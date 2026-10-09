@@ -1,13 +1,13 @@
 # Playable roster
 
-Usami, Takane, Kurako, and Koumi all start in the **Explorer** class. Their existing `_V03` portrait assignments and individual offset/scale adjustments are preserved. Character resources live in `resources/rpg/characters/`; skills and statuses are editable `.tres` files in their respective RPG resource directories.
+Usami, Takane, Kurako, and Koumi all start in the **Explorer** class. Each uses its matching `_V03` portrait with individual position and scale adjustments. Character resources live in `resources/rpg/characters/`; skills and statuses are editable `.tres` files in their respective RPG resource directories.
 
 | Character | Title | Unique skills |
 | --- | --- | --- |
 | Usami | The friendly rabbit | Jolly cheer; Caring friend |
 | Takane | The hunting hawk | Lock-on; Ride the gale; Graceful assault |
 | Kurako | The prankster jellyfish | Painful stab; Immobilizing stab; I am scary! |
-| Koumi | Enigmatic hare | Bonk; Cover |
+| Koumi | Emotions hare | Bonk; Cover |
 
 These values are starting balance choices for the requested minor/moderate/massive effects. Attack buffs/debuffs modify **Strength**. Buffs/debuffs last three affected action opportunities unless listed otherwise. Self-application counts the casting turn, matching the existing status timing rules.
 
@@ -32,12 +32,23 @@ Explorer adds balanced primary stats and growth as described in [core mechanics]
 
 ## Character descriptions
 
-- **Usami** encourages and cares for her companions, becoming quicker on her feet when everyone is safe and healthy.
-- **Takane** combines swift, precise attacks with fierce protectiveness toward Usami, fighting harder when her sister is hurt or downed.
-- **Kurako** is a playful opportunist whose thinking sharpens around outmatched or afflicted opponents.
-- **Koumi** is difficult to read emotionally but deliberate in action, protecting companions and showing her strongest composure at the start of a fight.
+### Usami — The friendly rabbit
 
-Only these four characters remain in the playable character resources. Automated stat/class tests use unnamed-role fixtures under `tests/fixtures/`.
+A warm-hearted rabbit girl who keeps the group together when the labyrinth feels endless. Usami lifts spirits with a cheerful word and tends to companions when the journey takes its toll. Seeing everyone safe and healthy puts an extra spring in her step.
+
+### Takane — The hunting hawk
+
+A sharp-eyed hawk who studies every opening before committing to a precise strike. Fast and focused, Takane stays one step ahead of the labyrinth's threats. Despite her cool demeanor, she is fiercely overprotective of her younger sister, Usami.
+
+### Kurako — The prankster jellyfish
+
+A mischievous jellyfish who treats danger as an opportunity for a prank. Kurako's stinging tricks leave hostiles weakened, poisoned, or unable to move, and seeing a weakened target really boosts her spirit.
+
+### Koumi — Emotions hare
+
+A quiet, enigmatic hare whose intentions are hard to read. It is unclear whether Koumi feels emotions at all, but her actions are straightforward and deliberate.
+
+Only these four characters remain in the playable character resources. Automated stat/class tests use generic frontliner and caster fixtures under `tests/fixtures/`; these are not playable characters. Press **Tab** in the Safe Zone to read character descriptions. Battle Information displays combat details without the character description text.
 
 ## Hidden combat passives
 
@@ -50,4 +61,4 @@ These automatic effects are editable under `resources/rpg/passives/` and assigne
 | Kurako | Easy target | Any living enemy is below Kurako’s level, has a negative stat modifier, poison, paralysis, or an explicitly negative status: Mental Acuity ×1.2. Multiple qualifying enemies do not stack it. |
 | Koumi | Collected | Rounds 1–4: Strength, Defense, Mental Acuity, Mental Resilience, and Speed ×1.1; maximum HP/SP are unchanged. Expires before round 5 planning and resets each battle. |
 
-Stat multipliers apply after permanent stats, equipment, and flat status modifiers, then round down. HP/MP capacity increases do not heal or restore points; expiration clamps excess points to the normal caps. Damage multipliers affect attacks, damage abilities, and damaging consumables after resistance; poison ticks retain their fixed status damage. Conditions update at each stat/damage calculation. Initiative still snapshots speed at round execution. All bonuses disappear at battle end and never change permanent growth. Status resources can set **Is Negative** for harmful effects without existing damage, paralysis, or stat penalties.
+Stat multipliers apply after permanent stats, equipment, and flat status modifiers, then round down. Collected does not modify maximum or current HP/SP, critical rate, critical damage, accuracy, evasion, or aggro. Damage multipliers affect attacks, damage abilities, and damaging consumables after resistance; poison ticks retain their fixed status damage. Conditions update at each stat/damage calculation. Initiative still snapshots speed at round execution. All bonuses disappear at battle end and never change permanent growth. Status resources can set **Is Negative** for harmful effects without existing damage, paralysis, or stat penalties.
