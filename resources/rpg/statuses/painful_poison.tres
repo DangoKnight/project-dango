@@ -1,0 +1,11 @@
+[gd_resource type="Resource" format=3]
+[ext_resource type="Script" path="res://scripts/rpg/status_effect.gd" id="Status"]
+[ext_resource type="Resource" path="res://resources/rpg/damage_types/poison.tres" id="Poison"]
+[resource]
+script = ExtResource("Status")
+id = &"painful_poison"
+display_name = "Painful Poison"
+duration_turns = 5
+stat_modifiers = Dictionary[StringName, float]({})
+turn_damage = 3
+damage_type = ExtResource("Poison")

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Script"]
+[ext_resource type="Resource" path="res://resources/rpg/damage_types/arcane.tres" id="Type"]
+
+
+[resource]
+script = ExtResource("Script")
+id = &"starfall"
+display_name = "Starfall"
+description = "A powerful arcane attack against a single target."
+effect = 0
+power = 15
+mana_cost = 5
+scaling_stat = "mental_acuity"
+scaling = 1.5
+defending_stat = "mental_resilience"
+damage_type = ExtResource("Type")
+

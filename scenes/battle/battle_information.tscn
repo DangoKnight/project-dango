@@ -1,0 +1,61 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/battle_information.gd" id="Script"]
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+bg_color = Color(0.08, 0.09, 0.11, 1)
+content_margin_left = 24.0
+content_margin_top = 20.0
+content_margin_right = 24.0
+content_margin_bottom = 20.0
+
+[node name="BattleInformation" type="PanelContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 0
+theme_override_styles/panel = SubResource("Panel")
+script = ExtResource("Script")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Heading" type="Label" parent="Layout"]
+layout_mode = 2
+text = "BATTLE INFORMATION"
+horizontal_alignment = 1
+
+[node name="Tabs" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="Layout/Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Enemies" type="Button" parent="Layout/Tabs"]
+layout_mode = 2
+text = "Hostiles"
+
+[node name="Content" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 24
+
+[node name="Members" type="ItemList" parent="Layout/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.0
+allow_reselect = true
+
+[node name="Details" type="RichTextLabel" parent="Layout/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.5
+theme_override_font_sizes/normal_font_size = 18
+
+[node name="Close" type="Button" parent="Layout"]
+layout_mode = 2
+text = "Return to battle (Tab / Esc)"

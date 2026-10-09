@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Script"]
+[ext_resource type="Resource" path="res://resources/rpg/damage_types/blunt.tres" id="Type"]
+
+
+[resource]
+script = ExtResource("Script")
+id = &"steadfast_strike"
+display_name = "Steadfast Strike"
+description = "A determined blunt strike against a single target."
+effect = 0
+power = 10
+mana_cost = 3
+scaling_stat = "defense"
+scaling = 1.5
+defending_stat = "defense"
+damage_type = ExtResource("Type")
+

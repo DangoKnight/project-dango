@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CharacterClass" format=3 uid="uid://du7r731oh8usj"]
+
+[ext_resource type="Script" uid="uid://dbonx52hipraq" path="res://scripts/rpg/weapon_type.gd" id="1_5ymyr"]
+[ext_resource type="Script" uid="uid://c2ovf6a57c6oi" path="res://scripts/rpg/ability_unlock.gd" id="3_ihqaa"]
+[ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="4_n6hex"]
+[ext_resource type="Script" uid="uid://cx7f3hlhhevnq" path="res://scripts/rpg/character_class.gd" id="Class"]
+[ext_resource type="Script" uid="uid://ddt764fvrnnt0" path="res://scripts/rpg/stats.gd" id="Stats"]
+
+[sub_resource type="Resource" id="Base"]
+script = ExtResource("Stats")
+max_hp = 10.0
+max_mp = 10.0
+strength = 2.0
+defense = 2.0
+mental_acuity = 2.0
+mental_resilience = 2.0
+speed = 2.0
+
+[sub_resource type="Resource" id="Growth"]
+script = ExtResource("Stats")
+max_hp = 5.0
+max_mp = 3.0
+strength = 1.0
+defense = 1.0
+mental_acuity = 1.0
+mental_resilience = 1.0
+speed = 1.0
+
+[resource]
+script = ExtResource("Class")
+id = &"explorer"
+display_name = "Explorer"
+description = "A versatile starting class with balanced growth and no additional weapon restrictions."
+base_stats = SubResource("Base")
+stat_growth = SubResource("Growth")

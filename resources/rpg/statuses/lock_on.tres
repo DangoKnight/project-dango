@@ -1,0 +1,8 @@
+[gd_resource type="Resource" format=3]
+[ext_resource type="Script" path="res://scripts/rpg/status_effect.gd" id="Status"]
+[resource]
+script = ExtResource("Status")
+id = &"lock_on"
+display_name = "Lock-on"
+duration_turns = 3
+stat_modifiers = Dictionary[StringName, float]({&"critical_rate": 0.65, &"critical_damage": 1.0})

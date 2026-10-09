@@ -1,0 +1,67 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/ui/equipment.gd" id="Script"]
+[ext_resource type="Theme" path="res://resources/themes/default.tres" id="Theme"]
+[node name="Equipment" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("Script")
+theme = ExtResource("Theme")
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchor_left = 0.04
+anchor_top = 0.04
+anchor_right = 0.96
+anchor_bottom = 0.96
+[node name="Layout" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+[node name="Title" type="Label" parent="Panel/Layout"]
+layout_mode = 2
+text = "EQUIPMENT"
+horizontal_alignment = 1
+[node name="Members" type="OptionButton" parent="Panel/Layout"]
+layout_mode = 2
+[node name="Lists" type="HBoxContainer" parent="Panel/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+[node name="Carried" type="VBoxContainer" parent="Panel/Layout/Lists"]
+layout_mode = 2
+size_flags_horizontal = 3
+[node name="Title" type="Label" parent="Panel/Layout/Lists/Carried"]
+layout_mode = 2
+text = "Carried"
+[node name="Items" type="ItemList" parent="Panel/Layout/Lists/Carried"]
+layout_mode = 2
+size_flags_vertical = 3
+[node name="Stash" type="VBoxContainer" parent="Panel/Layout/Lists"]
+layout_mode = 2
+size_flags_horizontal = 3
+[node name="Title" type="Label" parent="Panel/Layout/Lists/Stash"]
+layout_mode = 2
+text = "Shared stash"
+[node name="Items" type="ItemList" parent="Panel/Layout/Lists/Stash"]
+layout_mode = 2
+size_flags_vertical = 3
+[node name="Details" type="RichTextLabel" parent="Panel/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+[node name="Feedback" type="Label" parent="Panel/Layout"]
+layout_mode = 2
+autowrap_mode = 3
+[node name="Actions" type="HBoxContainer" parent="Panel/Layout"]
+layout_mode = 2
+[node name="Equip" type="Button" parent="Panel/Layout/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Equip"
+[node name="Unequip" type="Button" parent="Panel/Layout/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Unequip"
+[node name="Characters" type="Button" parent="Panel/Layout/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Back to Characters"

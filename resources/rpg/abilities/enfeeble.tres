@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Script"]
+[ext_resource type="Resource" path="res://resources/rpg/statuses/frailty.tres" id="Status"]
+
+[resource]
+script = ExtResource("Script")
+id = &"enfeeble"
+display_name = "Enfeeble"
+description = "Apply Frailty for three turns."
+effect = 2
+mana_cost = 4
+status_effect = ExtResource("Status")

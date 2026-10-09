@@ -1,0 +1,19 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/base/town.tscn" id="Town"]
+[ext_resource type="PackedScene" path="res://scenes/world/exploration_room.tscn" id="Map"]
+[ext_resource type="Texture2D" path="res://textures/safe_zone.svg" id="Background"]
+[ext_resource type="Texture2D" path="res://textures/barracks.svg" id="Barracks"]
+[ext_resource type="Texture2D" path="res://textures/tinkerer.svg" id="Tinkerer"]
+[ext_resource type="Texture2D" path="res://textures/chemist.svg" id="Chemist"]
+
+[node name="StartingTown" instance=ExtResource("Town")]
+town_id = &"starting_town"
+display_name = "Safe Zone"
+background_texture = ExtResource("Background")
+exploration_map = ExtResource("Map")
+location_backgrounds = Dictionary[String, Texture2D]({
+"Barracks": ExtResource("Barracks"),
+"Tinkerer": ExtResource("Tinkerer"),
+"Chemist": ExtResource("Chemist")
+})

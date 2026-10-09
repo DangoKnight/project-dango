@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://nk3ytl30vk85"]
+
+[ext_resource type="PackedScene" uid="uid://byfuq2tv8p7vj" path="res://scenes/battle/combat.tscn" id="Combat"]
+[ext_resource type="Script" uid="uid://citbupies7wf1" path="res://scripts/ui/portrait_preview.gd" id="Script"]
+
+[node name="PortraitPreview" type="Control" unique_id=1954475153]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("Script")
+
+[node name="Combat" parent="." unique_id=716409448 instance=ExtResource("Combat")]
+layout_mode = 1

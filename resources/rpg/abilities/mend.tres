@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Script"]
+
+
+[resource]
+script = ExtResource("Script")
+id = &"mend"
+display_name = "Mend"
+description = "Restore HP to a living ally."
+effect = 1
+power = 12
+mana_cost = 4
+scaling_stat = "mental_acuity"
+scaling = 1.2
+defending_stat = "none"
+
+
+targeting = 1

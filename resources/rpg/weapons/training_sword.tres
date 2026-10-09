@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/rpg/weapon.gd" id="Script"]
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/sword.tres" id="Type"]
+
+[resource]
+script = ExtResource("Script")
+id = &"training_sword"
+display_name = "Training Sword"
+weapon_type = ExtResource("Type")

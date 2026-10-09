@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PassiveAbilityDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/rpg/passive_ability.gd" id="Script"]
+
+[resource]
+script = ExtResource("Script")
+id = &"collected"
+display_name = "Collected"
+condition = 3
+round_limit = 4
+stat_multipliers = {&"strength": 1.1, &"defense": 1.1, &"mental_acuity": 1.1, &"mental_resilience": 1.1, &"speed": 1.1}

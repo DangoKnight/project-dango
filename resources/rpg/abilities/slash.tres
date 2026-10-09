@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Script"]
+[ext_resource type="Resource" path="res://resources/rpg/damage_types/slash.tres" id="Type"]
+
+
+[resource]
+script = ExtResource("Script")
+id = &"slash"
+display_name = "Slash"
+description = "A simple slashing attack."
+effect = 0
+power = 5
+mana_cost = 0
+scaling_stat = "strength"
+scaling = 1.0
+defending_stat = "defense"
+damage_type = ExtResource("Type")
+

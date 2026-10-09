@@ -1,0 +1,63 @@
+[gd_scene load_steps=4 format=3]
+[ext_resource type="Script" path="res://scripts/ui/options.gd" id="1"]
+[ext_resource type="Theme" path="res://resources/themes/default.tres" id="2"]
+[ext_resource type="Texture2D" path="res://textures/options.png" id="3"]
+
+[node name="options" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2")
+script = ExtResource("1")
+first_focus = NodePath("Panel/Buttons/Back")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Panel" type="PanelContainer" parent="."]
+anchor_left = 0.35
+anchor_top = 0.2
+anchor_right = 0.65
+anchor_bottom = 0.8
+grow_horizontal = 2
+grow_vertical = 2
+layout_mode = 1
+
+[node name="Buttons" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Panel/Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "OPTIONS"
+horizontal_alignment = 1
+
+[node name="VolumeLabel" type="Label" parent="Panel/Buttons"]
+layout_mode = 2
+text = "Master volume"
+horizontal_alignment = 1
+[node name="Volume" type="HSlider" parent="Panel/Buttons"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+[node name="Fullscreen" type="CheckButton" parent="Panel/Buttons"]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="Back" type="Button" parent="Panel/Buttons"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "Back"

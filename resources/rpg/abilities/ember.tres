@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Script"]
+[ext_resource type="Resource" path="res://resources/rpg/damage_types/fire.tres" id="Type"]
+
+
+[resource]
+script = ExtResource("Script")
+id = &"ember"
+display_name = "Ember"
+description = "A small fire spell."
+effect = 0
+power = 8
+mana_cost = 3
+scaling_stat = "mental_acuity"
+scaling = 1.4
+defending_stat = "mental_resilience"
+damage_type = ExtResource("Type")
+

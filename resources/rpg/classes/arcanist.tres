@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="CharacterClass" format=3 uid="uid://bjuu6m71yr3p"]
+
+[ext_resource type="Resource" path="res://resources/rpg/abilities/ember.tres" id="ember"]
+[ext_resource type="Resource" path="res://resources/rpg/abilities/enfeeble.tres" id="enfeeble"]
+[ext_resource type="Resource" path="res://resources/rpg/abilities/mend.tres" id="mend"]
+[ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="ResistanceScript"]
+[ext_resource type="Script" uid="uid://cx7f3hlhhevnq" path="res://scripts/rpg/character_class.gd" id="Script"]
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/staff.tres" id="staff"]
+[ext_resource type="Script" uid="uid://ddt764fvrnnt0" path="res://scripts/rpg/stats.gd" id="Stats"]
+[ext_resource type="Resource" path="res://resources/rpg/damage_types/arcane.tres" id="Type"]
+[ext_resource type="Script" uid="uid://c2ovf6a57c6oi" path="res://scripts/rpg/ability_unlock.gd" id="UnlockScript"]
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/wand.tres" id="wand"]
+[ext_resource type="Script" uid="uid://dbonx52hipraq" path="res://scripts/rpg/weapon_type.gd" id="WeaponTypeScript"]
+
+[sub_resource type="Resource" id="Base"]
+script = ExtResource("Stats")
+max_hp = 5.0
+max_mp = 15.0
+mental_acuity = 5.0
+mental_resilience = 3.0
+
+[sub_resource type="Resource" id="Unlockember"]
+script = ExtResource("UnlockScript")
+ability = ExtResource("ember")
+
+[sub_resource type="Resource" id="Unlockmend"]
+script = ExtResource("UnlockScript")
+level = 2
+ability = ExtResource("mend")
+
+[sub_resource type="Resource" id="StatusUnlock"]
+script = ExtResource("UnlockScript")
+level = 3
+ability = ExtResource("enfeeble")
+
+[sub_resource type="Resource" id="Resistance"]
+script = ExtResource("ResistanceScript")
+damage_type = ExtResource("Type")
+amount = 0.2
+
+[sub_resource type="Resource" id="Growth"]
+script = ExtResource("Stats")
+max_hp = 3.0
+max_mp = 4.0
+strength = 0.5
+defense = 0.5
+mental_acuity = 2.5
+mental_resilience = 1.5
+speed = 1.0
+
+[resource]
+script = ExtResource("Script")
+id = &"arcanist"
+display_name = "Arcanist"
+base_stats = SubResource("Base")
+stat_growth = SubResource("Growth")
+resistances = Array[ExtResource("ResistanceScript")]([SubResource("Resistance")])
+learned_abilities = Array[ExtResource("UnlockScript")]([SubResource("Unlockember"), SubResource("Unlockmend"), SubResource("StatusUnlock")])
+allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("staff"), ExtResource("wand")])

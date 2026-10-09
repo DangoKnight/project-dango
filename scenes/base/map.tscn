@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/map.gd" id="Map"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="Player"]
+
+[node name="Map" type="Node3D"]
+script = ExtResource("Map")
+
+[node name="SpawnPoint" type="Marker3D" parent="."]
+position = Vector3(0, 0.1, 0)
+
+[node name="Player" parent="." instance=ExtResource("Player")]

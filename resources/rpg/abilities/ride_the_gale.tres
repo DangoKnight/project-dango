@@ -1,0 +1,15 @@
+[gd_resource type="Resource" format=3]
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Ability"]
+[ext_resource type="Resource" path="res://resources/rpg/statuses/ride_the_gale.tres" id="Status"]
+[resource]
+script = ExtResource("Ability")
+id = &"ride_the_gale"
+display_name = "Ride the gale"
+description = "Raises own speed by 4 for three turns."
+effect = 2
+targeting = 2
+mana_cost = 3
+power = 0
+scaling = 1.0
+scaling_stat = "strength"
+status_effect = ExtResource("Status")

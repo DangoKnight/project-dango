@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PassiveAbilityDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/rpg/passive_ability.gd" id="Script"]
+
+[resource]
+script = ExtResource("Script")
+id = &"overprotective_sister"
+display_name = "Overprotective sister"
+condition = 1
+health_threshold = 0.5
+ally_id = &"usami"
+damage_multiplier = 1.2
+downed_damage_multiplier = 1.5

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" format=3]
+[ext_resource type="Script" path="res://scripts/rpg/gear.gd" id="Gear"]
+
+
+[resource]
+script = ExtResource("Gear")
+id = &"wind_artifact"
+display_name = "Wind Artifact"
+description = "speed +2."
+stat_modifiers = Dictionary[StringName, float]({&"speed": 2.0})

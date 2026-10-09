@@ -1,0 +1,329 @@
+[gd_scene format=3 uid="uid://byfuq2tv8p7vj"]
+
+[ext_resource type="Texture2D" uid="uid://c1fkw072gycpc" path="res://textures/battle_background.png" id="Background"]
+[ext_resource type="Resource" path="res://resources/rpg/encounters/training.tres" id="Encounter"]
+[ext_resource type="PackedScene" path="res://scenes/battle/party_card.tscn" id="PartyCard"]
+[ext_resource type="Texture2D" uid="uid://dpkvh4fn5346f" path="res://textures/portrait.png" id="Portrait"]
+[ext_resource type="Script" uid="uid://b6ktqqkgblfaj" path="res://scripts/battle/combat_screen.gd" id="Script"]
+[ext_resource type="PackedScene" path="res://scenes/battle/enemy_slot.tscn" id="Slot"]
+[ext_resource type="Theme" uid="uid://cbxiw1n5nqs11" path="res://resources/themes/default.tres" id="Theme"]
+
+[ext_resource type="PackedScene" path="res://scenes/battle/battle_information.tscn" id="Information"]
+
+[sub_resource type="StyleBoxFlat" id="CompactPanel"]
+content_margin_left = 20.0
+content_margin_top = 16.0
+content_margin_right = 20.0
+content_margin_bottom = 16.0
+bg_color = Color(0.12, 0.12, 0.12, 0.94)
+
+[sub_resource type="StyleBoxFlat" id="ActionPanelStyle"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.12, 0.12, 0.12, 0.94)
+
+[sub_resource type="StyleBoxFlat" id="LogPanelStyle"]
+content_margin_left = 16.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
+bg_color = Color(0.06, 0.06, 0.06, 0.18)
+
+[node name="Combat" type="Control" unique_id=212004450]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("Theme")
+script = ExtResource("Script")
+default_encounter = ExtResource("Encounter")
+
+[node name="Background" type="TextureRect" parent="." unique_id=913297]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("Background")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="EnemySpots" type="Control" parent="." unique_id=1458151574]
+layout_mode = 1
+anchor_left = 0.02
+anchor_top = 0.08
+anchor_right = 0.98
+anchor_bottom = 0.88
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Spot1" type="Control" parent="EnemySpots" unique_id=1290207251]
+layout_mode = 1
+anchor_left = 0.12
+anchor_top = 0.12
+anchor_right = 0.38
+anchor_bottom = 0.43
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="EnemySlot" parent="EnemySpots/Spot1" unique_id=1580887710 instance=ExtResource("Slot")]
+layout_mode = 1
+anchors_preset = 15
+
+[node name="Spot2" type="Control" parent="EnemySpots" unique_id=677650457]
+layout_mode = 1
+anchor_left = 0.405
+anchor_top = 0.025
+anchor_right = 0.665
+anchor_bottom = 0.335
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="EnemySlot" parent="EnemySpots/Spot2" unique_id=2037131872 instance=ExtResource("Slot")]
+layout_mode = 1
+anchors_preset = 15
+
+[node name="Spot3" type="Control" parent="EnemySpots" unique_id=2089896057]
+layout_mode = 1
+anchor_left = 0.705
+anchor_top = 0.19
+anchor_right = 0.965
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="EnemySlot" parent="EnemySpots/Spot3" unique_id=112320513 instance=ExtResource("Slot")]
+layout_mode = 1
+anchors_preset = 15
+
+[node name="Spot4" type="Control" parent="EnemySpots" unique_id=502616440]
+layout_mode = 1
+anchor_left = 0.08
+anchor_top = 0.57
+anchor_right = 0.34
+anchor_bottom = 0.88
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="EnemySlot" parent="EnemySpots/Spot4" unique_id=1009772545 instance=ExtResource("Slot")]
+layout_mode = 1
+anchors_preset = 15
+
+[node name="Spot5" type="Control" parent="EnemySpots" unique_id=1166079116]
+layout_mode = 1
+anchor_left = 0.39
+anchor_top = 0.485
+anchor_right = 0.65
+anchor_bottom = 0.795
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="EnemySlot" parent="EnemySpots/Spot5" unique_id=2131611974 instance=ExtResource("Slot")]
+layout_mode = 1
+anchors_preset = 15
+
+[node name="Spot6" type="Control" parent="EnemySpots" unique_id=878542617]
+layout_mode = 1
+anchor_left = 0.72
+anchor_top = 0.65
+anchor_right = 0.98
+anchor_bottom = 0.96
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="EnemySlot" parent="EnemySpots/Spot6" unique_id=150249767 instance=ExtResource("Slot")]
+layout_mode = 1
+anchors_preset = 15
+
+[node name="PortraitOverlay" type="Control" parent="." unique_id=2069468374]
+layout_mode = 1
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Layout" type="Control" parent="PortraitOverlay" unique_id=1712591041]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Portrait" type="TextureRect" parent="PortraitOverlay/Layout" unique_id=1726105020]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("Portrait")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RoundCounter" type="Label" parent="." unique_id=1599454023]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.82
+anchor_top = 0.02
+anchor_right = 0.975
+anchor_bottom = 0.08
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 2
+vertical_alignment = 1
+mouse_filter = 2
+text = "Round 1"
+
+[node name="Party" type="HBoxContainer" parent="." unique_id=1305050810]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.025
+anchor_top = 0.90
+anchor_right = 0.975
+anchor_bottom = 0.98
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="Character1" parent="Party" unique_id=703847897 instance=ExtResource("PartyCard")]
+
+[node name="Character2" parent="Party" unique_id=1548288885 instance=ExtResource("PartyCard")]
+
+[node name="Character3" parent="Party" unique_id=543630702 instance=ExtResource("PartyCard")]
+
+[node name="Character4" parent="Party" unique_id=1655872107 instance=ExtResource("PartyCard")]
+
+[node name="ActionPanel" type="PanelContainer" parent="." unique_id=1269826185]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.10
+anchor_right = 0.30
+anchor_bottom = 0.88
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("ActionPanelStyle")
+
+[node name="Layout" type="VBoxContainer" parent="ActionPanel" unique_id=410856704]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Commands" type="VBoxContainer" parent="ActionPanel/Layout" unique_id=353692840]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="Prompt" type="Label" parent="ActionPanel/Layout/Commands" unique_id=1168294638]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Choose an action"
+autowrap_mode = 2
+
+[node name="ActionScroll" type="ScrollContainer" parent="ActionPanel/Layout/Commands" unique_id=912539288]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Actions" type="GridContainer" parent="ActionPanel/Layout/Commands/ActionScroll" unique_id=1060547367]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 6
+columns = 1
+
+[node name="Back" type="Button" parent="ActionPanel/Layout/Commands" unique_id=1776105465]
+layout_mode = 2
+text = "Back"
+
+[node name="BattleLog" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchor_left = 0.04
+anchor_top = 0.02
+anchor_right = 0.96
+anchor_bottom = 0.02
+mouse_filter = 2
+theme_override_styles/panel = SubResource("LogPanelStyle")
+
+[node name="Log" type="Label" parent="BattleLog"]
+layout_mode = 2
+mouse_filter = 2
+custom_minimum_size = Vector2(0, 52)
+clip_text = true
+max_lines_visible = 2
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+
+[node name="TargetHint" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchor_left = 0.1
+anchor_top = 0.08
+anchor_right = 0.9
+anchor_bottom = 0.15
+horizontal_alignment = 1
+autowrap_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 18
+
+[node name="Confirmation" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchor_left = 0.25
+anchor_top = 0.34
+anchor_right = 0.75
+anchor_bottom = 0.66
+theme_override_styles/panel = SubResource("CompactPanel")
+
+[node name="Layout" type="VBoxContainer" parent="Confirmation"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Confirmation/Layout"]
+layout_mode = 2
+text = "Confirm actions"
+horizontal_alignment = 1
+
+[node name="Question" type="Label" parent="Confirmation/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Proceed with this round?"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Execute" type="Button" parent="Confirmation/Layout"]
+layout_mode = 2
+text = "Execute round"
+
+[node name="Return" type="Button" parent="Confirmation/Layout"]
+layout_mode = 2
+text = "Return"
+
+[node name="InformationBlocker" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 0
+
+[node name="BattleInformation" parent="." instance=ExtResource("Information")]

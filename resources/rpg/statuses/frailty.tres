@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/rpg/status_effect.gd" id="Script"]
+
+[resource]
+script = ExtResource("Script")
+id = &"frailty"
+display_name = "Frailty"
+description = "Mental Resilience reduced for three turns."
+duration_turns = 3
+stat_modifiers = Dictionary[StringName, float]({
+&"mental_resilience": -4.0
+})

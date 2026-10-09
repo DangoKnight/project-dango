@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Script"]
+[ext_resource type="Resource" path="res://resources/rpg/damage_types/slash.tres" id="Type"]
+
+
+[resource]
+script = ExtResource("Script")
+id = &"cleave"
+display_name = "Cleave"
+description = "A heavy slashing attack."
+effect = 0
+power = 18
+mana_cost = 4
+scaling_stat = "strength"
+scaling = 1.5
+defending_stat = "defense"
+damage_type = ExtResource("Type")
+

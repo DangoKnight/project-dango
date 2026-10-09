@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="CharacterClass" format=3 uid="uid://cqtjael6l4xpt"]
+
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/axe.tres" id="axe"]
+[ext_resource type="Resource" path="res://resources/rpg/abilities/cleave.tres" id="cleave"]
+[ext_resource type="Resource" path="res://resources/rpg/abilities/fortify.tres" id="fortify"]
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/hammer.tres" id="hammer"]
+[ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="ResistanceScript"]
+[ext_resource type="Script" uid="uid://cx7f3hlhhevnq" path="res://scripts/rpg/character_class.gd" id="Script"]
+[ext_resource type="Resource" path="res://resources/rpg/abilities/slash.tres" id="slash"]
+[ext_resource type="Script" uid="uid://ddt764fvrnnt0" path="res://scripts/rpg/stats.gd" id="Stats"]
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/sword.tres" id="sword"]
+[ext_resource type="Resource" path="res://resources/rpg/damage_types/blunt.tres" id="Type"]
+[ext_resource type="Script" uid="uid://c2ovf6a57c6oi" path="res://scripts/rpg/ability_unlock.gd" id="UnlockScript"]
+[ext_resource type="Script" uid="uid://dbonx52hipraq" path="res://scripts/rpg/weapon_type.gd" id="WeaponTypeScript"]
+
+[sub_resource type="Resource" id="Base"]
+script = ExtResource("Stats")
+max_hp = 20.0
+strength = 4.0
+defense = 4.0
+
+[sub_resource type="Resource" id="Unlockslash"]
+script = ExtResource("UnlockScript")
+ability = ExtResource("slash")
+
+[sub_resource type="Resource" id="Unlockcleave"]
+script = ExtResource("UnlockScript")
+level = 3
+ability = ExtResource("cleave")
+
+[sub_resource type="Resource" id="StatusUnlock"]
+script = ExtResource("UnlockScript")
+level = 2
+ability = ExtResource("fortify")
+
+[sub_resource type="Resource" id="Resistance"]
+script = ExtResource("ResistanceScript")
+damage_type = ExtResource("Type")
+amount = 0.15
+
+[sub_resource type="Resource" id="Growth"]
+script = ExtResource("Stats")
+max_hp = 7.0
+max_mp = 1.0
+strength = 2.0
+defense = 1.5
+mental_resilience = 0.5
+speed = 0.5
+
+[resource]
+script = ExtResource("Script")
+id = &"vanguard"
+display_name = "Vanguard"
+base_stats = SubResource("Base")
+stat_growth = SubResource("Growth")
+resistances = Array[ExtResource("ResistanceScript")]([SubResource("Resistance")])
+learned_abilities = Array[ExtResource("UnlockScript")]([SubResource("Unlockslash"), SubResource("Unlockcleave"), SubResource("StatusUnlock")])
+allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("sword"), ExtResource("axe"), ExtResource("hammer")])

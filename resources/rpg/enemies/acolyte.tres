@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="CharacterDefinition" format=3 uid="uid://c38vdhv0db6s5"]
+
+[ext_resource type="Script" uid="uid://dbonx52hipraq" path="res://scripts/rpg/weapon_type.gd" id="1_0ecd1"]
+[ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="4_v5pte"]
+[ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="6_03y7d"]
+[ext_resource type="Resource" path="res://resources/rpg/abilities/ember.tres" id="Ability"]
+[ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="AbilityScript"]
+[ext_resource type="Texture2D" uid="uid://dvejwiia65k2j" path="res://textures/enemy.png" id="Image"]
+[ext_resource type="Script" uid="uid://cftevjhnkln3e" path="res://scripts/rpg/character_definition.gd" id="Script"]
+[ext_resource type="Script" uid="uid://ddt764fvrnnt0" path="res://scripts/rpg/stats.gd" id="Stats"]
+
+[sub_resource type="Resource" id="Base"]
+script = ExtResource("Stats")
+max_hp = 30.0
+max_mp = 12.0
+strength = 4.0
+defense = 2.0
+mental_acuity = 6.0
+mental_resilience = 3.0
+speed = 6.0
+
+[resource]
+script = ExtResource("Script")
+id = &"acolyte"
+display_name = "Acolyte"
+base_stats = SubResource("Base")
+unique_abilities = Array[ExtResource("AbilityScript")]([ExtResource("Ability")])
+combat_texture = ExtResource("Image")

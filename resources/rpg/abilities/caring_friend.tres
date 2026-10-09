@@ -1,0 +1,13 @@
+[gd_resource type="Resource" format=3]
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Ability"]
+[resource]
+script = ExtResource("Ability")
+id = &"caring_friend"
+display_name = "Caring friend"
+description = "A minor heal for all living allies: 8 + 0.3 x mental acuity HP each."
+effect = 1
+targeting = 4
+mana_cost = 5
+power = 8
+scaling = 0.3
+scaling_stat = "mental_acuity"

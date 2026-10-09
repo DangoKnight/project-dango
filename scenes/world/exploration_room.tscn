@@ -1,0 +1,89 @@
+[gd_scene load_steps=19 format=3]
+[ext_resource type="PackedScene" path="res://scenes/base/map.tscn" id="Map"]
+[ext_resource type="Material" path="res://resources/materials/ground.tres" id="ground"]
+[ext_resource type="Material" path="res://resources/materials/wall.tres" id="wall"]
+[ext_resource type="Material" path="res://resources/materials/ceiling.tres" id="ceiling"]
+[ext_resource type="Resource" path="res://resources/rpg/encounters/training.tres" id="Encounter"]
+[sub_resource type="Environment" id="Environment"]
+background_mode = 1
+background_color = Color(0.2, 0.2, 0.2, 1)
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.75
+[sub_resource type="BoxMesh" id="GroundMesh"]
+size = Vector3(40, 1, 40)
+material = ExtResource("ground")
+[sub_resource type="BoxShape3D" id="GroundShape"]
+size = Vector3(40, 1, 40)
+[sub_resource type="BoxMesh" id="CeilingMesh"]
+size = Vector3(40, 1, 40)
+material = ExtResource("ceiling")
+[sub_resource type="BoxShape3D" id="CeilingShape"]
+size = Vector3(40, 1, 40)
+[sub_resource type="BoxMesh" id="NorthWallMesh"]
+size = Vector3(40, 8, 1)
+material = ExtResource("wall")
+[sub_resource type="BoxShape3D" id="NorthWallShape"]
+size = Vector3(40, 8, 1)
+[sub_resource type="BoxMesh" id="SouthWallMesh"]
+size = Vector3(40, 8, 1)
+material = ExtResource("wall")
+[sub_resource type="BoxShape3D" id="SouthWallShape"]
+size = Vector3(40, 8, 1)
+[sub_resource type="BoxMesh" id="WestWallMesh"]
+size = Vector3(1, 8, 40)
+material = ExtResource("wall")
+[sub_resource type="BoxShape3D" id="WestWallShape"]
+size = Vector3(1, 8, 40)
+[sub_resource type="BoxMesh" id="EastWallMesh"]
+size = Vector3(1, 8, 40)
+material = ExtResource("wall")
+[sub_resource type="BoxShape3D" id="EastWallShape"]
+size = Vector3(1, 8, 40)
+[node name="ExplorationRoom" instance=ExtResource("Map")]
+map_id = &"exploration_room"
+display_name = "Exploration Room"
+encounter = ExtResource("Encounter")
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment")
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-60, -25, 0)
+light_energy = 0.7
+[node name="Ground" type="StaticBody3D" parent="."]
+position = Vector3(0, -0.5, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("GroundMesh")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("GroundShape")
+[node name="Ceiling" type="StaticBody3D" parent="."]
+position = Vector3(0, 8.5, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ceiling"]
+mesh = SubResource("CeilingMesh")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling"]
+shape = SubResource("CeilingShape")
+[node name="NorthWall" type="StaticBody3D" parent="."]
+position = Vector3(0, 4, -20)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NorthWall"]
+mesh = SubResource("NorthWallMesh")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NorthWall"]
+shape = SubResource("NorthWallShape")
+[node name="SouthWall" type="StaticBody3D" parent="."]
+position = Vector3(0, 4, 20)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SouthWall"]
+mesh = SubResource("SouthWallMesh")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SouthWall"]
+shape = SubResource("SouthWallShape")
+[node name="WestWall" type="StaticBody3D" parent="."]
+position = Vector3(-20, 4, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WestWall"]
+mesh = SubResource("WestWallMesh")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WestWall"]
+shape = SubResource("WestWallShape")
+[node name="EastWall" type="StaticBody3D" parent="."]
+position = Vector3(20, 4, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="EastWall"]
+mesh = SubResource("EastWallMesh")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EastWall"]
+shape = SubResource("EastWallShape")
+[node name="SpawnPoint" parent="." index="0"]
+position = Vector3(0, 0.1, 12)

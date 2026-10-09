@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3]
+[ext_resource type="Script" path="res://scripts/rpg/status_effect.gd" id="Status"]
+[resource]
+script = ExtResource("Status")
+id = &"paralysis"
+display_name = "Paralysis"
+duration_turns = 2
+stat_modifiers = Dictionary[StringName, float]({})
+prevents_action = true

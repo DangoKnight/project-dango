@@ -1,0 +1,73 @@
+[gd_resource type="Resource" script_class="CharacterDefinition" format=3 uid="uid://dtoao4rtk4kh1"]
+
+[ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="11_pmd4k"]
+[ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="AbilityScript"]
+[ext_resource type="Resource" uid="uid://du7r731oh8usj" path="res://resources/rpg/classes/explorer.tres" id="Class"]
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/dagger.tres" id="dagger"]
+[ext_resource type="Resource" path="res://resources/rpg/damage_types/fire.tres" id="fire"]
+[ext_resource type="Resource" path="res://resources/rpg/damage_types/frost.tres" id="frost"]
+[ext_resource type="Texture2D" uid="uid://mrfu8k66f83s" path="res://textures/Characters/Alpha/Takane-chan_V03.png" id="Portrait"]
+[ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="ResistanceScript"]
+[ext_resource type="Script" uid="uid://cftevjhnkln3e" path="res://scripts/rpg/character_definition.gd" id="Script"]
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/staff.tres" id="staff"]
+[ext_resource type="Resource" path="res://resources/rpg/weapons/apprentice_staff.tres" id="StartingWeapon"]
+[ext_resource type="Script" uid="uid://ddt764fvrnnt0" path="res://scripts/rpg/stats.gd" id="Stats"]
+[ext_resource type="Resource" path="res://resources/rpg/abilities/lock_on.tres" id="Unique0"]
+[ext_resource type="Resource" path="res://resources/rpg/abilities/ride_the_gale.tres" id="Unique1"]
+[ext_resource type="Resource" path="res://resources/rpg/abilities/graceful_assault.tres" id="Unique2"]
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/wand.tres" id="wand"]
+[ext_resource type="Script" uid="uid://dbonx52hipraq" path="res://scripts/rpg/weapon_type.gd" id="WeaponTypeScript"]
+
+[ext_resource type="Script" path="res://scripts/rpg/passive_ability.gd" id="PassiveScript"]
+[ext_resource type="Resource" path="res://resources/rpg/passives/overprotective_sister.tres" id="HiddenPassive"]
+
+[sub_resource type="Resource" id="Base"]
+script = ExtResource("Stats")
+max_hp = 40.0
+max_mp = 20.0
+strength = 3.0
+defense = 2.0
+mental_acuity = 9.0
+mental_resilience = 6.0
+speed = 8.0
+
+[sub_resource type="Resource" id="frostResistance"]
+script = ExtResource("ResistanceScript")
+damage_type = ExtResource("frost")
+amount = 0.25
+
+[sub_resource type="Resource" id="fireResistance"]
+script = ExtResource("ResistanceScript")
+damage_type = ExtResource("fire")
+amount = -0.2
+
+[sub_resource type="Resource" id="Growth"]
+script = ExtResource("Stats")
+max_hp = 3.0
+max_mp = 3.0
+strength = 0.5
+defense = 0.5
+mental_acuity = 2.0
+mental_resilience = 1.0
+speed = 1.5
+
+[resource]
+script = ExtResource("Script")
+id = &"takane"
+display_name = "Takane"
+title = "The hunting hawk"
+description = "A sharp-eyed hawk who studies every opening before committing to a precise strike. Fast and focused, Takane stays one step ahead of the labyrinth's threats. Despite her cool demeanor, she is fiercely overprotective of her younger sister, Usami."
+starting_class = ExtResource("Class")
+base_stats = SubResource("Base")
+stat_growth = SubResource("Growth")
+resistances = Array[ExtResource("ResistanceScript")]([SubResource("frostResistance"), SubResource("fireResistance")])
+unique_abilities = Array[ExtResource("AbilityScript")]([ExtResource("Unique0"), ExtResource("Unique1"), ExtResource("Unique2")])
+allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("staff"), ExtResource("wand"), ExtResource("dagger")])
+starting_weapon = ExtResource("StartingWeapon")
+critical_rate = 0.05
+accuracy = 0.95
+portrait = ExtResource("Portrait")
+portrait_offset = Vector2(0, 0.25)
+portrait_scale = 1.5
+combat_texture = ExtResource("Portrait")
+hidden_abilities = Array[ExtResource("PassiveScript")]([ExtResource("HiddenPassive")])

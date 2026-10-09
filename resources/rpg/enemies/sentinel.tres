@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="CharacterDefinition" format=3 uid="uid://c1qur01xxkstv"]
+
+[ext_resource type="Script" uid="uid://dbonx52hipraq" path="res://scripts/rpg/weapon_type.gd" id="1_ifu1w"]
+[ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="4_b5vkt"]
+[ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="6_ame6v"]
+[ext_resource type="Resource" path="res://resources/rpg/abilities/slash.tres" id="Ability"]
+[ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="AbilityScript"]
+[ext_resource type="Texture2D" uid="uid://dvejwiia65k2j" path="res://textures/enemy.png" id="Image"]
+[ext_resource type="Script" uid="uid://cftevjhnkln3e" path="res://scripts/rpg/character_definition.gd" id="Script"]
+[ext_resource type="Script" uid="uid://ddt764fvrnnt0" path="res://scripts/rpg/stats.gd" id="Stats"]
+
+[sub_resource type="Resource" id="Base"]
+script = ExtResource("Stats")
+max_hp = 38.0
+max_mp = 12.0
+strength = 7.0
+defense = 3.0
+mental_acuity = 1.0
+mental_resilience = 2.0
+speed = 4.0
+
+[resource]
+script = ExtResource("Script")
+id = &"sentinel"
+display_name = "Sentinel"
+base_stats = SubResource("Base")
+unique_abilities = Array[ExtResource("AbilityScript")]([ExtResource("Ability")])
+combat_texture = ExtResource("Image")

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="GearDefinition" format=3 uid="uid://c5ca648ewjlfl"]
+
+[ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="2_hr8ix"]
+[ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="4_fpaao"]
+[ext_resource type="Script" uid="uid://ogqaxvo5ja6q" path="res://scripts/rpg/consumable_effect.gd" id="Effect"]
+[ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="Gear"]
+
+[sub_resource type="Resource" id="Heal"]
+script = ExtResource("Effect")
+amount = 30
+
+[resource]
+script = ExtResource("Gear")
+id = &"healing_draught"
+display_name = "Healing Draught"
+description = "Heals one ally for 30 HP. Three total uses."
+kind = 2
+max_uses = 3
+consumable_target = 0
+effects = Array[ExtResource("Effect")]([SubResource("Heal")])

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" format=3]
+[ext_resource type="Script" path="res://scripts/rpg/gear.gd" id="Gear"]
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Ability"]
+[ext_resource type="Resource" path="res://resources/rpg/abilities/ember.tres" id="Ember"]
+[ext_resource type="Resource" path="res://resources/rpg/abilities/mend.tres" id="Mend"]
+
+
+[resource]
+script = ExtResource("Gear")
+id = &"spell_medallion"
+display_name = "Spell Medallion"
+description = "Grants Ember and Mend while equipped. Normal MP costs apply."
+kind = 1
+spells = Array[ExtResource("Ability")]([ExtResource("Ember"), ExtResource("Mend")])

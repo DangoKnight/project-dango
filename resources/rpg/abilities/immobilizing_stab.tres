@@ -1,0 +1,15 @@
+[gd_resource type="Resource" format=3]
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Ability"]
+[ext_resource type="Resource" path="res://resources/rpg/statuses/paralysis.tres" id="Status"]
+[resource]
+script = ExtResource("Ability")
+id = &"immobilizing_stab"
+display_name = "Immobilizing stab"
+description = "Paralyzes one enemy for two action opportunities."
+effect = 2
+targeting = 0
+mana_cost = 5
+power = 0
+scaling = 1.0
+scaling_stat = "strength"
+status_effect = ExtResource("Status")

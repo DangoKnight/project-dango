@@ -1,0 +1,15 @@
+[gd_resource type="Resource" format=3]
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Ability"]
+[ext_resource type="Resource" path="res://resources/rpg/statuses/painful_poison.tres" id="Status"]
+[resource]
+script = ExtResource("Ability")
+id = &"painful_stab"
+display_name = "Painful stab"
+description = "Poisons one enemy for five affected turns, dealing 3 poison damage each turn before resistance."
+effect = 2
+targeting = 0
+mana_cost = 4
+power = 0
+scaling = 1.0
+scaling_stat = "strength"
+status_effect = ExtResource("Status")

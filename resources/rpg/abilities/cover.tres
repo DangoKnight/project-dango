@@ -1,0 +1,15 @@
+[gd_resource type="Resource" format=3]
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Ability"]
+[ext_resource type="Resource" path="res://resources/rpg/statuses/cover.tres" id="Status"]
+[resource]
+script = ExtResource("Ability")
+id = &"cover"
+display_name = "Cover"
+description = "Raises own defense by 4 and aggro weight by 2 for three turns."
+effect = 2
+targeting = 2
+mana_cost = 4
+power = 0
+scaling = 1.0
+scaling_stat = "strength"
+status_effect = ExtResource("Status")

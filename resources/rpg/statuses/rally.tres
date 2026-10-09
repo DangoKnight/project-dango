@@ -1,0 +1,8 @@
+[gd_resource type="Resource" format=3]
+[ext_resource type="Script" path="res://scripts/rpg/status_effect.gd" id="S"]
+[resource]
+script = ExtResource("S")
+id = &"rally"
+display_name = "Rally"
+duration_turns = 3
+stat_modifiers = Dictionary[StringName, float]({&"strength": 4.0})

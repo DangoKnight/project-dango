@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="GearDefinition" format=3 uid="uid://b8522qssd7x4b"]
+
+[ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="3_g8exs"]
+[ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="5_n50yw"]
+[ext_resource type="Script" uid="uid://ogqaxvo5ja6q" path="res://scripts/rpg/consumable_effect.gd" id="Effect"]
+[ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="Gear"]
+[ext_resource type="Resource" path="res://resources/rpg/statuses/rally.tres" id="Rally"]
+
+[sub_resource type="Resource" id="Heal"]
+script = ExtResource("Effect")
+amount = 18
+
+[sub_resource type="Resource" id="Buff"]
+script = ExtResource("Effect")
+kind = 2
+status = ExtResource("Rally")
+
+[resource]
+script = ExtResource("Gear")
+id = &"rally_flask"
+display_name = "Rally Flask"
+description = "Heals the living party for 18 HP and grants +4 strength for three turns. Three total uses."
+kind = 2
+max_uses = 3
+effects = Array[ExtResource("Effect")]([SubResource("Heal"), SubResource("Buff")])

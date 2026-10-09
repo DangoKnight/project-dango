@@ -1,0 +1,15 @@
+[gd_resource type="Resource" format=3]
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Ability"]
+[ext_resource type="Resource" path="res://resources/rpg/damage_types/blunt.tres" id="Damage"]
+[resource]
+script = ExtResource("Ability")
+id = &"bonk"
+display_name = "Bonk"
+description = "A moderate single-target bash attack using blunt damage."
+effect = 0
+targeting = 0
+mana_cost = 3
+power = 12
+scaling = 1.2
+scaling_stat = "strength"
+damage_type = ExtResource("Damage")

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" format=3]
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Ability"]
+[ext_resource type="Resource" path="res://resources/rpg/statuses/scared.tres" id="Status"]
+[resource]
+script = ExtResource("Ability")
+id = &"i_am_scary"
+display_name = "I am scary!"
+description = "Reduces all living enemies' strength and mental acuity by 3 for three turns."
+effect = 2
+targeting = 5
+mana_cost = 6
+power = 0
+scaling = 1.0
+scaling_stat = "strength"
+status_effect = ExtResource("Status")

@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=3]
+[ext_resource type="Script" path="res://scripts/world/town.gd" id="1"]
+[ext_resource type="Theme" path="res://resources/themes/default.tres" id="2"]
+[ext_resource type="Texture2D" path="res://textures/safe_zone.svg" id="3"]
+
+[node name="Town" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2")
+script = ExtResource("1")
+first_focus = NodePath("Panel/Buttons/Barracks")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Panel" type="PanelContainer" parent="."]
+anchor_left = 0.69
+anchor_top = 0.08
+anchor_right = 0.97
+anchor_bottom = 0.92
+grow_horizontal = 2
+grow_vertical = 2
+layout_mode = 1
+
+[node name="Buttons" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Panel/Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "SAFE ZONE"
+horizontal_alignment = 1
+
+[node name="Barracks" type="Button" parent="Panel/Buttons"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "Barracks"
+
+[node name="Tinkerer" type="Button" parent="Panel/Buttons"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "Tinkerer"
+
+[node name="Chemist" type="Button" parent="Panel/Buttons"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "Chemist"
+
+[node name="Explore" type="Button" parent="Panel/Buttons"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "Enter the Labyrinth"
+
+[node name="Spacer" type="Control" parent="Panel/Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Shortcuts" type="Label" parent="Panel/Buttons"]
+layout_mode = 2
+text = "Tab · Characters\nEsc · Menu"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 16

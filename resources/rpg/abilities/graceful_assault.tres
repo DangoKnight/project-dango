@@ -1,0 +1,16 @@
+[gd_resource type="Resource" format=3]
+[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Ability"]
+[ext_resource type="Resource" path="res://resources/rpg/damage_types/pierce.tres" id="Damage"]
+[resource]
+script = ExtResource("Ability")
+id = &"graceful_assault"
+display_name = "Graceful assault"
+description = "A normal-power pierce attack that cannot miss."
+effect = 0
+targeting = 0
+mana_cost = 4
+power = 8
+scaling = 1.0
+scaling_stat = "strength"
+guaranteed_hit = true
+damage_type = ExtResource("Damage")
