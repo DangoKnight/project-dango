@@ -101,7 +101,7 @@ Equipment/status tests cover character/class restriction intersections, starting
 
 See [gear](gear.md) for artifact stat/resistance modifiers, medallion spell grants, and consumables with friendly or enemy targets.
 
-The starting party contains Usami, Takane, Kurako, and Koumi. Their separate character resources assign both `portrait` and `combat_texture` to the matching artwork in `textures/Characters/Alpha/`. All four use Explorer and their own unique skills and titles; portrait and combat textures use the supplied `_V03` images. Initial character stat/growth profiles remain editable. Generic stat/class fixtures live only under `tests/fixtures/`.
+The starting party contains Usami, Takane, Kurako, and Koumi. Their separate character resources assign both `portrait` and `combat_texture` to the matching artwork in `textures/Characters/Alpha/`. All four use Explorer and their own unique skills and titles; portrait and combat textures use the supplied V03 artwork, stored without version suffixes. Initial character stat/growth profiles remain editable. Generic stat/class fixtures live only under `tests/fixtures/`.
 
 ## Accuracy, critical hits, and aggro
 

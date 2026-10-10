@@ -1,6 +1,6 @@
 # Playable roster
 
-Usami, Takane, Kurako, and Koumi all start in the **Explorer** class. Each uses its matching `_V03` portrait with individual position and scale adjustments. Character resources live in `resources/rpg/characters/`; skills and statuses are editable `.tres` files in their respective RPG resource directories.
+Usami, Takane, Kurako, and Koumi all start in the **Explorer** class. Each uses its matching portrait with individual position and scale adjustments. Character resources live in `resources/rpg/characters/`; skills and statuses are editable `.tres` files in their respective RPG resource directories.
 
 | Character | Title | Unique skills |
 | --- | --- | --- |

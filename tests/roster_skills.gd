@@ -38,7 +38,7 @@ func run() -> void:
 	var ids := [["jolly_cheer", "caring_friend"], ["lock_on", "ride_the_gale", "graceful_assault"], ["painful_stab", "immobilizing_stab", "i_am_scary"], ["bonk", "cover"]]
 	for index in range(names.size()):
 		var unit := character(names[index])
-		check(unit.definition.portrait != null and unit.definition.portrait.resource_path.get_file().ends_with("_V03.png"), "Character uses V03 portrait: " + names[index])
+		check(unit.definition.portrait != null and unit.definition.portrait.resource_path.get_file() == names[index].capitalize() + "-chan.png", "Character uses the renamed portrait: " + names[index])
 		check(unit.character_class == EXPLORER and unit.definition.title == titles[index], "Explorer class and requested title for " + names[index])
 		check(unit.get_abilities().size() == ids[index].size(), "No old unique/class abilities on " + names[index])
 		for ability_id in ids[index]:

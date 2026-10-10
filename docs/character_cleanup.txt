@@ -1,8 +1,8 @@
 Alpha character cleanup
 
 Method: built-in image_gen edits, followed by ImageMagick alpha-mask refinement.
-Original images: textures/Characters/Backups/Alpha-before-cleanup/ (excluded from Godot imports with .gdignore).
-Updated images: textures/Characters/Alpha/Usami-chan.png, Takane-chan.png, Kurako-chanpng.png, Koumi-chan.png.
+Historical originals and older revisions have been removed from the active textures folder. The user backup is in textures.old/ (excluded from Godot imports with .gdignore).
+Updated images: textures/Characters/Alpha/Usami-chan.png, Takane-chan.png, Kurako-chan.png, Koumi-chan.png.
 All outputs are transparent RGBA PNGs, normalized to the original 1248x1824 canvas dimensions.
 
 Initial prompt (issued separately for each filename):
@@ -16,4 +16,6 @@ Repair the silhouette of this character sprite. RE-INK AND REBUILD the outer 5 t
 
 Selected output: first pass for Usami, final pass for Takane, Kurako, and Koumi.
 The AI results still contained edge contamination. Final alpha refinement thresholded the alpha channel at 70%, opened it with Disk:3, eroded it with Disk:2, and softened the alpha with a 0.5-pixel Gaussian blur. RGB artwork was retained from the selected edit. Results were inspected against light and dark backgrounds.
-AI editing can alter small artwork details; the original images remain available in the backup directory.
+AI editing can alter small artwork details; older artwork is preserved in the user backup.
+
+Current active portraits retain the supplied V03 artwork, renamed to <name>-chan.png.

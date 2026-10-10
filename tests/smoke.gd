@@ -44,7 +44,7 @@ func run() -> void:
 		var definition: CharacterDefinition = game.party[index].definition
 		check(definition.starting_class.id == &"explorer", "All starting characters should be Explorers")
 		check(definition.display_name == expected_names[index], "Starting party should contain " + expected_names[index])
-		check(definition.portrait != null and definition.portrait.resource_path.begins_with("res://textures/Characters/Alpha/" + expected_images[index]), "Each character should use their matching portrait")
+		check(definition.portrait != null and definition.portrait.resource_path == "res://textures/Characters/Alpha/" + expected_images[index] + ".png", "Each character should use their matching portrait")
 		check(definition.combat_texture == definition.portrait, "Character combat texture should match its V03 portrait")
 	var original_character: CharacterState = game.party[0]
 	var tab := InputEventAction.new()

@@ -8,7 +8,7 @@
 [ext_resource type="Resource" path="res://resources/rpg/damage_types/frost.tres" id="frost"]
 [ext_resource type="Resource" path="res://resources/rpg/passives/collected.tres" id="HiddenPassive"]
 [ext_resource type="Script" uid="uid://cgpdt2kimfbak" path="res://scripts/rpg/passive_ability.gd" id="PassiveScript"]
-[ext_resource type="Texture2D" uid="uid://bhcf8mnf5iqvd" path="res://textures/Characters/Alpha/Koumi-chan_V03.png" id="Portrait"]
+[ext_resource type="Texture2D" uid="uid://bhcf8mnf5iqvd" path="res://textures/Characters/Alpha/Koumi-chan.png" id="Portrait"]
 [ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="ResistanceScript"]
 [ext_resource type="Script" uid="uid://cftevjhnkln3e" path="res://scripts/rpg/character_definition.gd" id="Script"]
 [ext_resource type="Resource" path="res://resources/rpg/weapon_types/staff.tres" id="staff"]
