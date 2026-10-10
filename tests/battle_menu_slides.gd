@@ -27,6 +27,57 @@ func run() -> void:
 	check(not battle.get_node("BattleLog").visible, "Log stays hidden during action selection")
 	check(battle.round_counter.visible and battle.round_counter.text == "Round 1" and battle.round_counter.anchor_left >= 0.8, "Round counter slides into the top right")
 	check(battle.party_cards.visible and is_equal_approx(battle.party_cards.anchor_top, 0.9), "Health cards slide up into their bottom position")
+	battle._open_special()
+	await create_timer(battle.menu_slide_duration * 0.4).timeout
+	check(battle.special_panel.anchor_left < 0.0 and battle.special_panel.visible, "Special slides out from behind the action card")
+	await create_timer(battle.menu_slide_duration + 0.05).timeout
+	check(battle.action_panel.visible and is_zero_approx(battle.special_panel.anchor_left) and battle.actions.get_child(0).text == "Attack", "Special leaves the action menu open")
+	check(battle.special_actions.get_child_count() == party[0].get_abilities().size(), "Drawer lists the active character's abilities")
+	var inside := InputEventMouseButton.new()
+	inside.button_index = MOUSE_BUTTON_LEFT
+	inside.pressed = true
+	inside.position = battle.get_canvas_transform() * battle.special_panel.get_global_rect().get_center()
+	battle._input(inside)
+	check(battle._special_open, "Clicking inside the drawer does not dismiss it")
+	check(battle.get_viewport().gui_get_focus_owner() == battle.special_actions.get_child(0), "Opening Special focuses its abilities for keyboard selection")
+	var right_click := InputEventMouseButton.new()
+	right_click.button_index = MOUSE_BUTTON_RIGHT
+	right_click.pressed = true
+	battle._input(right_click)
+	check(not battle._special_open and battle.session.phase == BattleSession.Phase.ACTION_SELECTION, "Right-click dismisses Special without changing plans")
+	await create_timer(battle.menu_slide_duration + 0.05).timeout
+	check(not battle.special_panel.visible, "Special slides back behind the action menu")
+	battle._open_special()
+	await create_timer(battle.menu_slide_duration * 0.4).timeout
+	var escape := InputEventAction.new()
+	escape.action = "ui_cancel"
+	escape.pressed = true
+	battle._input(escape)
+	check(not battle._special_open, "Escape reverses the opening slide")
+	battle._open_special()
+	await create_timer(battle.menu_slide_duration + 0.05).timeout
+	var outside := InputEventMouseButton.new()
+	outside.button_index = MOUSE_BUTTON_LEFT
+	outside.pressed = true
+	outside.position = Vector2.ZERO
+	battle._input(outside)
+	check(not battle._special_open and battle.session.planned_actions.is_empty(), "Outside click only dismisses Special")
+	battle._open_special()
+	await create_timer(battle.menu_slide_duration + 0.05).timeout
+	battle.special_actions.get_child(0).pressed.emit()
+	check(not battle._special_open and battle.session.phase == BattleSession.Phase.TARGET_SELECTION, "Selecting an ability closes Special and enters targeting")
+	check(battle._waiting_for_drawer and battle._panel_targets[battle.action_panel.name], "Main menu stays open while the drawer collapses")
+	check(battle.actions.get_child_count() > 0 and battle.actions.get_child(0).text == "Attack", "Closing drawer preserves the main menu contents")
+	check(battle.party_buttons[0].disabled, "Targets stay inactive during drawer collapse")
+	await create_timer(battle.menu_slide_duration * 0.4).timeout
+	check(battle.special_panel.visible and is_equal_approx(battle.action_panel.anchor_left, 0.02), "Drawer closes before the main menu moves")
+	await create_timer(battle.menu_slide_duration * 0.7).timeout
+	check(not battle.special_panel.visible and not battle._waiting_for_drawer and not battle._panel_targets[battle.action_panel.name], "Main menu starts closing once the drawer finishes")
+	check(not battle.party_buttons[0].disabled, "Ability targets activate after drawer collapse")
+	check(battle.prompt.text.is_empty() and not battle.has_node("TargetHint"), "Targeting shows no instructions")
+	battle._input(right_click)
+	check(battle.session.phase == BattleSession.Phase.ACTION_SELECTION and not battle._special_open, "Right-click cancels ability targeting without reopening Special")
+	await create_timer(battle.menu_slide_duration + 0.05).timeout
 	battle.session.choose_attack()
 	await create_timer(battle.menu_slide_duration * 0.4).timeout
 	check(battle.action_panel.position.x < 0 and battle.action_panel.visible, "Menu moves left during targeting")
@@ -40,7 +91,7 @@ func run() -> void:
 	await create_timer(battle.menu_slide_duration + 0.05).timeout
 	check(not battle.action_panel.visible and battle.action_panel.get_rect().end.x <= 0, "Targeting fully clears the action menu")
 	check(not battle.portrait.visible and battle.portrait.position.x > battle.size.x, "Portrait finishes outside the right edge")
-	check(battle.get_node("TargetHint").visible, "Target instructions remain visible")
+	check(not battle.has_node("TargetHint") and battle.prompt.text.is_empty(), "Target instructions are removed")
 	check(battle.party_cards.visible and battle.round_counter.visible, "Health and round counter remain visible during targeting")
 	battle.session.select_target(battle.session.enemies[0])
 	await create_timer(battle.menu_slide_duration + 0.05).timeout

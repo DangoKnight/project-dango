@@ -12,7 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2")
 script = ExtResource("1")
-first_focus = NodePath("Panel/Buttons/Town")
+card_slide_from = 1
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
@@ -27,9 +27,9 @@ expand_mode = 1
 stretch_mode = 6
 
 [node name="Panel" type="PanelContainer" parent="."]
-anchor_left = 0.69
+anchor_left = 0.03
 anchor_top = 0.25
-anchor_right = 0.97
+anchor_right = 0.31
 anchor_bottom = 0.75
 grow_horizontal = 2
 grow_vertical = 2
@@ -48,8 +48,3 @@ horizontal_alignment = 1
 layout_mode = 2
 text = "Coming soon"
 horizontal_alignment = 1
-
-[node name="Town" type="Button" parent="Panel/Buttons"]
-layout_mode = 2
-custom_minimum_size = Vector2(0, 48)
-text = "Back to Safe Zone"

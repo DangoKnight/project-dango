@@ -63,7 +63,7 @@ func run() -> void:
 	check(not RPGConsumables.use_item(actor, rally, [actor, actor]).success and rally.remaining_uses() == 3 and actor.current_hp == before, "Invalid targets cause no changes")
 	var result := RPGConsumables.use_item(actor, rally, [actor, ally])
 	check(result.success and result.healing == 36 and rally.remaining_uses() == 2, "Party effects spend one use")
-	check(actor.get_stat(&"strength") == strength + 7 and ally.get_active_statuses().size() == 1, "Party attack buff")
+	check(actor.get_stat(&"strength") == int(floor((strength + 3) * 1.25)) and ally.get_active_statuses().size() == 1, "Party attack buff")
 	actor.unequip_gear(rally)
 	check(ally.equip_gear(rally) and rally.remaining_uses() == 2, "Transfer keeps remaining uses")
 	RPGConsumables.use_item(ally, rally, [actor, ally])
@@ -199,7 +199,7 @@ func run() -> void:
 	check(command != null, "Consumable command appears in battle UI")
 	command.pressed.emit()
 	await create_timer(battle.menu_slide_duration + 0.05).timeout
-	check(not battle.portrait.visible and battle.prompt.text.contains("Frailty Bomb") and not battle.enemy_slots[0].disabled and battle.party_buttons[0].disabled, "Consumable targets hide portrait and enable enemies only")
+	check(not battle.portrait.visible and battle.prompt.text.is_empty() and not battle.enemy_slots[0].disabled and battle.party_buttons[0].disabled, "Consumable targets hide portrait and enable enemies only")
 	battle.enemy_slots[0].pressed.emit()
 	while battle.session.phase == BattleSession.Phase.ACTION_SELECTION:
 		battle.session.choose_wait()

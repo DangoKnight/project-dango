@@ -1,15 +1,14 @@
-[gd_resource type="Resource" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="AbilityDefinition" format=3 uid="uid://dlx51xox380i7"]
 
-[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Script"]
-[ext_resource type="Resource" path="res://resources/rpg/statuses/fortified.tres" id="Status"]
+[ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="Script"]
+[ext_resource type="Resource" uid="uid://dmtc53vp6qs7j" path="res://resources/rpg/statuses/fortified.tres" id="Status"]
 
 [resource]
 script = ExtResource("Script")
 id = &"fortify"
 display_name = "Fortify"
-description = "Apply Fortified for three turns."
+description = "Temporarily bolsters an ally's defense."
 effect = 2
-mana_cost = 3
-status_effect = ExtResource("Status")
-
 targeting = 1
+status_effect = ExtResource("Status")
+mana_cost = 3

@@ -56,3 +56,4 @@ resistances = Array[ExtResource("ResistanceScript")]([SubResource("frostResistan
 
 allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("staff"), ExtResource("wand"), ExtResource("dagger")])
 starting_weapon = ExtResource("StartingWeapon")
+growth_variation = 0.0

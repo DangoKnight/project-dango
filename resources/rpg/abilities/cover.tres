@@ -1,15 +1,14 @@
-[gd_resource type="Resource" format=3]
-[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Ability"]
-[ext_resource type="Resource" path="res://resources/rpg/statuses/cover.tres" id="Status"]
+[gd_resource type="Resource" script_class="AbilityDefinition" format=3 uid="uid://baklc0036soit"]
+
+[ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="Ability"]
+[ext_resource type="Resource" uid="uid://0fxgc08m68v3" path="res://resources/rpg/statuses/cover.tres" id="Status"]
+
 [resource]
 script = ExtResource("Ability")
 id = &"cover"
 display_name = "Cover"
-description = "Raises own defense by 4 and aggro weight by 2 for three turns."
+description = "Temporarily grants a moderate boost to own defense and draws enemy attention."
 effect = 2
 targeting = 2
-mana_cost = 4
-power = 0
-scaling = 1.0
-scaling_stat = "strength"
 status_effect = ExtResource("Status")
+mana_cost = 4

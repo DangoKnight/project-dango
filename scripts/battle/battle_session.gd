@@ -21,6 +21,7 @@ var _selected_consumable: GearInstance
 var _selected_basic := false
 var _queue: Array[BattleAction] = []
 var _queue_index := 0
+var _rewarded_enemies: Dictionary = {}
 
 
 func _init(allies: Array[CharacterState], opponents: Array[CharacterState]) -> void:
@@ -29,6 +30,9 @@ func _init(allies: Array[CharacterState], opponents: Array[CharacterState]) -> v
 	rng.randomize()
 	for character in party + enemies:
 		character.bind_battle(self)
+	for enemy in enemies:
+		if not enemy.is_alive():
+			_rewarded_enemies[enemy] = true
 	_start_round()
 
 
@@ -53,6 +57,14 @@ func choose_attack() -> bool:
 	phase = Phase.TARGET_SELECTION
 	changed.emit()
 	return true
+
+
+func toggle_observe() -> void:
+	if phase != Phase.ACTION_SELECTION or active_character() == null:
+		return
+	var actor := active_character()
+	actor.set_observing(not actor.observing)
+	changed.emit()
 
 
 func choose_ability(ability: AbilityDefinition) -> bool:
@@ -204,6 +216,11 @@ func begin_resolution() -> bool:
 		return a.priority > b.priority if a.priority != b.priority else a.sequence < b.sequence)
 	_queue_index = 0
 	phase = Phase.RESOLVING
+	var round_experience := 0.0
+	for enemy in _living(enemies):
+		round_experience += enemy.definition.base_experience_reward / pow(2.0, round_number - 1)
+	for character in party:
+		character.store_experience(get_instance_id(), round_experience * character.experience_multiplier())
 	changed.emit()
 	return true
 
@@ -218,6 +235,8 @@ func resolve_next_action() -> void:
 	if action.actor.can_act():
 		if action.running:
 			escaped = true
+			for character in party:
+				character.discard_encounter_experience(get_instance_id())
 			phase = Phase.FINISHED
 			_clear_battle_effects()
 			action_resolved.emit("%s leads the party to safety." % action.actor.definition.display_name)
@@ -272,6 +291,7 @@ func resolve_next_action() -> void:
 		var tick := action.actor.advance_status_turn()
 		if tick.damage > 0:
 			message += " %s takes %d status damage." % [action.actor.definition.display_name, tick.damage]
+	_reward_defeated_enemies()
 	action_resolved.emit(message)
 	if _check_finished():
 		return
@@ -280,6 +300,15 @@ func resolve_next_action() -> void:
 		_start_round()
 	else:
 		changed.emit()
+
+
+## Each enemy defeat pays its round-dependent bonus once to living party members.
+func _reward_defeated_enemies() -> void:
+	for enemy in enemies:
+		if not enemy.is_alive() and not _rewarded_enemies.has(enemy):
+			_rewarded_enemies[enemy] = true
+			for character in party:
+				character.store_experience(get_instance_id(), pow(2.0, round_number - 1) * character.experience_multiplier())
 
 
 ## Neutral weights preserve the existing enemy spread. Increased aggro uses weighted targeting.

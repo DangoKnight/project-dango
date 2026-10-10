@@ -64,7 +64,11 @@ func run() -> void:
 	for location in ["Barracks", "Tinkerer", "Chemist"]:
 		click(location)
 		check(game.screen == "location", location + " should open")
-		click("Back to Safe Zone")
+		var module = game.ui.get_child(0).module_view
+		check(not module.has_node("Panel/Buttons/Town"), location + " has no redundant return button")
+		click(location)
+		await create_timer(module.card_slide_duration + 0.05).timeout
+		check(game.screen == "town", location + " toggles closed from town navigation")
 	var escape := InputEventAction.new()
 	escape.action = "ui_cancel"
 	escape.pressed = true

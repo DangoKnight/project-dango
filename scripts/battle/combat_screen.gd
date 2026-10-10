@@ -13,6 +13,8 @@ var _panel_progress: Dictionary = {}
 var _panel_targets: Dictionary = {}
 var _panel_tweens: Dictionary = {}
 @onready var action_panel: PanelContainer = $ActionPanel
+@onready var special_panel: PanelContainer = $SpecialDrawer/SpecialPanel
+@onready var special_actions: GridContainer = $SpecialDrawer/SpecialPanel/Layout/Scroll/Abilities
 @onready var round_counter: Label = $RoundCounter
 @onready var party_cards: HBoxContainer = $Party
 @onready var confirmation: PanelContainer = $Confirmation
@@ -20,6 +22,7 @@ var session: BattleSession
 var enemy_slots: Array[Button] = []
 var party_buttons: Array[Button] = []
 var _special_open := false
+var _waiting_for_drawer := false
 var _menu_actor: CharacterState
 var _ending := false
 var _exiting := false
@@ -57,7 +60,7 @@ func _ready() -> void:
 			card.get_node(stat).max_value = 1
 			card.get_node(stat).value = 0
 			card.get_node(stat + "/Value").text = stat + " —"
-	for panel in [action_panel, confirmation, portrait, round_counter, party_cards, battle_log, enemy_stage]:
+	for panel in [action_panel, special_panel, confirmation, portrait, round_counter, party_cards, battle_log, enemy_stage]:
 		_panel_homes[panel.name] = Vector4(panel.anchor_left, panel.anchor_top, panel.anchor_right, panel.anchor_bottom)
 		_panel_targets[panel.name] = panel == enemy_stage
 		_set_panel_progress(1.0 if panel == enemy_stage else 0.0, panel)
@@ -112,11 +115,15 @@ func configure(party: Array[CharacterState], encounter: BattleEncounter) -> bool
 func _refresh() -> void:
 	if session == null:
 		return
+	if session.phase != BattleSession.Phase.TARGET_SELECTION:
+		_waiting_for_drawer = false
 	round_counter.text = "Round %d" % session.round_number
 	if session.phase == BattleSession.Phase.ACTION_SELECTION:
 		var actor := session.active_character()
 		_present_portrait(actor.definition)
 	var targets := session.valid_targets()
+	if _waiting_for_drawer:
+		targets = []
 	for index in range(session.enemies.size()):
 		var enemy := session.enemies[index]
 		var slot := enemy_slots[index]
@@ -137,60 +144,52 @@ func _refresh() -> void:
 		card.get_node("SP").value = character.current_mp
 		card.get_node("SP/Value").text = "SP  %d / %d" % [character.current_mp, character.get_stat(&"max_mp")]
 		card.disabled = character not in targets
-	for child in actions.get_children():
-		actions.remove_child(child)
-		child.queue_free()
+	if session.phase == BattleSession.Phase.TARGET_SELECTION:
+		for child in actions.get_children():
+			child.disabled = true
+	else:
+		for child in actions.get_children():
+			actions.remove_child(child)
+			child.queue_free()
 	actions.columns = 1
 	if session.active_character() != _menu_actor:
 		_special_open = false
 		_menu_actor = session.active_character()
-	back.visible = session.phase == BattleSession.Phase.ACTION_SELECTION and _special_open
-	back.disabled = session.phase == BattleSession.Phase.ACTION_SELECTION and session.planned_actions.is_empty() and not _special_open
+	if session.phase != BattleSession.Phase.ACTION_SELECTION:
+		_special_open = false
+	back.visible = false
 	var previous_name := session.planned_actions[-1].actor.definition.display_name if not session.planned_actions.is_empty() else ""
-	back.text = "Back to actions" if session.phase == BattleSession.Phase.TARGET_SELECTION or _special_open else "Return to " + previous_name
 	match session.phase:
 		BattleSession.Phase.ACTION_SELECTION:
 			var actor := session.active_character()
 			prompt.text = actor.definition.display_name + " — choose an action"
-			if _special_open:
-				prompt.text = actor.definition.display_name + " — Special"
-				for ability in actor.get_abilities():
-					var button := _command("%s (%d SP)" % [ability.display_name, ability.mana_cost], session.choose_ability.bind(ability))
-					button.disabled = not actor.can_act() or actor.current_mp < ability.mana_cost
-					button.tooltip_text = ability.description
-					if actions.get_child_count() == 1:
-						button.grab_focus()
-				if actor.get_abilities().is_empty():
-					_command("No abilities available", func(): pass).disabled = true
-			else:
-				var attack := _command("Attack", session.choose_attack)
-				attack.disabled = not actor.can_act()
-				attack.grab_focus()
-				_command("Defend", session.choose_defend).disabled = not actor.can_act()
-				_command("Special", _open_special).disabled = not actor.can_act()
-				var has_consumable := false
-				for item in actor.get_equipped_gear():
-					if item.definition.kind == GearDefinition.Kind.CONSUMABLE and not item.is_destroyed():
-						has_consumable = true
-						var button := _command(item.definition.display_name, session.choose_consumable.bind(item))
-						button.tooltip_text = "%s (%d uses)" % [item.definition.description, item.remaining_uses()]
-						button.disabled = not actor.can_act()
-				if not has_consumable:
-					_command("Consumable", func(): pass).disabled = true
-				if not previous_name.is_empty():
-					_command("Return to " + previous_name, _back)
-				_command("Run", session.choose_run).disabled = not actor.can_act()
-				if not actor.can_act():
-					prompt.text = actor.definition.display_name + " — paralyzed (choose Wait)"
-					_command("Wait", session.choose_wait)
+			var attack := _command("Attack", session.choose_attack)
+			attack.disabled = not actor.can_act()
+			attack.grab_focus()
+			_command("Defend", session.choose_defend).disabled = not actor.can_act()
+			_command("Special", _open_special).disabled = not actor.can_act()
+			var has_consumable := false
+			for item in actor.get_equipped_gear():
+				if item.definition.kind == GearDefinition.Kind.CONSUMABLE and not item.is_destroyed():
+					has_consumable = true
+					var button := _command(item.definition.display_name, session.choose_consumable.bind(item))
+					button.tooltip_text = "%s (%d uses)" % [item.definition.description, item.remaining_uses()]
+					button.disabled = not actor.can_act()
+			if not has_consumable:
+				_command("Consumable", func(): pass).disabled = true
+			var observe := _command("Observe", _toggle_observe)
+			observe.toggle_mode = true
+			observe.set_pressed_no_signal(actor.observing)
+			observe.tooltip_text = "Halves effective stats except HP and SP while active and increases experience earned by 50%."
+			if not previous_name.is_empty():
+				_command("Return to " + previous_name, _back)
+			_command("Run", session.choose_run).disabled = not actor.can_act()
+			if not actor.can_act():
+				prompt.text = actor.definition.display_name + " — paralyzed (choose Wait)"
+				_command("Wait", session.choose_wait)
 
 		BattleSession.Phase.TARGET_SELECTION:
-			var item := session.selected_consumable()
-			prompt.text = "Choose a target for " + (item.definition.display_name if item != null else session.selected_ability().display_name)
-			if item == null and session.selected_ability().targeting in [AbilityDefinition.Target.PARTY, AbilityDefinition.Target.ENEMIES]:
-				prompt.text += " (affects the whole group)"
-			if item != null and item.definition.consumable_target in [GearDefinition.Target.PARTY, GearDefinition.Target.ENEMIES]:
-				prompt.text += " (affects the whole group)"
+			prompt.text = ""
 			for index in range(session.enemies.size()):
 				if session.enemies[index] in targets:
 					enemy_slots[index].grab_focus()
@@ -210,9 +209,8 @@ func _refresh() -> void:
 				_ending = true
 				call_deferred("_finish_battle")
 
-	$TargetHint.visible = not intro_playing and session.phase == BattleSession.Phase.TARGET_SELECTION
-	$TargetHint.text = prompt.text + " · Right-click or Esc to cancel"
-	_slide_panel(action_panel, not intro_playing and session.phase == BattleSession.Phase.ACTION_SELECTION)
+	_slide_panel(special_panel, not intro_playing and _special_open)
+	_slide_panel(action_panel, not intro_playing and (session.phase == BattleSession.Phase.ACTION_SELECTION or _waiting_for_drawer))
 	_slide_panel(confirmation, not intro_playing and session.phase == BattleSession.Phase.READY)
 	_slide_panel(portrait, not intro_playing and not _portrait_swapping and session.phase == BattleSession.Phase.ACTION_SELECTION)
 	_slide_panel(battle_log, not intro_playing and not _exiting and session.phase in [BattleSession.Phase.RESOLVING, BattleSession.Phase.FINISHED])
@@ -242,12 +240,13 @@ func _slide_panel(panel: Control, shown: bool) -> void:
 
 
 func _focus_panel(panel: Control, shown: bool) -> void:
-	if not shown or intro_playing or information.visible or panel not in [action_panel, confirmation]:
+	if not shown or intro_playing or information.visible or panel not in [action_panel, special_panel, confirmation]:
 		return
 	if panel == confirmation:
 		$Confirmation/Layout/Execute.grab_focus()
 	else:
-		for command in actions.get_children():
+		var commands := special_actions if _special_open else actions
+		for command in commands.get_children():
 			if command is Button and not command.disabled:
 				command.grab_focus()
 				break
@@ -257,7 +256,9 @@ func _set_panel_progress(progress: float, panel: Control) -> void:
 	_panel_progress[panel.name] = progress
 	var home: Vector4 = _panel_homes[panel.name]
 	var shift := Vector2(0.0, 1.05 - home.y)
-	if panel == action_panel:
+	if panel == special_panel:
+		shift = Vector2(-1.02, 0.0)
+	elif panel == action_panel:
 		shift = Vector2(-(home.z + 0.02), 0.0)
 	elif panel in [round_counter, battle_log]:
 		var panel_height := maxf(home.w - home.y, panel.get_combined_minimum_size().y / maxf(size.y, 1.0))
@@ -277,8 +278,9 @@ func _set_panel_progress(progress: float, panel: Control) -> void:
 ## The battlefield remains visible while the presentation and input are suspended.
 func set_intro_playing(playing: bool) -> void:
 	intro_playing = playing
+	_waiting_for_drawer = false
 	_portrait_swapping = false
-	for panel in [action_panel, confirmation, portrait, round_counter, party_cards, battle_log]:
+	for panel in [action_panel, special_panel, confirmation, portrait, round_counter, party_cards, battle_log]:
 		var tween: Tween = _panel_tweens.get(panel.name)
 		if tween != null:
 			tween.kill()
@@ -321,7 +323,7 @@ func _update_portrait_pivot() -> void:
 	portrait_image.pivot_offset = portrait_image.size * 0.5
 
 
-func _command(title: String, callback: Callable) -> Button:
+func _command(title: String, callback: Callable, container: GridContainer = null) -> Button:
 	var button := Button.new()
 	button.text = title
 	button.clip_text = true
@@ -330,24 +332,77 @@ func _command(title: String, callback: Callable) -> Button:
 	button.custom_minimum_size.y = 32
 	button.add_theme_font_size_override("font_size", 18)
 	button.pressed.connect(callback)
-	actions.add_child(button)
+	(container if container != null else actions).add_child(button)
 	return button
 
 
 func _select_target(character: CharacterState) -> void:
-	session.select_target(character)
+	if not _waiting_for_drawer:
+		session.select_target(character)
+
+
+func _toggle_observe() -> void:
+	session.toggle_observe()
+	for command in actions.get_children():
+		if command.text == "Observe":
+			command.grab_focus()
+			break
 
 
 func _open_special() -> void:
+	if _special_open:
+		_close_special()
+		return
+	for child in special_actions.get_children():
+		special_actions.remove_child(child)
+		child.queue_free()
+	var actor := session.active_character()
+	for ability in actor.get_abilities():
+		var button := _command("%s (%d SP)" % [ability.display_name, ability.mana_cost], _choose_special.bind(ability), special_actions)
+		button.disabled = not actor.can_act() or actor.current_mp < ability.mana_cost
+		button.tooltip_text = ability.description
+	if special_actions.get_child_count() == 0:
+		_command("No abilities available", func(): pass, special_actions).disabled = true
 	_special_open = true
+	_refresh()
+	$SpecialDrawer/SpecialPanel/Layout/Scroll.scroll_vertical = 0
+	_focus_panel(special_panel, true)
+
+
+func _close_special() -> void:
+	_special_open = false
+	_slide_panel(special_panel, false)
+	if session.phase == BattleSession.Phase.ACTION_SELECTION:
+		for command in actions.get_children():
+			if command.text == "Special":
+				command.grab_focus()
+				break
+
+
+func _choose_special(ability: AbilityDefinition) -> void:
+	if not _special_open:
+		return
+	_waiting_for_drawer = menu_slide_duration > 0.0 and float(_panel_progress[special_panel.name]) > 0.0
+	_close_special()
+	if not session.choose_ability(ability):
+		_waiting_for_drawer = false
+		_refresh()
+		return
+	if _waiting_for_drawer:
+		var tween: Tween = _panel_tweens[special_panel.name]
+		tween.finished.connect(_finish_drawer_collapse, CONNECT_ONE_SHOT)
+
+
+func _finish_drawer_collapse() -> void:
+	_waiting_for_drawer = false
 	_refresh()
 
 
 func _back() -> void:
 	if session.phase == BattleSession.Phase.ACTION_SELECTION and _special_open:
-		_special_open = false
-		_refresh()
+		_close_special()
 	elif session.phase == BattleSession.Phase.TARGET_SELECTION:
+		_waiting_for_drawer = false
 		session.cancel_target()
 	else:
 		session.undo_choice()
@@ -394,10 +449,27 @@ func _log(message: String) -> void:
 func _input(event: InputEvent) -> void:
 	if intro_playing or _ending or session == null:
 		return
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and not information.visible and session.phase == BattleSession.Phase.TARGET_SELECTION:
-		session.cancel_target()
-		get_viewport().set_input_as_handled()
-		return
+	if not information.visible:
+		if event is InputEventMouseButton and event.pressed:
+			if event.button_index == MOUSE_BUTTON_RIGHT:
+				if _special_open:
+					_close_special()
+				elif session.phase == BattleSession.Phase.TARGET_SELECTION:
+					_waiting_for_drawer = false
+					session.cancel_target()
+				else:
+					return
+				get_viewport().set_input_as_handled()
+				return
+			var click_position: Vector2 = get_canvas_transform().affine_inverse() * event.position
+			if _special_open and event.button_index == MOUSE_BUTTON_LEFT and not special_panel.get_global_rect().intersection($SpecialDrawer.get_global_rect()).has_point(click_position):
+				_close_special()
+				get_viewport().set_input_as_handled()
+				return
+		if event.is_action_pressed("ui_cancel") and (_special_open or session.phase == BattleSession.Phase.TARGET_SELECTION):
+			_back()
+			get_viewport().set_input_as_handled()
+			return
 	if event.is_action_pressed("battle_information"):
 		if information.is_open:
 			_close_information()

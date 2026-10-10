@@ -13,6 +13,7 @@ grow_vertical = 2
 theme = ExtResource("2")
 script = ExtResource("1")
 first_focus = NodePath("Panel/Buttons/Barracks")
+card_slide_from = 2
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1

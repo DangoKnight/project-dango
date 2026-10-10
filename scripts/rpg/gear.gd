@@ -10,6 +10,8 @@ enum Target { ALLY, PARTY, SELF, ENEMY, ENEMIES }
 @export var kind: Kind = Kind.ARTIFACT
 ## Artifact-only flat modifiers, including negative values for penalties.
 @export var stat_modifiers: Dictionary[StringName, float] = {}
+## Optional future gear growth bonuses; only equipped items contribute on level-up.
+@export var stat_growth_modifiers: Dictionary[StringName, float] = {}
 @export var resistances: Array[DamageResistance] = []
 ## Medallion spells use their normal targeting rules and MP costs.
 @export var spells: Array[AbilityDefinition] = []
@@ -21,6 +23,9 @@ enum Target { ALLY, PARTY, SELF, ENEMY, ENEMIES }
 func is_valid() -> bool:
 	if id.is_empty() or kind not in [Kind.ARTIFACT, Kind.MEDALLION, Kind.CONSUMABLE]:
 		return false
+	for stat in stat_growth_modifiers:
+		if stat not in RPGStats.NAMES or not is_finite(stat_growth_modifiers[stat]):
+			return false
 	if kind == Kind.ARTIFACT:
 		for stat in stat_modifiers:
 			if stat not in RPGStats.ALL_NAMES or not is_finite(stat_modifiers[stat]):

@@ -6,6 +6,8 @@
 [ext_resource type="Resource" uid="uid://du7r731oh8usj" path="res://resources/rpg/classes/explorer.tres" id="Class"]
 [ext_resource type="Resource" path="res://resources/rpg/damage_types/fire.tres" id="fire"]
 [ext_resource type="Resource" path="res://resources/rpg/damage_types/frost.tres" id="frost"]
+[ext_resource type="Resource" path="res://resources/rpg/passives/easy_target.tres" id="HiddenPassive"]
+[ext_resource type="Script" uid="uid://cgpdt2kimfbak" path="res://scripts/rpg/passive_ability.gd" id="PassiveScript"]
 [ext_resource type="Texture2D" uid="uid://54as2yaama2u" path="res://textures/Characters/Alpha/Kurako-chan_V03.png" id="Portrait"]
 [ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="ResistanceScript"]
 [ext_resource type="Script" uid="uid://cftevjhnkln3e" path="res://scripts/rpg/character_definition.gd" id="Script"]
@@ -13,23 +15,20 @@
 [ext_resource type="Resource" path="res://resources/rpg/weapons/training_sword.tres" id="StartingWeapon"]
 [ext_resource type="Script" uid="uid://ddt764fvrnnt0" path="res://scripts/rpg/stats.gd" id="Stats"]
 [ext_resource type="Resource" path="res://resources/rpg/weapon_types/sword.tres" id="sword"]
-[ext_resource type="Resource" path="res://resources/rpg/abilities/painful_stab.tres" id="Unique0"]
-[ext_resource type="Resource" path="res://resources/rpg/abilities/immobilizing_stab.tres" id="Unique1"]
-[ext_resource type="Resource" path="res://resources/rpg/abilities/i_am_scary.tres" id="Unique2"]
+[ext_resource type="Resource" uid="uid://dg28461kppbft" path="res://resources/rpg/abilities/painful_stab.tres" id="Unique0"]
+[ext_resource type="Resource" uid="uid://cmijyj4g1okjv" path="res://resources/rpg/abilities/immobilizing_stab.tres" id="Unique1"]
+[ext_resource type="Resource" uid="uid://chln4xmqlsaf" path="res://resources/rpg/abilities/i_am_scary.tres" id="Unique2"]
 [ext_resource type="Script" uid="uid://dbonx52hipraq" path="res://scripts/rpg/weapon_type.gd" id="WeaponTypeScript"]
-
-[ext_resource type="Script" path="res://scripts/rpg/passive_ability.gd" id="PassiveScript"]
-[ext_resource type="Resource" path="res://resources/rpg/passives/easy_target.tres" id="HiddenPassive"]
 
 [sub_resource type="Resource" id="Base"]
 script = ExtResource("Stats")
-max_hp = 60.0
-max_mp = 10.0
-strength = 8.0
-defense = 5.0
-mental_acuity = 2.0
-mental_resilience = 3.0
-speed = 5.0
+max_hp = 30.0
+max_mp = 20.0
+strength = 5.0
+defense = 4.0
+mental_acuity = 6.0
+mental_resilience = 4.0
+speed = 6.0
 
 [sub_resource type="Resource" id="fireResistance"]
 script = ExtResource("ResistanceScript")
@@ -43,13 +42,13 @@ amount = -0.25
 
 [sub_resource type="Resource" id="Growth"]
 script = ExtResource("Stats")
-max_hp = 5.0
-max_mp = 1.0
-strength = 1.5
+max_hp = 1.5
+max_mp = 1.5
+strength = 0.5
 defense = 1.0
-mental_acuity = 0.5
-mental_resilience = 0.5
-speed = 1.0
+mental_acuity = 1.5
+mental_resilience = 1.0
+speed = 1.5
 
 [resource]
 script = ExtResource("Script")
@@ -58,10 +57,12 @@ display_name = "Kurako"
 title = "The prankster jellyfish"
 description = "A mischievous jellyfish who treats danger as an opportunity for a prank. Kurako's stinging tricks leave hostiles weakened, poisoned, or unable to move, and seeing a weakened target really boosts her spirit."
 starting_class = ExtResource("Class")
+base_experience_reward = null
 base_stats = SubResource("Base")
 stat_growth = SubResource("Growth")
 resistances = Array[ExtResource("ResistanceScript")]([SubResource("fireResistance"), SubResource("frostResistance")])
 unique_abilities = Array[ExtResource("AbilityScript")]([ExtResource("Unique0"), ExtResource("Unique1"), ExtResource("Unique2")])
+hidden_abilities = Array[ExtResource("PassiveScript")]([ExtResource("HiddenPassive")])
 allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("sword"), ExtResource("axe"), ExtResource("spear")])
 starting_weapon = ExtResource("StartingWeapon")
 critical_rate = 0.05
@@ -70,4 +71,3 @@ portrait = ExtResource("Portrait")
 portrait_offset = Vector2(0, 0.3)
 portrait_scale = 1.55
 combat_texture = ExtResource("Portrait")
-hidden_abilities = Array[ExtResource("PassiveScript")]([ExtResource("HiddenPassive")])

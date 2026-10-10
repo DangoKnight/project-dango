@@ -64,12 +64,12 @@ func run() -> void:
 	var result := RPGCombat.use_ability(frontliner, frontliner, FORTIFY)
 	check(result.success and result.amount == 0 and result.status_id == FORTIFIED.id, "Status abilities should report application without damage")
 	check(frontliner.current_hp == hp and frontliner.current_mp == mp - FORTIFY.mana_cost, "Status application should spend MP and preserve HP")
-	check(frontliner.get_stat(&"defense") == base_defense + 4, "Buffs should modify stats")
+	check(frontliner.get_stat(&"defense") == int(floor(frontliner._permanent_stats[&"defense"] * 1.25)), "Buffs should modify stats")
 	check(RPGCombat.calculate_amount(frontliner, caster, FORTIFY) == 0, "Status previews should not predict HP damage")
 	frontliner.advance_status_turn()
 	check(frontliner.get_active_statuses()[0].remaining_turns == 2, "Turn advancement should decrement duration")
 	RPGCombat.use_ability(frontliner, frontliner, FORTIFY)
-	check(frontliner.get_active_statuses().size() == 1 and frontliner.get_active_statuses()[0].remaining_turns == 3 and frontliner.get_stat(&"defense") == base_defense + 4, "Reapplication should refresh, not stack")
+	check(frontliner.get_active_statuses().size() == 1 and frontliner.get_active_statuses()[0].remaining_turns == 3 and frontliner.get_stat(&"defense") == int(floor(frontliner._permanent_stats[&"defense"] * 1.25)), "Reapplication should refresh, not stack")
 	var snapshot := frontliner.get_active_statuses()
 	snapshot[0].remaining_turns = 999
 	check(frontliner.get_active_statuses()[0].remaining_turns == 3, "Status snapshots should not expose mutable duration state")
@@ -97,19 +97,55 @@ func run() -> void:
 	check(not malformed.is_valid(), "Status abilities require a valid status definition")
 	var bad_status := StatusEffectDefinition.new()
 	bad_status.id = &"bad"
-	bad_status.stat_modifiers[&"unknown_stat"] = 4.0
+	bad_status.stat_percent_modifiers[&"unknown_stat"] = 4.0
 	check(not frontliner.apply_status(bad_status), "Unknown stat modifiers should be rejected")
-	bad_status.stat_modifiers.clear()
+	bad_status.stat_percent_modifiers.clear()
 	bad_status.duration_turns = 0
 	check(not bad_status.is_valid(), "Zero-duration statuses should be rejected")
 	var hp_buff := StatusEffectDefinition.new()
 	hp_buff.id = &"vigor"
 	hp_buff.duration_turns = 1
-	hp_buff.stat_modifiers[&"max_hp"] = 20.0
+	hp_buff.stat_percent_modifiers[&"max_hp"] = 0.25
 	frontliner.apply_status(hp_buff)
 	frontliner.restore()
 	frontliner.advance_status_turn()
 	check(frontliner.current_hp == frontliner.get_stat(&"max_hp"), "Expiration of max-HP buffs should clamp current HP")
-	check(FORTIFIED.stat_modifiers[&"defense"] == 4.0 and FORTIFIED.duration_turns == 3, "Applying and expiring statuses must not mutate definitions")
+	check(FORTIFIED.stat_percent_modifiers[&"defense"] == 0.25 and FORTIFIED.duration_turns == 3, "Applying and expiring statuses must not mutate definitions")
+	# Percentages scale raw stats and equipment, retain fractions until final rounding,
+	# combine additively across effects, and leave permanent progression untouched.
+	var scaled := CharacterState.new(CharacterDefinition.new())
+	scaled._permanent_stats[&"strength"] = 40.5
+	var permanent := scaled._permanent_stats.duplicate()
+	var artifact := GearDefinition.new()
+	artifact.id = &"percentage_fixture"
+	artifact.stat_modifiers = {&"strength": 3.5}
+	scaled.equip_gear(GearInstance.new(artifact))
+	var buff := StatusEffectDefinition.new()
+	buff.id = &"percentage_buff"
+	buff.stat_percent_modifiers = {&"strength": 0.25, &"critical_rate": 0.25, &"accuracy": 0.1, &"evasion": 0.2, &"critical_damage": 1.0}
+	scaled.apply_status(buff)
+	check(scaled.get_stat(&"strength") == 55, "Percentage buff includes equipment and unrounded permanent stats")
+	check(is_equal_approx(scaled.get_combat_stat(&"critical_rate"), scaled.definition.critical_rate + 0.25), "Critical rate adds percentage points")
+	check(scaled.get_combat_stat(&"accuracy") == 1.0, "Accuracy caps at full accuracy after additive bonuses")
+	check(is_equal_approx(scaled.get_combat_stat(&"evasion"), 0.2), "Additive evasion works from a zero base")
+	check(is_equal_approx(scaled.get_combat_stat(&"critical_damage"), scaled.definition.critical_damage + 1.0), "Critical damage adds percentage points to its multiplier")
+	scaled.apply_status(buff)
+	check(scaled.get_stat(&"strength") == 55, "Reapplying a percentage effect never compounds it")
+	var debuff := StatusEffectDefinition.new()
+	debuff.id = &"percentage_debuff"
+	debuff.stat_percent_modifiers = {&"strength": -0.2}
+	scaled.apply_status(debuff)
+	check(scaled.get_stat(&"strength") == 46 and debuff.is_harmful(), "Buff and debuff percentages add before a single rounding")
+	debuff.stat_percent_modifiers[&"critical_rate"] = -0.1
+	check(is_equal_approx(scaled.get_combat_stat(&"critical_rate"), scaled.definition.critical_rate + 0.15), "Rate bonuses and penalties add together")
+	debuff.stat_percent_modifiers[&"critical_rate"] = -2.0
+	check(scaled.get_combat_stat(&"critical_rate") == 0.0, "Rate debuffs clamp at zero")
+	debuff.stat_percent_modifiers[&"strength"] = -2.0
+	check(scaled.get_stat(&"strength") == 0, "Severe debuffs cannot produce negative stats")
+	scaled.remove_status(buff.id)
+	scaled.remove_status(debuff.id)
+	check(scaled.get_stat(&"strength") == 44 and scaled._permanent_stats == permanent, "Removing effects restores equipment-adjusted stats without changing permanent values")
+	buff.stat_percent_modifiers[&"strength"] = INF
+	check(not buff.is_valid(), "Nonfinite percentage modifiers are rejected")
 	print("Equipment/status tests complete: %d failure(s)" % failures)
 	quit(1 if failures else 0)

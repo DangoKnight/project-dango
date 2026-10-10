@@ -1,13 +1,13 @@
-[gd_resource type="Resource" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="AbilityDefinition" format=3 uid="uid://bsbnlf3mojup4"]
 
-[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Script"]
-[ext_resource type="Resource" path="res://resources/rpg/statuses/frailty.tres" id="Status"]
+[ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="Script"]
+[ext_resource type="Resource" uid="uid://431x7lairj8k" path="res://resources/rpg/statuses/frailty.tres" id="Status"]
 
 [resource]
 script = ExtResource("Script")
 id = &"enfeeble"
 display_name = "Enfeeble"
-description = "Apply Frailty for three turns."
+description = "Temporarily weakens an enemy's mental resilience."
 effect = 2
-mana_cost = 4
 status_effect = ExtResource("Status")
+mana_cost = 4

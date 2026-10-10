@@ -2,6 +2,8 @@ extends Node
 
 const MAIN_MENU := preload("res://scenes/ui/main_menu.tscn")
 const LOCATION := preload("res://scenes/ui/location.tscn")
+const BARRACKS := preload("res://scenes/ui/barracks.tscn")
+const LEVEL_UP_NOTICE := preload("res://scenes/ui/level_up_notice.tscn")
 const OPTIONS := preload("res://scenes/ui/options.tscn")
 const PAUSE_MENU := preload("res://scenes/ui/pause_menu.tscn")
 const HUD := preload("res://scenes/ui/exploration_hud.tscn")
@@ -28,7 +30,9 @@ const COMBAT := preload("res://scenes/battle/combat.tscn")
 @export_range(0.0, 2.0, 0.05) var battle_fade_in_duration := 0.35
 @export_range(0.0, 5.0, 0.1) var battle_reveal_duration := 2.0
 @export_range(0.0, 2.0, 0.05) var battle_return_fade_duration := 0.35
+@export_range(0.0, 2.0, 0.05) var sleep_fade_duration := 0.5
 var _battle_transition := false
+var level_up_notice: Control
 @onready var battle_fade: ColorRect = $UI/BattleFade
 
 var gear_inventory := GearInventory.new()
@@ -41,6 +45,7 @@ var screen := "main"
 var options_return := "main"
 var pause_return := "explore"
 var party: Array[CharacterState] = []
+var roster: Array[CharacterState] = []
 var current_town_scene: PackedScene
 var current_map_scene: PackedScene
 var location_backgrounds: Dictionary[String, Texture2D] = {}
@@ -73,6 +78,8 @@ func _show_view(view: Control, next_screen: String) -> Control:
 
 
 func _on_action_requested(action: String) -> void:
+	if _battle_transition or _module_busy():
+		return
 	match action:
 		"NewGame": new_game()
 		"Town": show_town()
@@ -101,6 +108,10 @@ func show_main() -> void:
 
 
 func show_town(town_scene: PackedScene = null) -> void:
+	if town_scene == null and ui.get_child_count() > 0 and ui.get_child(0) is Town:
+		ui.get_child(0).close_module()
+		screen = "town"
+		return
 	var destination := town_scene if town_scene != null else current_town_scene
 	if destination == null:
 		destination = starting_town
@@ -123,32 +134,85 @@ func show_town(town_scene: PackedScene = null) -> void:
 func new_game() -> void:
 	current_town_scene = starting_town
 	party.clear()
+	roster.clear()
 	gear_inventory = GearInventory.new()
 	for gear in starting_gear:
 		gear_inventory.add(gear)
 	for character in starting_characters:
 		if character != null:
-			party.append(CharacterState.new(character))
-	for member in party:
+			var member := CharacterState.new(character)
+			roster.append(member)
+			if party.size() < 4:
+				party.append(member)
+	for member in roster:
 		for item in member.get_equipped_gear():
 			gear_inventory.register(item)
-	show_town()
+	show_town(starting_town)
 
 
 func show_equipment() -> void:
 	var view := _show_scene(EQUIPMENT, "equipment")
-	view.configure(party, gear_inventory)
+	view.configure(roster, gear_inventory)
 
 
 func show_characters() -> void:
 	var view := _show_scene(CHARACTERS, "characters")
-	view.configure(party)
+	view.configure(roster)
 
 
 func show_location(location: String) -> void:
-	var view := _show_scene(LOCATION, "location")
+	if ui.get_child_count() == 0 or not ui.get_child(0) is Town:
+		show_town()
+	var town := ui.get_child(0) as Town
+	if town.module_view != null and town.module_view.get_meta("location", "") == location:
+		town._navigation_pending = true
+		await town.dismiss_module()
+		town._navigation_pending = false
+		screen = "town"
+		return
+	var view := (BARRACKS if location == "Barracks" else LOCATION).instantiate() as Control
+	view.set_meta("location", location)
 	view.get_node("Background").texture = location_backgrounds.get(location)
-	view.get_node("Panel/Buttons/Title").text = location
+	town.open_module(view)
+	view.action_requested.connect(_on_action_requested)
+	if location == "Barracks":
+		view.configure(roster, party)
+		view.sleep_requested.connect(_sleep_at_barracks.bind(view))
+	else:
+		view.get_node("Panel/Buttons/Title").text = location
+	screen = "location"
+
+
+func _module_busy() -> bool:
+	if ui.get_child_count() > 0 and ui.get_child(0) is Town:
+		if ui.get_child(0)._navigation_pending:
+			return true
+		var module: Control = ui.get_child(0).module_view
+		return module != null and module.has_method("is_busy") and module.is_busy()
+	return false
+
+
+func _sleep_at_barracks(view: Control) -> void:
+	if _battle_transition or view.is_busy():
+		return
+	_battle_transition = true
+	view._busy = true
+	battle_fade.color.a = 0.0
+	battle_fade.show()
+	await _fade_battle_to(1.0, sleep_fade_duration)
+	var reports: Array[Dictionary] = view.apply_rest()
+	if not reports.is_empty():
+		level_up_notice = LEVEL_UP_NOTICE.instantiate()
+		$UI.add_child(level_up_notice)
+		level_up_notice.configure(reports)
+		await level_up_notice.dismissed
+		level_up_notice.queue_free()
+		level_up_notice = null
+	await _fade_battle_to(0.0, sleep_fade_duration)
+	battle_fade.hide()
+	view._busy = false
+	_battle_transition = false
+	view.get_node("Panel/Buttons/Sleep").grab_focus()
 
 
 func show_options(return_to: String) -> void:
@@ -258,18 +322,25 @@ func _on_combat_finished(victory: bool) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if _battle_transition:
+	if is_instance_valid(level_up_notice):
 		return
-	if event.is_action_pressed("party_information") and screen in ["town", "characters"]:
-		if screen == "town":
+	if _battle_transition or _module_busy():
+		get_viewport().set_input_as_handled()
+		return
+	if event.is_action_pressed("party_information") and screen in ["town", "location", "characters"]:
+		get_viewport().set_input_as_handled()
+		if screen in ["town", "location"]:
+			if screen == "location":
+				_battle_transition = true
+				await ui.get_child(0).dismiss_module()
+				_battle_transition = false
 			show_characters()
 		else:
 			show_town()
-		get_viewport().set_input_as_handled()
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if _battle_transition:
+	if _battle_transition or _module_busy():
 		get_viewport().set_input_as_handled()
 		return
 	if screen == "explore" and event.is_action_pressed("start_battle"):
@@ -282,7 +353,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			"pause": _resume_pause()
 			"options": _options_back()
 			"equipment": show_characters()
-			"location", "characters": show_town()
+			"location":
+				var town := ui.get_child(0) as Town
+				if town.module_view != null and town.module_view.has_method("close_party") and town.module_view.get_node("PartyPanel").visible:
+					town.module_view.close_party()
+				else:
+					show_town()
+			"characters": show_town()
 			"town": show_pause("town")
 		get_viewport().set_input_as_handled()
 

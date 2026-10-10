@@ -209,6 +209,40 @@ theme_override_constants/separation = 16
 
 [node name="Character4" parent="Party" unique_id=1655872107 instance=ExtResource("PartyCard")]
 
+[node name="SpecialDrawer" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.30
+anchor_top = 0.10
+anchor_right = 0.64
+anchor_bottom = 0.88
+clip_contents = true
+mouse_filter = 2
+
+[node name="SpecialPanel" type="PanelContainer" parent="SpecialDrawer"]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_styles/panel = SubResource("ActionPanelStyle")
+
+[node name="Layout" type="VBoxContainer" parent="SpecialDrawer/SpecialPanel"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="SpecialDrawer/SpecialPanel/Layout"]
+layout_mode = 2
+text = "Special"
+
+[node name="Scroll" type="ScrollContainer" parent="SpecialDrawer/SpecialPanel/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Abilities" type="GridContainer" parent="SpecialDrawer/SpecialPanel/Layout/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/v_separation = 6
+columns = 1
+
 [node name="ActionPanel" type="PanelContainer" parent="." unique_id=1269826185]
 layout_mode = 1
 anchors_preset = -1
@@ -273,18 +307,6 @@ theme_override_font_sizes/font_size = 18
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-
-[node name="TargetHint" type="Label" parent="."]
-visible = false
-layout_mode = 1
-anchor_left = 0.1
-anchor_top = 0.08
-anchor_right = 0.9
-anchor_bottom = 0.15
-horizontal_alignment = 1
-autowrap_mode = 2
-mouse_filter = 2
-theme_override_font_sizes/font_size = 18
 
 [node name="Confirmation" type="PanelContainer" parent="."]
 visible = false

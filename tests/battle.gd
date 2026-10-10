@@ -43,7 +43,7 @@ func resolve_round(session: BattleSession) -> void:
 
 
 func press_command(view: CombatScreen, title: String) -> void:
-	for child in view.actions.get_children() + [view.get_node("Confirmation/Layout/Execute"), view.get_node("Confirmation/Layout/Return")]:
+	for child in view.actions.get_children() + view.special_actions.get_children() + [view.get_node("Confirmation/Layout/Execute"), view.get_node("Confirmation/Layout/Return")]:
 		if child is Button and child.text == title:
 			child.pressed.emit()
 			return

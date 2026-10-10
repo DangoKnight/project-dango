@@ -9,26 +9,38 @@ const GEAR_TYPE_LIMITS := [3, 1, 1]
 var definition: CharacterDefinition
 var character_class: CharacterClass
 var level: int = 1
-var current_hp: int
+var observing := false
+var current_hp: int:
+	set(value):
+		current_hp = value
+		if value <= 0:
+			_stored_experience.clear()
 var current_mp: int
+## Applied progress toward the next level; banked combat XP stays separate.
+var experience: float = 0.0
+var _stored_experience: Dictionary[int, float] = {}
 var defending := false
 var equipped_weapon: WeaponDefinition
 var _permanent_stats: Dictionary[StringName, float] = {}
 var _statuses: Dictionary = {}
 var _gear: Array[GearInstance] = []
 var _battle_context: WeakRef
+var _growth_rng: RandomNumberGenerator
 
 
-func _init(character: CharacterDefinition, class_override: CharacterClass = null, starting_level: int = 1) -> void:
+func _init(character: CharacterDefinition, class_override: CharacterClass = null, starting_level: int = 1, growth_rng: RandomNumberGenerator = null) -> void:
 	assert(character != null, "A character definition is required")
+	_growth_rng = growth_rng if growth_rng != null else RandomNumberGenerator.new()
+	if growth_rng == null:
+		_growth_rng.randomize()
 	definition = character
 	character_class = class_override if class_override != null else character.starting_class
 	for stat in RPGStats.NAMES:
 		_permanent_stats[stat] = _stat_part(definition.base_stats, stat) + (_stat_part(character_class.base_stats, stat) if character_class != null else 0.0)
-	set_level(starting_level)
 	for gear in definition.starting_gear:
 		if gear != null:
 			equip_gear(GearInstance.new(gear))
+	set_level(starting_level)
 	current_hp = get_stat(&"max_hp")
 	current_mp = get_stat(&"max_mp")
 	if can_equip_weapon(definition.starting_weapon):
@@ -39,19 +51,34 @@ func get_stat(stat: StringName) -> int:
 	if stat not in RPGStats.NAMES:
 		return 0
 	var total: float = _permanent_stats.get(stat, 0.0)
-	for status in _statuses.values():
-		total += float(status.definition.stat_modifiers.get(stat, 0.0))
 	for item in _gear:
 		if item.definition.kind == GearDefinition.Kind.ARTIFACT:
 			total += float(item.definition.stat_modifiers.get(stat, 0.0))
+	total *= _status_stat_multiplier(stat)
 	for passive in definition.hidden_abilities:
 		if passive != null and passive.stat_multipliers.has(stat) and _passive_active(passive):
 			total *= passive.stat_multipliers[stat]
-	return maxi(1 if stat == &"max_hp" else 0, int(floor(total)))
+	var factor := 1.0 if stat in [&"max_hp", &"max_mp"] else _observe_factor()
+	return maxi(1 if stat == &"max_hp" else 0, int(floor(total * factor)))
+
+
+func _observe_factor() -> float:
+	return 0.5 if observing else 1.0
+
+
+func set_observing(enabled: bool) -> void:
+	observing = enabled
+	_clamp_vitals()
+	changed.emit()
+
+
+func experience_multiplier() -> float:
+	return 1.5 if observing else 1.0
 
 
 ## Weak context avoids retaining a battle through its party members.
 func bind_battle(context: RefCounted) -> void:
+	observing = false
 	_battle_context = weakref(context) if context != null else null
 	_clamp_vitals()
 
@@ -153,9 +180,14 @@ func set_level(new_level: int) -> void:
 	var destination := clampi(new_level, level, MAX_LEVEL)
 	if destination == level:
 		return
-	for stat in RPGStats.NAMES:
-		_permanent_stats[stat] += (destination - level) * get_growth(stat)
-	level = destination
+	# Roll every intermediate level separately so bulk leveling has the same
+	# distribution and RNG sequence as advancing one level at a time.
+	while level < destination:
+		for stat in RPGStats.NAMES:
+			var variation := maxf(0.0, definition.growth_variation)
+			var roll := _growth_rng.randf_range(-variation, variation) if variation > 0.0 else 0.0
+			_permanent_stats[stat] += get_growth(stat) + roll
+		level += 1
 	_clamp_vitals()
 	changed.emit()
 
@@ -177,6 +209,55 @@ func restore() -> void:
 	current_hp = get_stat(&"max_hp")
 	current_mp = get_stat(&"max_mp")
 	changed.emit()
+
+
+func experience_to_next_level() -> float:
+	return 100.0 * level if level < MAX_LEVEL else 0.0
+
+
+func stored_experience() -> float:
+	var total := 0.0
+	for amount in _stored_experience.values():
+		total += amount
+	return total
+
+
+func store_experience(encounter_id: int, amount: float) -> void:
+	if not is_alive() or not is_finite(amount) or amount <= 0.0:
+		return
+	_stored_experience[encounter_id] = _stored_experience.get(encounter_id, 0.0) + amount
+	changed.emit()
+
+
+func discard_encounter_experience(encounter_id: int) -> void:
+	_stored_experience.erase(encounter_id)
+	changed.emit()
+
+
+func apply_stored_experience(reports: Array[Dictionary] = []) -> int:
+	var previous_level := level
+	experience += stored_experience()
+	_stored_experience.clear()
+	while level < MAX_LEVEL and experience >= experience_to_next_level():
+		experience -= experience_to_next_level()
+		var before: Dictionary = {}
+		for stat in RPGStats.NAMES:
+			before[stat] = get_stat(stat)
+		var previous_abilities := get_abilities()
+		var old_level := level
+		set_level(level + 1)
+		var after: Dictionary = {}
+		for stat in RPGStats.NAMES:
+			after[stat] = get_stat(stat)
+		var learned: Array[AbilityDefinition] = []
+		for ability in get_abilities():
+			if ability not in previous_abilities:
+				learned.append(ability)
+		reports.append({"definition": definition, "from_level": old_level, "to_level": level, "before": before, "after": after, "learned": learned})
+	if level == MAX_LEVEL:
+		experience = 0.0
+	changed.emit()
+	return level - previous_level
 
 
 func is_alive() -> bool:
@@ -311,21 +392,35 @@ func advance_status_turn() -> Dictionary:
 
 
 func get_growth(stat: StringName) -> float:
-	return _stat_part(definition.stat_growth, stat) + (_stat_part(character_class.stat_growth, stat) if character_class != null else 0.0)
+	var growth := _stat_part(definition.stat_growth, stat) + (_stat_part(character_class.stat_growth, stat) if character_class != null else 0.0)
+	for item in _gear:
+		growth += float(item.definition.stat_growth_modifiers.get(stat, 0.0))
+	return growth
 
 
 func get_combat_stat(stat: StringName) -> float:
 	if stat not in RPGStats.COMBAT_NAMES:
 		return 0.0
 	var total := float(definition.get(stat))
-	for status in _statuses.values():
-		total += float(status.definition.stat_modifiers.get(stat, 0.0))
 	for item in _gear:
 		if item.definition.kind == GearDefinition.Kind.ARTIFACT:
 			total += float(item.definition.stat_modifiers.get(stat, 0.0))
 	if stat in [&"critical_rate", &"accuracy", &"evasion"]:
-		return clampf(total, 0.0, 1.0)
-	return maxf(1.0 if stat == &"critical_damage" else 0.01, total)
+		return clampf(total + _status_stat_percent(stat), 0.0, 1.0) * _observe_factor()
+	if stat == &"critical_damage":
+		return maxf(1.0, total + _status_stat_percent(stat)) * _observe_factor()
+	return maxf(0.01, total * _status_stat_multiplier(stat)) * _observe_factor()
+
+
+func _status_stat_multiplier(stat: StringName) -> float:
+	return maxf(0.0, 1.0 + _status_stat_percent(stat))
+
+
+func _status_stat_percent(stat: StringName) -> float:
+	var percent := 0.0
+	for status in _statuses.values():
+		percent += float(status.definition.stat_percent_modifiers.get(stat, 0.0))
+	return percent
 
 
 func can_act() -> bool:

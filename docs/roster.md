@@ -13,16 +13,16 @@ These values are starting balance choices for the requested minor/moderate/massi
 
 | Skill | Target | MP / SP | Effect |
 | --- | --- | --- | --- |
-| Jolly cheer | One ally | 4 | +4 Strength and +4 Defense for 3 turns |
+| Jolly cheer | One ally | 4 | +25% Strength and +25% Defense for 3 turns |
 | Caring friend | Living party | 5 | Each ally heals 8 + 0.3 × caster Mental Acuity HP, rounded and capped at maximum HP |
-| Lock-on | Self | 5 | +65 percentage points critical rate and +1.0 critical damage multiplier for 3 turns; default 5% / 150% becomes 70% / 250% |
-| Ride the gale | Self | 3 | +4 Speed for 3 turns; affects subsequent round initiative |
+| Lock-on | Self | 5 | +65 percentage points critical rate and +100 percentage points critical damage for 3 turns; default 5% / 150% becomes 70% / 250% |
+| Ride the gale | Self | 3 | +25% Speed for 3 turns; affects subsequent round initiative |
 | Graceful assault | One enemy | 4 | Pierce damage: power 8 + Strength, minus Defense and adjusted for Pierce resistance; cannot miss |
 | Painful stab | One enemy | 4 | Weak poison: 3 Poison damage before resistance at the end of each affected turn, for exactly 5 ticks |
 | Immobilizing stab | One enemy | 5 | Paralysis blocks the next 2 action opportunities, including an already queued action |
-| I am scary! | Entire living enemy party | 6 | -3 Strength and -3 Mental Acuity for 3 turns |
+| I am scary! | Entire living enemy party | 6 | -20% Strength and -20% Mental Acuity for 3 turns |
 | Bonk | One enemy | 3 | Moderate bash attack using the existing Blunt damage type: power 12 + 1.2 × Strength, minus Defense and adjusted for resistance |
-| Cover | Self | 4 | +4 Defense and +2 aggro weight for 3 turns; increases the probability of receiving enemy attacks |
+| Cover | Self | 4 | +25% Defense and +100% aggro weight for 3 turns; increases the probability of receiving enemy attacks |
 
 Poison and paralysis are status applications with no additional immediate stab damage. Status applications and healing do not roll accuracy or criticals. Damage abilities, including Bonk and Graceful assault, can critically hit. Graceful assault bypasses accuracy and evasion, but still respects Defense and Pierce resistance.
 
@@ -61,4 +61,10 @@ These automatic effects are editable under `resources/rpg/passives/` and assigne
 | Kurako | Easy target | Any living enemy is below Kurako’s level, has a negative stat modifier, poison, paralysis, or an explicitly negative status: Mental Acuity ×1.2. Multiple qualifying enemies do not stack it. |
 | Koumi | Collected | Rounds 1–4: Strength, Defense, Mental Acuity, Mental Resilience, and Speed ×1.1; maximum HP/SP are unchanged. Expires before round 5 planning and resets each battle. |
 
-Stat multipliers apply after permanent stats, equipment, and flat status modifiers, then round down. Collected does not modify maximum or current HP/SP, critical rate, critical damage, accuracy, evasion, or aggro. Damage multipliers affect attacks, damage abilities, and damaging consumables after resistance; poison ticks retain their fixed status damage. Conditions update at each stat/damage calculation. Initiative still snapshots speed at round execution. All bonuses disappear at battle end and never change permanent growth. Status resources can set **Is Negative** for harmful effects without existing damage, paralysis, or stat penalties.
+Stat multipliers apply after permanent stats, equipment, and percentage status modifiers, then round down. Collected does not modify maximum or current HP/SP, critical rate, critical damage, accuracy, evasion, or aggro. Damage multipliers affect attacks, damage abilities, and damaging consumables after resistance; poison ticks retain their fixed status damage. Conditions update at each stat/damage calculation. Initiative still snapshots speed at round execution. All bonuses disappear at battle end and never change permanent growth. Status resources can set **Is Negative** for harmful effects without existing damage, paralysis, or stat penalties.
+
+## Growth variation (developer reference)
+
+Each primary stat rolls independently at every level-up around character + current class + equipped gear growth. Usami, Takane, and Kurako use uniform ±0.5 variation; Koumi uses ±1.0. Fractions accumulate permanently. Bulk leveling rolls each intermediate level; class changes and repeated level requests never reroll past gains. Gear resources support optional `stat_growth_modifiers`, with no bonuses assigned to existing items.
+
+Growth values and natural variation are hidden from all player-facing screens, including Characters and both sides of Battle Information. Only current effective stats are displayed. These values remain editable in developer resources.

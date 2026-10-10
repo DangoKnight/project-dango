@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="CharacterDefinition" format=3 uid="uid://c1qur01xxkstv"]
 
 [ext_resource type="Script" uid="uid://dbonx52hipraq" path="res://scripts/rpg/weapon_type.gd" id="1_ifu1w"]
+[ext_resource type="Script" uid="uid://cgpdt2kimfbak" path="res://scripts/rpg/passive_ability.gd" id="4_ame6v"]
 [ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="4_b5vkt"]
 [ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="6_ame6v"]
 [ext_resource type="Resource" path="res://resources/rpg/abilities/slash.tres" id="Ability"]
@@ -23,6 +24,7 @@ speed = 4.0
 script = ExtResource("Script")
 id = &"sentinel"
 display_name = "Sentinel"
+base_experience_reward = 20.0
 base_stats = SubResource("Base")
 unique_abilities = Array[ExtResource("AbilityScript")]([ExtResource("Ability")])
 combat_texture = ExtResource("Image")

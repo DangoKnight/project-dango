@@ -56,3 +56,4 @@ resistances = Array[ExtResource("ResistanceScript")]([SubResource("fireResistanc
 
 allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("sword"), ExtResource("axe"), ExtResource("spear")])
 starting_weapon = ExtResource("StartingWeapon")
+growth_variation = 0.0

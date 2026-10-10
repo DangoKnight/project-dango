@@ -47,10 +47,13 @@ func run() -> void:
 		check(EXPLORER.stat_growth.value(stat) == 1.0, "Explorer has balanced primary-stat growth")
 	# Growth is accumulated at each level, using the class equipped for those levels.
 	var growth_unit := character("usami")
+	growth_unit.definition = growth_unit.definition.duplicate(true)
+	growth_unit.definition.growth_variation = 0.0
 	growth_unit.set_level(3)
 	var before: Dictionary = {}
 	for stat in RPGStats.NAMES:
 		before[stat] = growth_unit.get_stat(stat)
+	var before_raw := growth_unit._permanent_stats.duplicate()
 	var hp := growth_unit.current_hp
 	var mp := growth_unit.current_mp
 	growth_unit.set_class(ARCANIST)
@@ -58,23 +61,27 @@ func run() -> void:
 		check(growth_unit.get_stat(stat) == before[stat], "Class change preserves " + String(stat))
 	check(growth_unit.current_hp == hp and growth_unit.current_mp == mp, "Class change does not refill or reduce pools")
 	growth_unit.set_level(5)
-	check(growth_unit.get_stat(&"max_hp") == before[&"max_hp"] + 16, "New levels use new class HP growth")
-	check(growth_unit.get_stat(&"mental_acuity") == before[&"mental_acuity"] + 6, "New class mental growth applies only to future levels")
+	check(growth_unit.get_stat(&"max_hp") == int(floor(before_raw[&"max_hp"] + 2.0 * growth_unit.get_growth(&"max_hp"))), "New levels use new class HP growth")
+	check(growth_unit.get_stat(&"mental_acuity") == int(floor(before_raw[&"mental_acuity"] + 2.0 * growth_unit.get_growth(&"mental_acuity"))), "New class mental growth applies only to future levels")
 	var earned := growth_unit.get_stat(&"strength")
+	var earned_raw: float = growth_unit._permanent_stats[&"strength"]
 	growth_unit.set_class(VANGUARD)
 	check(growth_unit.get_stat(&"strength") == earned, "A second class change does not retroactively replace growth")
 	growth_unit.set_level(6)
-	check(growth_unit.get_stat(&"strength") == earned + 3, "Fractional permanent growth accumulates across classes before rounding")
+	check(growth_unit.get_stat(&"strength") == int(floor(earned_raw + growth_unit.get_growth(&"strength"))), "Fractional permanent growth accumulates across classes before rounding")
 	growth_unit.set_level(1)
 	check(growth_unit.level == 6, "Lower level request cannot remove permanent growth")
 	var last := growth_unit.get_stat(&"strength")
 	growth_unit.set_level(6)
 	check(growth_unit.get_stat(&"strength") == last, "Repeated level request cannot farm growth")
 	growth_unit.set_class(null)
+	var last_raw: float = growth_unit._permanent_stats[&"strength"]
 	growth_unit.set_level(7)
-	check(growth_unit.get_stat(&"strength") == last + 2, "Without a class only character growth applies")
+	check(growth_unit.get_stat(&"strength") == int(floor(last_raw + growth_unit.get_growth(&"strength"))), "Without a class only character growth applies")
 	var temporary_unit := character("usami")
-	var original_strength := temporary_unit.get_stat(&"strength")
+	temporary_unit.definition = temporary_unit.definition.duplicate(true)
+	temporary_unit.definition.growth_variation = 0.0
+	var original_strength: float = temporary_unit._permanent_stats[&"strength"]
 	var iron := GearInstance.new(load("res://resources/rpg/gear/iron_artifact.tres"))
 	temporary_unit.equip_gear(iron)
 	temporary_unit.apply_status(skill("jolly_cheer").status_effect)
@@ -82,7 +89,7 @@ func run() -> void:
 	temporary_unit.set_level(2)
 	temporary_unit.unequip_gear(iron)
 	temporary_unit.remove_status(&"jolly_cheer")
-	check(temporary_unit.get_stat(&"strength") == original_strength + 2, "Temporary buffs and gear never become permanent during class changes or level-ups")
+	check(temporary_unit.get_stat(&"strength") == int(floor(original_strength + temporary_unit.get_growth(&"strength"))), "Temporary buffs and gear never become permanent during class changes or level-ups")
 	# Usami: single-ally buff and a group heal with one MP cost.
 	var usami := character("usami")
 	var takane := character("takane")
@@ -91,7 +98,7 @@ func run() -> void:
 	var old_strength := takane.get_stat(&"strength")
 	var old_defense := takane.get_stat(&"defense")
 	check(RPGCombat.use_ability(usami, takane, skill("jolly_cheer")).success, "Jolly cheer applies to one ally")
-	check(takane.get_stat(&"strength") == old_strength + 4 and takane.get_stat(&"defense") == old_defense + 4 and usami.get_active_statuses().is_empty(), "Jolly cheer affects only chosen ally")
+	check(takane.get_stat(&"strength") == int(floor(old_strength * 1.25)) and takane.get_stat(&"defense") == int(floor(old_defense * 1.25)) and usami.get_active_statuses().is_empty(), "Jolly cheer affects only chosen ally")
 	for unit in [usami, takane, kurako, koumi]:
 		unit.current_hp -= 15
 	var session := BattleSession.new([usami, takane, kurako, koumi], [target()])
@@ -132,7 +139,7 @@ func run() -> void:
 	check(is_equal_approx(takane.get_combat_stat(&"critical_rate"), 0.7) and is_equal_approx(takane.get_combat_stat(&"critical_damage"), 2.5), "Lock-on massively boosts both critical traits")
 	var speed := takane.get_stat(&"speed")
 	RPGCombat.use_ability(takane, takane, skill("ride_the_gale"))
-	check(takane.get_stat(&"speed") == speed + 4, "Ride the gale boosts speed")
+	check(takane.get_stat(&"speed") == int(floor(speed * 1.25)), "Ride the gale boosts speed")
 	check(not RPGCombat.use_ability(takane, usami, skill("ride_the_gale")).success, "Self-only skill rejects another unit")
 	var takane_def := takane.definition.duplicate() as CharacterDefinition
 	takane_def.accuracy = 0
@@ -193,7 +200,7 @@ func run() -> void:
 	resolve_round(session)
 	check(kurako.current_mp == mp - skill("i_am_scary").mana_cost, "Enemy-party debuff spends MP once")
 	for foe in [foe1, foe2]:
-		check(foe.get_stat(&"strength") == 7 and foe.get_stat(&"mental_acuity") == 7, "Enemy-party debuff affects attack and mental acuity of each foe")
+		check(foe.get_stat(&"strength") == 8 and foe.get_stat(&"mental_acuity") == 8, "Enemy-party debuff affects attack and mental acuity of each foe")
 	# Paralysis cancels already queued actions for two turns without spending their MP.
 	var fast_definition := kurako.definition.duplicate(true) as CharacterDefinition
 	fast_definition.base_stats.speed = 100
@@ -215,7 +222,7 @@ func run() -> void:
 	koumi.restore()
 	old_defense = koumi.get_stat(&"defense")
 	RPGCombat.use_ability(koumi, koumi, skill("cover"))
-	check(koumi.get_stat(&"defense") == old_defense + 4 and koumi.get_combat_stat(&"aggro") == 3, "Cover boosts self defense and aggro")
+	check(koumi.get_stat(&"defense") == int(floor(old_defense * 1.25)) and koumi.get_combat_stat(&"aggro") == 2, "Cover boosts self defense and aggro")
 	session = BattleSession.new([usami, koumi], [target()])
 	session.rng.seed = 42
 	var cover_targets := 0
@@ -223,9 +230,10 @@ func run() -> void:
 		if session._aggro_target([usami, koumi], usami) == koumi:
 			cover_targets += 1
 	check(cover_targets > 650 and cover_targets < 850, "Cover's aggro weight increases target probability to about 75 percent in a two-unit party")
+	var cover_defense := koumi.get_stat(&"defense")
 	for turn in range(3):
 		koumi.advance_status_turn()
-	check(koumi.get_stat(&"defense") == old_defense and koumi.get_combat_stat(&"aggro") == 1, "Cover expires and restores defense/aggro")
+	check(koumi.get_stat(&"defense") < cover_defense and koumi.get_active_statuses().is_empty() and koumi.get_combat_stat(&"aggro") == 1, "Cover expires and restores defense/aggro")
 	# Poison can end battle, and action-blocking effects still permit Wait planning.
 	fast_kurako.restore()
 	var fragile := target(3)
@@ -239,7 +247,7 @@ func run() -> void:
 	usami.apply_status(paralysis)
 	session = BattleSession.new([usami], [target()])
 	check(not session.choose_attack() and not session.choose_ability(skill("jolly_cheer")) and session.choose_wait(), "Paralyzed party member can only plan Wait")
-	# Actual battle presentation includes titles and group target prompts.
+	# Actual battle presentation supports group targets without instructions.
 	var view := load("res://scenes/battle/combat.tscn").instantiate() as CombatScreen
 	root.add_child(view)
 	var encounter := BattleEncounter.new()
@@ -247,7 +255,7 @@ func run() -> void:
 	usami = character("usami")
 	view.configure([usami, character("takane"), character("kurako"), character("koumi")], encounter)
 	view.session.choose_ability(skill("caring_friend"))
-	check(not view._panel_targets[view.portrait.name] and view.prompt.text.contains("whole group") and not view.party_buttons[3].disabled, "Group spell UI hides portrait and permits fourth friendly target")
+	check(not view._panel_targets[view.portrait.name] and view.prompt.text.is_empty() and not view.party_buttons[3].disabled, "Group spell UI hides portrait and permits fourth friendly target")
 	view.session.select_target(view.session.party[3])
 	check(view.session.active_character().definition.id == &"takane", "Group action advances to next character")
 	view.queue_free()

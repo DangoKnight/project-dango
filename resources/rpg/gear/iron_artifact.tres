@@ -15,7 +15,7 @@ amount = 0.2
 script = ExtResource("Gear")
 id = &"iron_artifact"
 display_name = "Iron Artifact"
-description = "Strength +3, speed -1, slash resistance +20%."
+description = "Strength +3, speed -1. Grants slash resistance."
 stat_modifiers = Dictionary[StringName, float]({
 &"speed": -1.0,
 &"strength": 3.0

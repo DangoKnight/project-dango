@@ -62,9 +62,13 @@ func _select(item: GearInstance) -> void:
 	var lines := PackedStringArray([gear.display_name + " — " + gear.type_name(), gear.description])
 	if gear.kind == GearDefinition.Kind.ARTIFACT:
 		for stat in gear.stat_modifiers:
-			lines.append("%s: %+.1f" % [RPGStats.display_name(stat), gear.stat_modifiers[stat]])
+			if stat in RPGStats.NAMES:
+				lines.append("%s: %+.1f" % [RPGStats.display_name(stat), gear.stat_modifiers[stat]])
 		for resistance in gear.resistances:
-			lines.append("%s resistance: %+.0f%%" % [resistance.damage_type.display_name, resistance.amount * 100])
+			if resistance != null and resistance.damage_type != null:
+				var label := DamageResistance.display_label(resistance.amount)
+				if not label.is_empty():
+					lines.append("%s: %s" % [resistance.damage_type.display_name, label])
 	elif gear.kind == GearDefinition.Kind.MEDALLION:
 		for spell in gear.spells:
 			lines.append("%s — %d MP" % [spell.display_name, spell.mana_cost])

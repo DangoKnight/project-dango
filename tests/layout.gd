@@ -92,6 +92,7 @@ func run() -> void:
 	for window_size in sizes:
 		root.size = window_size
 		game.show_town()
+		await create_timer(game.ui.get_child(0).card_slide_duration + 0.05).timeout
 		await settle()
 		var view: Control = game.ui.get_child(0)
 		fits(view.get_node("Panel"), Rect2(Vector2.ZERO, view.size), "Town panel at %s" % window_size)
@@ -118,9 +119,10 @@ func run() -> void:
 		await settle()
 		view = game.ui.get_child(0)
 		fits(view.get_node("Panel"), Rect2(Vector2.ZERO, view.size), "Pause menu at %s" % window_size)
-		game.show_location("Inn")
+		game.show_location("Tinkerer")
+		await create_timer(game.ui.get_child(0).card_slide_duration + 0.05).timeout
 		await settle()
 		view = game.ui.get_child(0)
-		fits(view.get_node("Panel"), Rect2(Vector2.ZERO, view.size), "Location at %s" % window_size)
+		fits(view.module_view.get_node("Panel"), Rect2(Vector2.ZERO, view.size), "Location at %s" % window_size)
 	print("Layout tests complete: %d failure(s)" % failures)
 	quit(1 if failures else 0)

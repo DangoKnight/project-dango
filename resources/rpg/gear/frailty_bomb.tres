@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="6_lwh6j"]
 [ext_resource type="Script" uid="uid://ogqaxvo5ja6q" path="res://scripts/rpg/consumable_effect.gd" id="Effect"]
 [ext_resource type="Resource" path="res://resources/rpg/damage_types/fire.tres" id="Fire"]
-[ext_resource type="Resource" path="res://resources/rpg/statuses/frailty.tres" id="Frailty"]
+[ext_resource type="Resource" uid="uid://431x7lairj8k" path="res://resources/rpg/statuses/frailty.tres" id="Frailty"]
 [ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="Gear"]
 
 [sub_resource type="Resource" id="Damage"]

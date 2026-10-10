@@ -1,8 +1,12 @@
-[gd_resource type="Resource" format=3]
-[ext_resource type="Script" path="res://scripts/rpg/status_effect.gd" id="Status"]
+[gd_resource type="Resource" script_class="StatusEffectDefinition" format=3 uid="uid://0fxgc08m68v3"]
+
+[ext_resource type="Script" uid="uid://cyuu23mhdp8ox" path="res://scripts/rpg/status_effect.gd" id="Status"]
+
 [resource]
 script = ExtResource("Status")
 id = &"cover"
 display_name = "Cover"
-duration_turns = 3
-stat_modifiers = Dictionary[StringName, float]({&"aggro": 2.0, &"defense": 4.0})
+stat_percent_modifiers = Dictionary[StringName, float]({
+&"aggro": 1.0,
+&"defense": 0.25
+})

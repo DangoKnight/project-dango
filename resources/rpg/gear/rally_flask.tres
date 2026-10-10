@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="5_n50yw"]
 [ext_resource type="Script" uid="uid://ogqaxvo5ja6q" path="res://scripts/rpg/consumable_effect.gd" id="Effect"]
 [ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="Gear"]
-[ext_resource type="Resource" path="res://resources/rpg/statuses/rally.tres" id="Rally"]
+[ext_resource type="Resource" uid="uid://bi2m6bhxnkbia" path="res://resources/rpg/statuses/rally.tres" id="Rally"]
 
 [sub_resource type="Resource" id="Heal"]
 script = ExtResource("Effect")

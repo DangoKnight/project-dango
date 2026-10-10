@@ -1,19 +1,21 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene format=3 uid="uid://ccxqumkxycacn"]
 
-[ext_resource type="PackedScene" path="res://scenes/base/town.tscn" id="Town"]
+[ext_resource type="Texture2D" uid="uid://cuo3lqpbl0eaf" path="res://textures/safe_zone.svg" id="Background"]
+[ext_resource type="Texture2D" uid="uid://drmhgqk0axyjd" path="res://textures/barracks.svg" id="Barracks"]
+[ext_resource type="Texture2D" uid="uid://msrg6rfigvaq" path="res://textures/chemist.svg" id="Chemist"]
 [ext_resource type="PackedScene" path="res://scenes/world/exploration_room.tscn" id="Map"]
-[ext_resource type="Texture2D" path="res://textures/safe_zone.svg" id="Background"]
-[ext_resource type="Texture2D" path="res://textures/barracks.svg" id="Barracks"]
-[ext_resource type="Texture2D" path="res://textures/tinkerer.svg" id="Tinkerer"]
-[ext_resource type="Texture2D" path="res://textures/chemist.svg" id="Chemist"]
+[ext_resource type="Texture2D" uid="uid://bx0feg2ldqnaj" path="res://textures/tinkerer.svg" id="Tinkerer"]
+[ext_resource type="PackedScene" path="res://scenes/base/town.tscn" id="Town"]
 
-[node name="StartingTown" instance=ExtResource("Town")]
+[node name="StartingTown" unique_id=1644206447 instance=ExtResource("Town")]
 town_id = &"starting_town"
-display_name = "Safe Zone"
 background_texture = ExtResource("Background")
 exploration_map = ExtResource("Map")
 location_backgrounds = Dictionary[String, Texture2D]({
 "Barracks": ExtResource("Barracks"),
-"Tinkerer": ExtResource("Tinkerer"),
-"Chemist": ExtResource("Chemist")
+"Chemist": ExtResource("Chemist"),
+"Tinkerer": ExtResource("Tinkerer")
 })
+
+[node name="Panel" parent="." index="1"]
+anchors_preset = -1

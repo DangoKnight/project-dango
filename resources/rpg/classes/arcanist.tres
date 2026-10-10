@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="CharacterClass" format=3 uid="uid://bjuu6m71yr3p"]
 
 [ext_resource type="Resource" path="res://resources/rpg/abilities/ember.tres" id="ember"]
-[ext_resource type="Resource" path="res://resources/rpg/abilities/enfeeble.tres" id="enfeeble"]
+[ext_resource type="Resource" uid="uid://bsbnlf3mojup4" path="res://resources/rpg/abilities/enfeeble.tres" id="enfeeble"]
 [ext_resource type="Resource" path="res://resources/rpg/abilities/mend.tres" id="mend"]
 [ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="ResistanceScript"]
 [ext_resource type="Script" uid="uid://cx7f3hlhhevnq" path="res://scripts/rpg/character_class.gd" id="Script"]

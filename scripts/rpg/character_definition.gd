@@ -10,8 +10,12 @@ extends Resource
 		emit_changed()
 @export_multiline var description: String
 @export var starting_class: CharacterClass
+## Experience contributed per resolved battle round when used as an enemy.
+@export_range(0.0, 100000.0, 0.5) var base_experience_reward: float = 0.0
 @export var base_stats: RPGStats
 @export var stat_growth: RPGStats
+## Independent uniform variation around combined growth for every stat and earned level.
+@export_range(0.0, 10.0, 0.05) var growth_variation: float = 0.5
 @export var resistances: Array[DamageResistance] = []
 @export var unique_abilities: Array[AbilityDefinition] = []
 ## Automatic combat passives; excluded from skill menus and character information.

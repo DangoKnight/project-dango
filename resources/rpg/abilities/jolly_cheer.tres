@@ -1,15 +1,14 @@
-[gd_resource type="Resource" format=3]
-[ext_resource type="Script" path="res://scripts/rpg/ability.gd" id="Ability"]
-[ext_resource type="Resource" path="res://resources/rpg/statuses/jolly_cheer.tres" id="Status"]
+[gd_resource type="Resource" script_class="AbilityDefinition" format=3 uid="uid://b742sut8hgeom"]
+
+[ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="Ability"]
+[ext_resource type="Resource" uid="uid://c2g3f3mleohod" path="res://resources/rpg/statuses/jolly_cheer.tres" id="Status"]
+
 [resource]
 script = ExtResource("Ability")
 id = &"jolly_cheer"
 display_name = "Jolly cheer"
-description = "Raises one ally's strength and defense by 4 for three turns."
+description = "Temporarily grants a moderate boost to an ally's strength and defense."
 effect = 2
 targeting = 1
-mana_cost = 4
-power = 0
-scaling = 1.0
-scaling_stat = "strength"
 status_effect = ExtResource("Status")
+mana_cost = 4

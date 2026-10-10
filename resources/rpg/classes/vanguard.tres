@@ -2,7 +2,7 @@
 
 [ext_resource type="Resource" path="res://resources/rpg/weapon_types/axe.tres" id="axe"]
 [ext_resource type="Resource" path="res://resources/rpg/abilities/cleave.tres" id="cleave"]
-[ext_resource type="Resource" path="res://resources/rpg/abilities/fortify.tres" id="fortify"]
+[ext_resource type="Resource" uid="uid://dlx51xox380i7" path="res://resources/rpg/abilities/fortify.tres" id="fortify"]
 [ext_resource type="Resource" path="res://resources/rpg/weapon_types/hammer.tres" id="hammer"]
 [ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="ResistanceScript"]
 [ext_resource type="Script" uid="uid://cx7f3hlhhevnq" path="res://scripts/rpg/character_class.gd" id="Script"]

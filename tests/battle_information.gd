@@ -42,7 +42,7 @@ func run() -> void:
 	panel.enemy_tab.pressed.emit()
 	check(panel.enemy_tab.text == "Friendlies", "Hostile view offers return to Friendlies")
 	check(panel.showing_enemies and panel.members.item_count == battle.session.enemies.size(), "Opposite tab lists all enemies")
-	check(panel.details.text.contains(battle.session.enemies[0].definition.display_name) and panel.details.text.contains("Critical rate"), "Full enemy details are known immediately")
+	check(panel.details.text.contains(battle.session.enemies[0].definition.display_name) and panel.details.text.contains("Strength"), "Visible enemy details are known immediately")
 	panel.enemy_tab.pressed.emit()
 	panel.members.select(3)
 	panel.members.item_selected.emit(3)

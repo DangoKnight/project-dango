@@ -55,11 +55,11 @@ func run() -> void:
 	check(kurako.get_stat(&"mental_acuity") == base_acuity, "Higher-level healthy enemies do not activate Easy target")
 	var harmful := StatusEffectDefinition.new()
 	harmful.id = &"test_debuff"
-	harmful.stat_modifiers = {&"strength": -1.0}
+	harmful.stat_percent_modifiers = {&"strength": -1.0}
 	foe.apply_status(harmful)
 	check(kurako.get_stat(&"mental_acuity") == int(floor(base_acuity * 1.2)), "A debuffed enemy activates Easy target")
 	foe.remove_status(harmful.id)
-	harmful.stat_modifiers = {}
+	harmful.stat_percent_modifiers = {}
 	harmful.is_negative = true
 	foe.apply_status(harmful)
 	check(kurako.get_stat(&"mental_acuity") == int(floor(base_acuity * 1.2)), "Explicit negative statuses activate Easy target")
@@ -77,7 +77,7 @@ func run() -> void:
 	var boosted_acuity := kurako.get_stat(&"mental_acuity")
 	foe.set_level(3)
 	var unboosted_acuity := kurako.get_stat(&"mental_acuity")
-	check(boosted_acuity == int(floor(unboosted_acuity * 1.2)), "A lower-level foe activates Easy target without a debuff")
+	check(boosted_acuity == int(floor(kurako._permanent_stats[&"mental_acuity"] * 1.2)), "A lower-level foe activates Easy target without a debuff")
 	var low_foe := CharacterState.new(foe.definition)
 	battle.enemies.append(low_foe)
 	check(kurako.get_stat(&"mental_acuity") == boosted_acuity, "Any qualifying enemy activates the bonus once")

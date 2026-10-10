@@ -6,6 +6,8 @@
 [ext_resource type="Resource" path="res://resources/rpg/weapon_types/dagger.tres" id="dagger"]
 [ext_resource type="Resource" path="res://resources/rpg/damage_types/fire.tres" id="fire"]
 [ext_resource type="Resource" path="res://resources/rpg/damage_types/frost.tres" id="frost"]
+[ext_resource type="Resource" path="res://resources/rpg/passives/collected.tres" id="HiddenPassive"]
+[ext_resource type="Script" uid="uid://cgpdt2kimfbak" path="res://scripts/rpg/passive_ability.gd" id="PassiveScript"]
 [ext_resource type="Texture2D" uid="uid://bhcf8mnf5iqvd" path="res://textures/Characters/Alpha/Koumi-chan_V03.png" id="Portrait"]
 [ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="ResistanceScript"]
 [ext_resource type="Script" uid="uid://cftevjhnkln3e" path="res://scripts/rpg/character_definition.gd" id="Script"]
@@ -13,22 +15,19 @@
 [ext_resource type="Resource" path="res://resources/rpg/weapons/apprentice_staff.tres" id="StartingWeapon"]
 [ext_resource type="Script" uid="uid://ddt764fvrnnt0" path="res://scripts/rpg/stats.gd" id="Stats"]
 [ext_resource type="Resource" path="res://resources/rpg/abilities/bonk.tres" id="Unique0"]
-[ext_resource type="Resource" path="res://resources/rpg/abilities/cover.tres" id="Unique1"]
+[ext_resource type="Resource" uid="uid://baklc0036soit" path="res://resources/rpg/abilities/cover.tres" id="Unique1"]
 [ext_resource type="Resource" path="res://resources/rpg/weapon_types/wand.tres" id="wand"]
 [ext_resource type="Script" uid="uid://dbonx52hipraq" path="res://scripts/rpg/weapon_type.gd" id="WeaponTypeScript"]
 
-[ext_resource type="Script" path="res://scripts/rpg/passive_ability.gd" id="PassiveScript"]
-[ext_resource type="Resource" path="res://resources/rpg/passives/collected.tres" id="HiddenPassive"]
-
 [sub_resource type="Resource" id="Base"]
 script = ExtResource("Stats")
-max_hp = 40.0
-max_mp = 20.0
-strength = 3.0
-defense = 2.0
-mental_acuity = 9.0
+max_hp = 55.0
+max_mp = 15.0
+strength = 5.0
+defense = 8.0
+mental_acuity = 2.0
 mental_resilience = 6.0
-speed = 8.0
+speed = 5.0
 
 [sub_resource type="Resource" id="frostResistance"]
 script = ExtResource("ResistanceScript")
@@ -43,12 +42,12 @@ amount = -0.2
 [sub_resource type="Resource" id="Growth"]
 script = ExtResource("Stats")
 max_hp = 3.0
-max_mp = 3.0
-strength = 0.5
-defense = 0.5
-mental_acuity = 2.0
+max_mp = 1.0
+strength = 1.0
+defense = 1.0
+mental_acuity = 0.5
 mental_resilience = 1.0
-speed = 1.5
+speed = 1.0
 
 [resource]
 script = ExtResource("Script")
@@ -57,10 +56,13 @@ display_name = "Koumi"
 title = "Emotions hare"
 description = "A quiet, enigmatic hare whose intentions are hard to read. It is unclear whether Koumi feels emotions at all, but her actions are straightforward and deliberate."
 starting_class = ExtResource("Class")
+base_experience_reward = null
 base_stats = SubResource("Base")
 stat_growth = SubResource("Growth")
+growth_variation = 1.0
 resistances = Array[ExtResource("ResistanceScript")]([SubResource("frostResistance"), SubResource("fireResistance")])
 unique_abilities = Array[ExtResource("AbilityScript")]([ExtResource("Unique0"), ExtResource("Unique1")])
+hidden_abilities = Array[ExtResource("PassiveScript")]([ExtResource("HiddenPassive")])
 allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("staff"), ExtResource("wand"), ExtResource("dagger")])
 starting_weapon = ExtResource("StartingWeapon")
 critical_rate = 0.05
@@ -69,4 +71,3 @@ portrait = ExtResource("Portrait")
 portrait_offset = Vector2(0, 0.2)
 portrait_scale = 1.4
 combat_texture = ExtResource("Portrait")
-hidden_abilities = Array[ExtResource("PassiveScript")]([ExtResource("HiddenPassive")])

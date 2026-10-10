@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="CharacterDefinition" format=3 uid="uid://c38vdhv0db6s5"]
 
 [ext_resource type="Script" uid="uid://dbonx52hipraq" path="res://scripts/rpg/weapon_type.gd" id="1_0ecd1"]
+[ext_resource type="Script" uid="uid://cgpdt2kimfbak" path="res://scripts/rpg/passive_ability.gd" id="4_03y7d"]
 [ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="4_v5pte"]
 [ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="6_03y7d"]
 [ext_resource type="Resource" path="res://resources/rpg/abilities/ember.tres" id="Ability"]
@@ -23,6 +24,7 @@ speed = 6.0
 script = ExtResource("Script")
 id = &"acolyte"
 display_name = "Acolyte"
+base_experience_reward = 30.0
 base_stats = SubResource("Base")
 unique_abilities = Array[ExtResource("AbilityScript")]([ExtResource("Ability")])
 combat_texture = ExtResource("Image")

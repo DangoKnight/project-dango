@@ -9,13 +9,10 @@ static func describe(character: CharacterState, damage_types: Array[DamageType],
 		character.definition.title,
 		character.definition.description if include_description else "",
 		"", "HP %d / %d    MP %d / %d" % [character.current_hp, character.get_stat(&"max_hp"), character.current_mp, character.get_stat(&"max_mp")],
-		"", "STATS  (growth on the next level)",
+		"", "STATS",
 	])
 	for stat in RPGStats.NAMES:
-		var growth := character.get_growth(stat)
-		lines.append("%s: %d  (+%.1f)" % [RPGStats.display_name(stat), character.get_stat(stat), growth])
-	lines.append("Critical rate: %.0f%%  |  Critical damage: %.0f%%" % [character.get_combat_stat(&"critical_rate") * 100, character.get_combat_stat(&"critical_damage") * 100])
-	lines.append("Accuracy: %.0f%%  |  Evasion: %.0f%%  |  Aggro: %.1f" % [character.get_combat_stat(&"accuracy") * 100, character.get_combat_stat(&"evasion") * 100, character.get_combat_stat(&"aggro")])
+		lines.append("%s: %d" % [RPGStats.display_name(stat), character.get_stat(stat)])
 	lines.append("\nAVAILABLE ABILITIES")
 	for ability in character.get_abilities():
 		var origin := "Medallion"
@@ -49,8 +46,14 @@ static func describe(character: CharacterState, damage_types: Array[DamageType],
 		lines.append("None")
 	for status in statuses:
 		lines.append("%s: %d turns" % [status.definition.display_name, status.remaining_turns])
-	lines.append("\nRESISTANCES  (+resistance / -weakness)")
+	lines.append("\nRESISTANCES AND WEAKNESSES")
+	var has_affinity := false
 	for damage_type in damage_types:
 		if damage_type != null:
-			lines.append("%s: %+.0f%%" % [damage_type.display_name, character.get_resistance(damage_type) * 100])
+			var label := DamageResistance.display_label(character.get_resistance(damage_type))
+			if not label.is_empty():
+				lines.append("%s: %s" % [damage_type.display_name, label])
+				has_affinity = true
+	if not has_affinity:
+		lines.append("None")
 	return "\n".join(lines)
