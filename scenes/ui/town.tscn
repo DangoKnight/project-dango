@@ -9,6 +9,7 @@
 
 [node name="StartingTown" unique_id=1644206447 instance=ExtResource("Town")]
 town_id = &"starting_town"
+display_name = "Station 45-B"
 background_texture = ExtResource("Background")
 exploration_map = ExtResource("Map")
 location_backgrounds = Dictionary[String, Texture2D]({

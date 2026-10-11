@@ -33,7 +33,7 @@ func run() -> void:
 	var game: Node = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
 	game.new_game(false)
-	var party_member: CharacterState = game.party[0]
+	var party_member: CharacterState = game.state.party[0]
 	check(game.ui.get_child(0) is Town, "Starting town should be a Town instance")
 	game.show_town(second_town)
 	var town := game.ui.get_child(0) as Town
@@ -62,7 +62,7 @@ func run() -> void:
 	game.show_location("Barracks")
 	check(game.ui.get_child(0).get_node("Background").texture == load("res://textures/wall.png"), "Locations should use the town's configured background")
 	game.show_town()
-	check(game.party[0] == party_member, "Changing towns and maps should preserve party state")
+	check(game.state.party[0] == party_member, "Changing towns and maps should preserve party state")
 	game.new_game(false)
 	check(game.ui.get_child(0).town_id == &"starting_town", "New Game should reset the starting town")
 	# A town without an exploration destination cannot navigate to an invalid map.

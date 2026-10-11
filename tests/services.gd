@@ -154,7 +154,7 @@ func run() -> void:
 	var stock_before: int = barter.stock_list.item_count
 	barter.exchange.pressed.emit()
 	check(barter.stock_list.item_count == stock_before - 1 and barter.feedback.text == "Acceptable", "Barterer UI performs the accepted exchange")
-	var initial_service: SafeZoneServices = game.safe_zone_services[game.active_safe_zone_key]
+	var initial_service: SafeZoneServices = game.state.safe_zone_services[game.state.active_safe_zone_key]
 	game.show_location("Tinkerer")
 	var workshop: Control = town.module_view
 	check(workshop.ideas.item_count == initial_service.recipes.size(), "Tinkerer lists Safe Zone weapon ideas")
@@ -164,10 +164,10 @@ func run() -> void:
 		for index in range(recipe.required_kills[enemy_id] * 2):
 			game._record_service_kill(enemy_id)
 	workshop._claim()
-	check(game.weapon_inventory.size() == 1 and not initial_service.commissions.has(recipe.product_key()), "Completed commission awards a weapon to shared stash")
-	var original_weapon: WeaponDefinition = game.party[0].equipped_weapon
+	check(game.state.weapon_inventory.size() == 1 and not initial_service.commissions.has(recipe.product_key()), "Completed commission awards a weapon to shared stash")
+	var original_weapon: WeaponDefinition = game.state.party[0].equipped_weapon
 	workshop._equip_weapon()
-	check(game.party[0].equipped_weapon == recipe.weapon and original_weapon in game.weapon_inventory, "Crafted weapons can be equipped and the previous weapon returns to stash")
+	check(game.state.party[0].equipped_weapon == recipe.weapon and original_weapon in game.state.weapon_inventory, "Crafted weapons can be equipped and the previous weapon returns to stash")
 	var medallion_index := initial_service.recipes.find(medallion_recipe)
 	check(medallion_index >= 0, "Tinkerer offers the sample medallion design")
 	workshop.ideas.select(medallion_index)
@@ -177,16 +177,16 @@ func run() -> void:
 	for enemy_id in medallion_recipe.required_kills:
 		for index in range(medallion_recipe.required_kills[enemy_id] * 2):
 			game._record_service_kill(enemy_id)
-	var old_gear: Array = game.gear_inventory.get_items()
+	var old_gear: Array = game.state.gear_inventory.get_items()
 	workshop._claim()
 	var crafted_medallion: GearInstance
-	for item in game.gear_inventory.get_items():
+	for item in game.state.gear_inventory.get_items():
 		if item not in old_gear:
 			crafted_medallion = item
 	check(crafted_medallion != null and crafted_medallion.definition.kind == GearDefinition.Kind.MEDALLION, "Tinkerer UI delivers the fabricated medallion")
-	check(game.party[0].equip_gear(crafted_medallion), "Fabricated medallion can be equipped")
-	check(load("res://resources/rpg/abilities/ember.tres") in game.party[0].get_abilities(), "Fabricated medallion grants its spells while equipped")
-	game.party[0].unequip_gear(crafted_medallion)
+	check(game.state.party[0].equip_gear(crafted_medallion), "Fabricated medallion can be equipped")
+	check(load("res://resources/rpg/abilities/ember.tres") in game.state.party[0].get_abilities(), "Fabricated medallion grants its spells while equipped")
+	game.state.party[0].unequip_gear(crafted_medallion)
 	# Stock and quests survive navigation; walking counts even with encounters disabled.
 	initial_service.restock_pending = true
 	initial_service.steps_since_visit = 0
@@ -194,7 +194,7 @@ func run() -> void:
 	await create_timer(0.35).timeout # Let outgoing module cards finish sliding.
 	game.explore()
 	var map: LabyrinthMap = game.world
-	check(game.safe_zone_services[game.active_safe_zone_key] == initial_service, "Initial Safe Zone identity survives first departure")
+	check(game.state.safe_zone_services[game.state.active_safe_zone_key] == initial_service, "Initial Safe Zone identity survives first departure")
 	map.definition.encounters_enabled = false
 	var entry := map.layout.landmark(map.entry_landmark)
 	map.player.position = map.layout.world_position(map.layout.passages[entry.coordinate][0])
@@ -224,7 +224,7 @@ func run() -> void:
 		battle.session._reward_defeated_enemies()
 		check(initial_service.commissions[recipe.product_key()].kills.get(species, 0) == 1, "Poison defeat counts once through live battle integration")
 	game.new_game(false)
-	check(game.safe_zone_services.is_empty() and game.weapon_inventory.is_empty(), "New Game resets service stock, quest history, and crafted weapon stash")
+	check(game.state.safe_zone_services.is_empty() and game.state.weapon_inventory.is_empty(), "New Game resets service stock, quest history, and crafted weapon stash")
 	game.queue_free()
 	await process_frame
 	print("Safe Zone services tests complete: %d failure(s)" % failures)

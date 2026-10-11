@@ -51,4 +51,4 @@ func is_valid() -> bool:
 
 
 func type_name() -> String:
-	return ["Artifact", "Medallion", "Consumable"][kind]
+	return [L10n.text("Artifact"), L10n.text("Medallion"), L10n.text("Consumable")][kind]

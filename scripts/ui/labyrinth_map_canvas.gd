@@ -23,7 +23,7 @@ func configure(map: LabyrinthMap) -> void:
 	_landmark_labels.clear()
 	for landmark in visible_landmarks():
 		var label := Label.new()
-		label.text = landmark.display_name
+		label.text = L10n.text(landmark.display_name)
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

@@ -38,6 +38,7 @@ func run() -> void:
 	await click("Back")
 	await click("New Game")
 	check(game.screen == "town", "New Game should open town")
+	check(game.ui.get_child(0).get_node("Panel/Buttons/Title").text == "STATION 45-B", "Starting town displays its name")
 	var conversations := root.get_node("Conversations")
 	await create_timer(game.new_game_reveal_duration + 0.06).timeout
 	check(conversations.is_active() and paused, "New Game starts the opening conversation")
@@ -52,30 +53,31 @@ func run() -> void:
 	check(town_buttons.size() == 4, "Town shows only the three services and Explore")
 	for obsolete in ["Characters", "Options", "MainMenu"]:
 		check(not game.ui.get_child(0).has_node("Panel/Buttons/" + obsolete), "Shortcut-only option is absent from town: " + obsolete)
-	check(game.party.size() == 4, "New Game should initialize the starting party")
-	var expected_names := ["Usami", "Takane", "Kurako", "Koumi"]
-	var expected_images := ["Usami-chan", "Takane-chan", "Kurako-chan", "Koumi-chan"]
-	for index in range(4):
-		var definition: CharacterDefinition = game.party[index].definition
+	check(game.state.party.size() == 3, "New Game starts Usami, Takane and Kurako as the active party")
+	check(game.state.roster.size() == 3, "Only Usami, Takane and Kurako are recruited at New Game")
+	var expected_names := ["Usami", "Takane", "Kurako"]
+	var expected_images := ["Usami-chan", "Takane-chan", "Kurako-chan"]
+	for index in range(expected_names.size()):
+		var definition: CharacterDefinition = game.state.roster[index].definition
 		check(definition.starting_class.id == &"explorer", "All starting characters should be Explorers")
 		check(definition.display_name == expected_names[index], "Starting party should contain " + expected_names[index])
 		check(definition.portrait != null and definition.portrait.resource_path == "res://textures/Characters/Alpha/" + expected_images[index] + "_Portrait.png", "Each character should use their matching portrait")
 		check(definition.combat_texture == definition.portrait, "Character combat texture should match its new portrait")
-	var original_character: CharacterState = game.party[0]
+	var original_character: CharacterState = game.state.party[0]
 	var tab := InputEventAction.new()
 	tab.action = "party_information"
 	tab.pressed = true
 	game._input(tab)
 	check(game.screen == "characters", "Characters should open the party screen")
 	var roster: Control = game.ui.get_child(0)
-	check(roster.get_node("Panel/Buttons/Content/Members").item_count == 4, "Party screen should list characters")
+	check(roster.get_node("Panel/Buttons/Content/Members").item_count == 3, "Characters lists only recruited characters")
 	check("Usami" in roster.get_node("Panel/Buttons/Content/Details").text, "Party screen should show selected character")
 	check("Training Sword" in roster.get_node("Panel/Buttons/Content/Details").text, "Party screen should show equipped weapons")
 	check("Allowed types: Sword, Axe, Spear" in roster.get_node("Panel/Buttons/Content/Details").text, "Party screen should show combined weapon restrictions")
 	roster.get_node("Panel/Buttons/Content/Members").item_selected.emit(1)
 	check("Takane" in roster.get_node("Panel/Buttons/Content/Details").text, "Selecting a character should update details")
-	await click("Back to Safe Zone")
-	check(game.party[0] == original_character, "Returning to town should preserve character state")
+	await click("Back to Station 45-B")
+	check(game.state.party[0] == original_character, "Returning to town should preserve character state")
 	for location in ["Barracks", "Tinkerer", "Barterer"]:
 		await click(location)
 		check(game.screen == "location", location + " should open")
@@ -159,7 +161,7 @@ func run() -> void:
 	await click("Main Menu")
 	check(game.screen == "main" and game.world == null, "Main menu should clear room")
 	await click("New Game")
-	check(game.party[0] != original_character and game.party[0].level == 1, "New Game should create fresh character states")
+	check(game.state.party[0] != original_character and game.state.party[0].level == 1, "New Game should create fresh character states")
 	await process_frame
 	print("Smoke test complete: %d failure(s)" % failures)
 	quit(1 if failures else 0)

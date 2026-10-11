@@ -41,7 +41,7 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Panel/Buttons"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "PROJECT NEGI"
+text = "PROJECT DANGO"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="Panel/Buttons"]

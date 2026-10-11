@@ -42,22 +42,22 @@ func learn_ability(monster: CharacterDefinition, ability: AbilityDefinition) -> 
 
 func describe(monster_id: StringName) -> String:
 	if not entries.has(monster_id):
-		return "No information discovered."
+		return L10n.text("No information discovered.")
 	var entry := entries[monster_id]
-	var lines := PackedStringArray([entry.definition.display_name, "", "DISCOVERED RESISTANCES"])
+	var lines := PackedStringArray([L10n.text(entry.definition.display_name), "", L10n.text("DISCOVERED RESISTANCES")])
 	var listed: Array[StringName] = []
 	for damage_type in DAMAGE_TYPES:
 		listed.append(damage_type.id)
 		var resistance: Dictionary = entry.resistances.get(damage_type.id, {})
-		lines.append("%s: %s" % [damage_type.display_name, resistance.get("label", "???")])
+		lines.append(L10n.text("%s: %s") % [L10n.text(damage_type.display_name), L10n.text(resistance.get("label", "???"))])
 	for type_id in entry.resistances:
 		if type_id not in listed:
 			var resistance: Dictionary = entry.resistances[type_id]
-			lines.append("%s: %s" % [resistance.name, resistance.label])
-	lines.append("\nOBSERVED ABILITIES")
+			lines.append(L10n.text("%s: %s") % [L10n.text(resistance.name), L10n.text(resistance.label)])
+	lines.append(L10n.text("\nOBSERVED ABILITIES"))
 	if entry.abilities.is_empty():
 		lines.append("???")
 	for ability in entry.abilities.values():
-		lines.append(ability.display_name)
-		lines.append(ability.description)
+		lines.append(L10n.text(ability.display_name))
+		lines.append(L10n.text(ability.description))
 	return "\n".join(lines)

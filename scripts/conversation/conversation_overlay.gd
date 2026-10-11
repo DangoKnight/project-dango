@@ -6,6 +6,7 @@ signal dismissed
 var event: ConversationEvent
 var line_index := 0
 var _revealed := 0.0
+var _line_elapsed := 0.0
 var _closing := false
 var _portrait_homes: Dictionary = {}
 var _occupants: Dictionary = {}
@@ -38,11 +39,12 @@ func _show_line() -> void:
 	_present_portrait(right_portrait, line, ConversationLine.Speaker.RIGHT)
 	left_portrait.modulate = Color.WHITE if line.speaker != ConversationLine.Speaker.RIGHT else Color(0.55, 0.55, 0.6)
 	right_portrait.modulate = Color.WHITE if line.speaker != ConversationLine.Speaker.LEFT else Color(0.55, 0.55, 0.6)
-	speaker_label.text = line.displayed_speaker()
-	body.text = line.text
+	speaker_label.text = L10n.text(line.displayed_speaker())
+	body.text = L10n.text(line.text)
 	_revealed = 0.0
+	_line_elapsed = 0.0
 	body.visible_characters = -1 if event.characters_per_second <= 0.0 else 0
-	next_button.text = "Finish" if line_index == event.lines.size() - 1 else "Continue"
+	next_button.text = L10n.text("Finish") if line_index == event.lines.size() - 1 else L10n.text("Continue")
 	$Root/Dialogue.visible = not (line.auto_advance and line.text.strip_edges().is_empty())
 	next_button.visible = not line.auto_advance
 
@@ -131,10 +133,11 @@ func _offscreen_shift(home: Vector4, direction: int) -> Vector2:
 func _process(delta: float) -> void:
 	if event == null or _closing:
 		return
+	_line_elapsed += delta
 	if body.visible_characters >= 0:
 		_revealed += delta * event.characters_per_second
 		body.visible_characters = mini(int(_revealed), body.get_total_character_count())
-	if event.lines[line_index].auto_advance and (body.visible_characters < 0 or body.visible_characters >= body.get_total_character_count()):
+	if event.lines[line_index].auto_advance and _line_elapsed >= event.lines[line_index].minimum_duration and (body.visible_characters < 0 or body.visible_characters >= body.get_total_character_count()):
 		for tween: Tween in _entrance_tweens.values():
 			if tween.is_running():
 				return
@@ -144,7 +147,7 @@ func _process(delta: float) -> void:
 func advance() -> void:
 	if _closing or event == null:
 		return
-	if event.lines[line_index].auto_advance:
+	if event.lines[line_index].auto_advance or _line_elapsed < event.lines[line_index].minimum_duration:
 		return
 	if body.visible_characters >= 0 and body.visible_characters < body.get_total_character_count():
 		body.visible_characters = -1

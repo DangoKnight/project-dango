@@ -1,4 +1,4 @@
-# Project Negi
+# Project Dango
 
 A Godot 4.7 game prototype. Import `project.godot` in the Godot Project Manager, open the project, and press **F5** to play. `scenes/main.tscn` is the configured main scene.
 
@@ -8,7 +8,7 @@ A Godot 4.7 game prototype. Import `project.godot` in the Godot Project Manager,
 - Every labyrinth cell has a ceiling light: full brightness for walked cells, discovered ordinary landmarks, and each known Safe Zone’s approach room; dim for their neighbors through open passages; and off elsewhere. Safe Zone endpoints keep their ceiling lights off. Known Safe Zone approach rooms are revealed on the map at initialization; unknown refuges grant no automatic reveal or light. Very faint ambient lighting keeps unexplored rooms much darker without making them fully black.
 - Move with **WASD** or **arrow keys**, look with the **mouse**, and press **Esc** to pause. The pause menu is an open field journal, with Resume, Map, Monsters, Options, and Main Menu across both pages. Options highlight on hover; selecting one fades the current page contents before showing the chapter. Monsters lists names on the left and learned information on the right. Map places completion, discovered landmarks (including Safe Zones), and picked-up item count on the left, with the chart on the right. Completion and collected item counts reset each visit, and item totals are never shown. **Map** charts only walked cells, including their floors, walls, and discovered Safe Zone endpoints, plus your position and facing direction. Walked floors and walls reset when the labyrinth regenerates; discovered Safe Zones and landmarks remain marked until New Game.
 - Options control master volume and fullscreen for the current session. No audio is included yet.
-- **Tab** in town opens Characters (press Tab again to return); **Esc** opens a menu with Options and Main Menu. Characters shows the full roster's current stats, abilities, class unlocks, and resistances. New Game starts Usami, Takane, Kurako, and Koumi with their named portraits from `textures/Characters/Alpha/`. All four start as Explorer, with permanent level-up growth, titles, and their own unique skills. Their portraits use the V03 artwork, stored without version suffixes.
+- **Tab** in town opens Characters (press Tab again to return); **Esc** opens a menu with Options and Main Menu. Characters shows the full roster's current stats, abilities, class unlocks, and resistances. New Game recruits Usami, Takane, and Kurako; Koumi is absent from both the active party and reserve roster until she joins later. Character portraits come from `textures/Characters/Alpha/`. All four start as Explorer, with permanent level-up growth, titles, and their own unique skills. Their portraits use the V03 artwork, stored without version suffixes.
 - Status abilities apply timed buffs/debuffs, poison, and paralysis. Damage attacks support accuracy and critical hits; aggro influences enemy targeting. Weapon types are restricted by both character and class; the Characters screen shows effective allowed types and starting equipment.
 - **Characters → Equipment** manages four shared gear slots: up to three Artifacts, one Medallion, and one Consumable. Consumables can heal, buff, damage, or debuff single targets or groups, and are destroyed when their uses run out.
 - Combat banks experience each round, with enemy rewards quartered each subsequent round and a defeat bonus equal to the defeated enemy’s turn reward for that round. Downed characters lose their entire unspent bank; retreat forfeits this encounter’s XP for the party. Sleep multiplies banked XP by the party’s highest labyrinth completion since its last rest (60% completion grants 60% of stored XP), using 100 × current level per level-up. This global peak survives individual knockouts, retreat, and map regeneration, and resets after rest, a full party wipe, or New Game. A wipe returns the team fully healed to the last visited Safe Zone and destroys all stash and carried consumables, including reserves. Artifacts, medallions, levels, and applied EXP remain intact. Each earned level shows a portrait card with actual stat changes and newly learned abilities over the black screen; dismiss all cards to fade back into Barracks.
@@ -41,6 +41,7 @@ The scene trees, controls, meshes, lights, camera, and collision shapes are save
 | `resources/themes/default.tres` | Shared UI font size, spacing, and panel style |
 | `textures/` | Illustrated environments, room textures, enemy sprites, and character artwork |
 | `scripts/main.gd` | Scene navigation and exploration lifecycle |
+| `scripts/state/game_state.gd` | GameState autoload: party, inventory, services, discoveries, and story progress |
 | `scripts/player.gd` | First-person movement and mouse look |
 | `scripts/ui/` | Menu action signals and options controls |
 | `scripts/rpg/` | Character state, growth, abilities, and damage rules |
@@ -54,9 +55,11 @@ The scene trees, controls, meshes, lights, camera, and collision shapes are save
 See [gear](docs/gear.md) for slot limits, the shared stash, medallion spells, and consumable effects/targets.
 See [playable roster](docs/roster.md) for titles and unique skills.
 See [core mechanics](docs/core_mechanics.md) for formulas, class behavior, resource authoring, and API examples.
+See [GameState](docs/game_state.md) for shared run data, story flags, and reset behavior.
 See [maps and towns](docs/maps_and_towns.md) to create additional areas using inherited scenes and assign exploration destinations in the Inspector.
 See [turn-based combat](docs/battle.md) for battle controls, enemy placement, portrait setup, encounters, and round rules.
 See [conversation events](docs/conversations.md) to author and preview dialogue with left/right portraits and trigger it in town, exploration, or combat.
+See [translation tables](docs/localization.md) to maintain English text and add languages.
 
 Change movement bindings under **Project → Project Settings → Input Map**. Select the Player node in its scene to adjust speed, mouse sensitivity, and gravity in the Inspector. Open UI scenes to edit button text and layout; button node names identify their navigation actions.
 
@@ -69,6 +72,7 @@ Run the navigation and physics smoke test after importing the project:
 ```sh
 godot --headless --path . --editor --import --quit
 godot --headless --path . --script res://tests/rpg.gd
+godot --headless --path . --script res://tests/game_state.gd
 godot --headless --path . --script res://tests/roster_skills.gd
 godot --headless --path . --script res://tests/equipment_status.gd
 godot --headless --path . --script res://tests/gear.gd

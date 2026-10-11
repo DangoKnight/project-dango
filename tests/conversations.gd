@@ -98,8 +98,8 @@ func run() -> void:
 	town.add_child(trigger)
 	check(trigger.trigger() and paused and director.is_active(), "Town trigger pauses the scene")
 	check(not trigger.trigger(), "Once-per-instance trigger rejects repeat activation")
-	check(director.overlay.left_portrait.texture == game.party[1].definition.portrait, "Slot 1 uses Takane's current portrait")
-	check(director.overlay.right_portrait.texture == game.party[0].definition.portrait, "Slot 2 uses Usami's current portrait")
+	check(director.overlay.left_portrait.texture == game.state.party[1].definition.portrait, "Slot 1 uses Takane's current portrait")
+	check(director.overlay.right_portrait.texture == game.state.party[0].definition.portrait, "Slot 2 uses Usami's current portrait")
 	check(director.overlay.right_portrait.anchor_left >= 1.0, "Usami enters slot 2 from beyond the right edge")
 	check(director.overlay.speaker_label.text == "Usami", "Speaker name comes from the character resource")
 	check(Input.mouse_mode == Input.MOUSE_MODE_VISIBLE, "Conversation releases the mouse")
@@ -113,34 +113,36 @@ func run() -> void:
 	await close_conversation()
 	check(not paused and game.ui.get_child(0) == town, "Finishing resumes the same Town instance")
 	var animated := event_with_text(&"entrances")
-	animated.lines[0].right_character = game.party[0].definition
+	animated.lines[0].right_character = game.state.party[0].definition
 	animated.lines[0].right_entrance = ConversationLine.Entrance.FROM_RIGHT
 	animated.lines[0].right_entrance_duration = 0.2
 	var same_character := ConversationLine.new()
-	same_character.right_character = game.party[0].definition
+	same_character.right_character = game.state.party[0].definition
 	same_character.text = "Stay in the same slot."
 	animated.lines.append(same_character)
 	var replacement := ConversationLine.new()
-	replacement.right_character = game.party[2].definition
+	replacement.right_character = game.state.party[2].definition
 	replacement.right_entrance = ConversationLine.Entrance.FADE
 	replacement.right_entrance_duration = 0.1
 	replacement.text = "A new face."
 	animated.lines.append(replacement)
 	var departure := ConversationLine.new()
-	departure.left_character = game.party[1].definition
+	departure.left_character = game.state.party[1].definition
 	departure.left_entrance = ConversationLine.Entrance.FROM_TOP
 	departure.left_entrance_duration = 0.1
 	departure.text = "The right slot clears."
 	animated.lines.append(departure)
 	director.play(animated)
 	var animated_view = director.overlay
+	var right_home: Vector4 = animated_view._portrait_homes[animated_view.right_portrait]
 	await create_timer(0.05).timeout
-	check(animated_view.right_portrait.anchor_left > 0.51 and animated_view.right_portrait.anchor_left < 1.02, "Portrait animates while the game is paused")
+	check(animated_view.right_portrait.anchor_left > right_home.x and animated_view.right_portrait.anchor_left < 1.02, "Portrait animates while the game is paused")
 	var initial_tween: Tween = animated_view._entrance_tweens[animated_view.right_portrait]
 	animated_view.advance()
 	check(animated_view._entrance_tweens[animated_view.right_portrait] == initial_tween, "Same character does not restart an entrance on the next line")
-	await create_timer(0.2).timeout
-	check(is_equal_approx(animated_view.right_portrait.anchor_left, 0.51), "Slide ends at slot 2's normal anchor")
+	if initial_tween.is_running():
+		await initial_tween.finished
+	check(is_equal_approx(animated_view.right_portrait.anchor_left, right_home.x), "Slide ends at slot 2's normal anchor")
 	animated_view.advance()
 	check(is_zero_approx(animated_view.right_portrait.self_modulate.a), "Replacement character fades in from transparent")
 	await create_timer(0.14).timeout
@@ -149,9 +151,9 @@ func run() -> void:
 	check(not animated_view.right_portrait.visible and animated_view.left_portrait.anchor_bottom < 0.0, "Empty slot hides its occupant and the other slot can enter from above")
 	await close_conversation()
 	var swaps := event_with_text(&"swaps")
-	swaps.lines[0].left_character = game.party[0].definition
+	swaps.lines[0].left_character = game.state.party[0].definition
 	var swap := ConversationLine.new()
-	swap.left_character = game.party[1].definition
+	swap.left_character = game.state.party[1].definition
 	swap.left_exit = ConversationLine.Exit.TO_LEFT
 	swap.left_exit_duration = 0.1
 	swap.left_entrance = ConversationLine.Entrance.FROM_LEFT
@@ -165,14 +167,17 @@ func run() -> void:
 	swaps.lines.append(leave)
 	director.play(swaps)
 	var swap_view = director.overlay
+	var left_home: Vector4 = swap_view._portrait_homes[swap_view.left_portrait]
 	swap_view.advance()
-	check(swap_view.left_portrait.texture == game.party[0].definition.portrait, "Previous portrait remains during its exit")
+	check(swap_view.left_portrait.texture == game.state.party[0].definition.portrait, "Previous portrait remains during its exit")
 	await create_timer(0.04).timeout
-	check(swap_view.left_portrait.anchor_right < 0.49 and swap_view.left_portrait.texture == game.party[0].definition.portrait, "Outgoing character slides away before replacement")
+	check(swap_view.left_portrait.anchor_right < left_home.z and swap_view.left_portrait.texture == game.state.party[0].definition.portrait, "Outgoing character slides away before replacement")
 	await create_timer(0.09).timeout
-	check(swap_view.left_portrait.texture == game.party[1].definition.portrait and swap_view.left_portrait.anchor_left < 0.01, "Replacement slides in only after the exit completes")
-	await create_timer(0.14).timeout
-	check(is_equal_approx(swap_view.left_portrait.anchor_left, 0.01), "Replacement reaches slot 1")
+	check(swap_view.left_portrait.texture == game.state.party[1].definition.portrait and swap_view.left_portrait.anchor_left < left_home.x, "Replacement slides in only after the exit completes")
+	var replacement_tween: Tween = swap_view._entrance_tweens[swap_view.left_portrait]
+	if replacement_tween.is_running():
+		await replacement_tween.finished
+	check(is_equal_approx(swap_view.left_portrait.anchor_left, left_home.x), "Replacement reaches slot 1")
 	swap_view.advance()
 	check(swap_view.left_portrait.visible, "Clearing a slot keeps its outgoing portrait until the exit completes")
 	await create_timer(0.14).timeout
@@ -188,10 +193,11 @@ func run() -> void:
 	check(not swap_view.left_portrait.visible and swap_view._occupants[swap_view.left_portrait] == null, "Rapid advancement cancels a superseded replacement")
 	await close_conversation()
 	var ending := event_with_text(&"departure_step")
-	ending.lines[0].left_character = game.party[0].definition
-	ending.lines[0].right_character = game.party[1].definition
+	ending.lines[0].left_character = game.state.party[0].definition
+	ending.lines[0].right_character = game.state.party[1].definition
 	var final_step := ConversationLine.new()
 	final_step.auto_advance = true
+	final_step.minimum_duration = 1.0
 	final_step.left_exit = ConversationLine.Exit.TO_LEFT
 	final_step.left_exit_duration = 0.08
 	final_step.right_exit = ConversationLine.Exit.TO_RIGHT
@@ -206,7 +212,11 @@ func run() -> void:
 	await create_timer(0.13).timeout
 	check(director.is_active() and not ending_view.left_portrait.visible and ending_view.right_portrait.visible, "Final step waits for the slower portrait exit")
 	await create_timer(0.15).timeout
-	check(not director.is_active() and not paused, "Final departure closes automatically after both characters leave")
+	check(director.is_active() and not ending_view.left_portrait.visible and not ending_view.right_portrait.visible, "Timed step remains open after portraits finish leaving")
+	ending_view.advance()
+	check(director.is_active(), "Manual input cannot skip a forced duration")
+	await create_timer(1.0).timeout
+	check(not director.is_active() and not paused, "Final departure closes automatically after its one-second minimum")
 
 	var once := event_with_text(&"once", true)
 	check(director.play(once), "Once-per-game event starts")
@@ -281,7 +291,7 @@ func run() -> void:
 	game.start_combat(false)
 	var combat = game.ui.get_child(0)
 	combat.action_delay = 0.1
-	for member in game.party:
+	for member in game.state.party:
 		combat.session.choose_defend()
 	combat._execute_round()
 	var queue_index: int = combat.session._queue_index

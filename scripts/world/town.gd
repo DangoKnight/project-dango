@@ -34,7 +34,7 @@ func _ready() -> void:
 	super._ready()
 	card_slide_from = initial_slide
 	first_focus = initial_focus
-	$Panel/Buttons/Title.text = display_name.to_upper()
+	$Panel/Buttons/Title.text = L10n.text(display_name).to_upper()
 	if background_texture != null:
 		$Background.texture = background_texture
 

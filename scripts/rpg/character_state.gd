@@ -316,17 +316,17 @@ func get_equipped_gear() -> Array[GearInstance]:
 
 func gear_equip_error(item: GearInstance) -> String:
 	if item == null or item.definition == null or not item.definition.is_valid() or item.is_destroyed():
-		return "This gear is invalid or depleted."
+		return L10n.text("This gear is invalid or depleted.")
 	if item.get_carrier() != null or item in _gear:
-		return "This item is already equipped."
+		return L10n.text("This item is already equipped.")
 	if _gear.size() >= GEAR_LIMIT:
-		return "A character can carry only four pieces of gear."
+		return L10n.text("A character can carry only four pieces of gear.")
 	var count := 0
 	for equipped in _gear:
 		if equipped.definition.kind == item.definition.kind:
 			count += 1
 	if count >= GEAR_TYPE_LIMITS[item.definition.kind]:
-		return "Maximum %d %s gear allowed." % [GEAR_TYPE_LIMITS[item.definition.kind], item.definition.type_name()]
+		return L10n.text("Maximum %d %s gear allowed.") % [GEAR_TYPE_LIMITS[item.definition.kind], item.definition.type_name()]
 	return ""
 
 

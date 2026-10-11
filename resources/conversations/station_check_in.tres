@@ -5,15 +5,16 @@
 [ext_resource type="Script" uid="uid://j6qkokwt15" path="res://scripts/conversation/conversation_line.gd" id="Line"]
 [ext_resource type="Resource" uid="uid://dtoao4rtk4kh1" path="res://resources/rpg/characters/takane.tres" id="Takane"]
 [ext_resource type="Resource" uid="uid://dvyjvvqp4xbwp" path="res://resources/rpg/characters/usami.tres" id="Usami"]
+[ext_resource type="Resource" uid="uid://bvf0h5rk7p1j" path="res://resources/rpg/characters/koumi.tres" id="Koumi"]
 
-[sub_resource type="Resource" id="First"]
+[sub_resource type="Resource" id="1"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 speaker = 1
 text = "Usami! Are you ready?!"
 left_entrance = 1
 
-[sub_resource type="Resource" id="Second"]
+[sub_resource type="Resource" id="2"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Usami")
@@ -21,14 +22,14 @@ speaker = 2
 text = "I'm ready, Kurako-chan! This is so exciting!"
 right_entrance = 2
 
-[sub_resource type="Resource" id="Third"]
+[sub_resource type="Resource" id="3"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Usami")
 speaker = 1
 text = "Just think of all the people waiting to be pranked! This is gonna be so much fun!"
 
-[sub_resource type="Resource" id="Fourth"]
+[sub_resource type="Resource" id="4"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Takane")
@@ -37,21 +38,21 @@ text = "This is not a game, Kurako. It is very dangerous out there. Someone coul
 right_entrance = 2
 right_exit = 2
 
-[sub_resource type="Resource" id="Fifth"]
+[sub_resource type="Resource" id="5"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Takane")
 speaker = 2
 text = "It should go without saying. If something bad happens I'm taking Usami and running back to the Station."
 
-[sub_resource type="Resource" id="Sixth"]
+[sub_resource type="Resource" id="6"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Takane")
 speaker = 1
 text = "W-What about me?!"
 
-[sub_resource type="Resource" id="Seventh"]
+[sub_resource type="Resource" id="7"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Usami")
@@ -60,7 +61,7 @@ text = "Don't worry, Kurako-chan! Takane-chan is a really sweet girl. There's no
 right_entrance = 2
 right_exit = 2
 
-[sub_resource type="Resource" id="Eighth"]
+[sub_resource type="Resource" id="8"]
 script = ExtResource("Line")
 left_character = ExtResource("Takane")
 right_character = ExtResource("Usami")
@@ -69,22 +70,36 @@ text = "..."
 left_entrance = 1
 left_exit = 1
 
-[sub_resource type="Resource" id="Nineth"]
+[sub_resource type="Resource" id="9"]
 script = ExtResource("Line")
 left_character = ExtResource("Takane")
 right_character = ExtResource("Kurako")
 speaker = 2
-text = "Now I'm getting scared..."
+text = "S-She's not saying yes..."
 right_entrance = 2
 right_exit = 2
 
-[sub_resource type="Resource" id="Departure"]
+[sub_resource type="Resource" id="10"]
 script = ExtResource("Line")
 auto_advance = true
+minimum_duration = 1.0
 left_exit = 1
+right_exit = 2
+
+[sub_resource type="Resource" id="11"]
+script = ExtResource("Line")
+right_character = ExtResource("Koumi")
+speaker = 2
+text = "..."
+right_entrance = 2
+
+[sub_resource type="Resource" id="12"]
+script = ExtResource("Line")
+auto_advance = true
+minimum_duration = 0.5
 right_exit = 2
 
 [resource]
 script = ExtResource("Event")
 id = &"station_check_in"
-lines = Array[ExtResource("Line")]([SubResource("First"), SubResource("Second"), SubResource("Third"), SubResource("Fourth"), SubResource("Fifth"), SubResource("Sixth"), SubResource("Seventh"), SubResource("Eighth"), SubResource("Nineth"), SubResource("Departure")])
+lines = Array[ExtResource("Line")]([SubResource("1"), SubResource("2"), SubResource("3"), SubResource("4"), SubResource("5"), SubResource("6"), SubResource("7"), SubResource("8"), SubResource("9"), SubResource("10"), SubResource("11"), SubResource("12")])

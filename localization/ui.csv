@@ -1,0 +1,247 @@
+keys,en
+"
+ABILITIES LEARNED","
+ABILITIES LEARNED"
+"
+ACTIVE STATUSES","
+ACTIVE STATUSES"
+"
+AVAILABLE ABILITIES","
+AVAILABLE ABILITIES"
+"
+FUTURE CLASS ABILITIES","
+FUTURE CLASS ABILITIES"
+"
+GEAR (%d / 4)","
+GEAR (%d / 4)"
+"
+OBSERVED ABILITIES","
+OBSERVED ABILITIES"
+"
+RESISTANCES AND WEAKNESSES","
+RESISTANCES AND WEAKNESSES"
+"
+WEAPON","
+WEAPON"
+ %d, %d
+ %s takes %d status damage., %s takes %d status damage.
+ (%d uses), (%d uses)
+ (defeated), (defeated)
+ (destroyed), (destroyed)
+ · Idea, · Idea
+ · Known design, · Known design
+ · Unlimited, · Unlimited
+ — %d uses, — %d uses
+%d. %s,%d. %s
+%d. Empty,%d. Empty
+%s (%d SP),%s (%d SP)
+%s (%d uses),%s (%d uses)
+%s [%s / %s] — %d MP,%s [%s / %s] — %d MP
+%s [%s]%s,%s [%s]%s
+%s cannot act.,%s cannot act.
+%s defends.,%s defends.
+%s fails to escape.,%s fails to escape.
+%s is paralyzed and cannot act.,%s is paralyzed and cannot act.
+%s is staying in reserve.,%s is staying in reserve.
+%s joined the active party.,%s joined the active party.
+%s leads the party to safety.,%s leads the party to safety.
+%s uses %s on %s.,%s uses %s on %s.
+%s uses %s on %s: %d %s.,%s uses %s on %s: %d %s.
+%s uses %s on %s: miss.,%s uses %s on %s: miss.
+"%s uses %s: %d healing, %d damage, %d SP restored; effects applied. %d uses left%s.","%s uses %s: %d healing, %d damage, %d SP restored; effects applied. %d uses left%s."
+%s waits.,%s waits.
+%s · Level %d → %d,%s · Level %d → %d
+%s — %d MP,%s — %d MP
+%s — Level %d %s,%s — Level %d %s
+%s — choose an action,%s — choose an action
+%s — paralyzed (choose Wait),%s — paralyzed (choose Wait)
+%s: %+.1f,%s: %+.1f
+%s: %d,%s: %d
+%s: %d / %d,%s: %d / %d
+%s: %d turns,%s: %d turns
+%s: %d → %d (%+d),%s: %d → %d (%+d)
+%s: %s,%s: %s
+%s: %s failed (%s).,%s: %s failed (%s).
++,+
+4 total · up to 3 Artifacts · 1 Medallion · 1 Consumable,4 total · up to 3 Artifacts · 1 Medallion · 1 Consumable
+A character can carry only four pieces of gear.,A character can carry only four pieces of gear.
+Accept commission,Accept commission
+Acceptable,Acceptable
+Actions are resolving…,Actions are resolving…
+All actions chosen,All actions chosen
+All enemies,All enemies
+Allowed types: %s,Allowed types: %s
+Any,Any
+Artifact,Artifact
+BARRACKS,BARRACKS
+BATTLE INFORMATION,BATTLE INFORMATION
+Back,Back
+Back to %s,Back to %s
+Back to Barracks,Back to Barracks
+Back to Characters,Back to Characters
+Back to Safe Zone,Back to Safe Zone
+Barracks,Barracks
+Barterer,Barterer
+CHARACTERS,CHARACTERS
+Carried,Carried
+Carried (%d / 4),Carried (%d / 4)
+Choose an action,Choose an action
+Class,Class
+Collect [E],Collect [E]
+Collect equipment,Collect equipment
+Collect medallion,Collect medallion
+Collect weapon,Collect weapon
+Coming soon,Coming soon
+Commission accepted.,Commission accepted.
+Commission in progress,Commission in progress
+Confirm actions,Confirm actions
+Consumable,Consumable
+Continue,Continue
+DISCOVERED RESISTANCES,DISCOVERED RESISTANCES
+Damage,Damage
+Defeat.,Defeat.
+Defend,Defend
+Defense,Defense
+"Discovered landmarks
+%d","Discovered landmarks
+%d"
+Display,Display
+"Drag names between Party and Reserve, or between party slots.","Drag names between Party and Reserve, or between party slots."
+EQUIPMENT,EQUIPMENT
+Empty,Empty
+Enter the Labyrinth,Enter the Labyrinth
+Equip,Equip
+Equip weapon,Equip weapon
+Equipment,Equipment
+Equipment designs,Equipment designs
+Equipped.,Equipped.
+Escaped!,Escaped!
+Everyone is rested. HP and SP fully restored.,Everyone is rested. HP and SP fully restored.
+Exchange,Exchange
+Execute round,Execute round
+Exit,Exit
+Exploration,Exploration
+Exploration Room,Exploration Room
+Field journal,Field journal
+Field notes,Field notes
+Finish,Finish
+Friendlies,Friendlies
+Fullscreen,Fullscreen
+HP  %d / %d,HP  %d / %d
+HP %d / %d,HP %d / %d
+HP %d / %d    MP %d / %d,HP %d / %d    MP %d / %d
+"Halves strength, defense, mental acuity, mental resilience, and speed while active. Increases experience earned by 50%.","Halves strength, defense, mental acuity, mental resilience, and speed while active. Increases experience earned by 50%."
+Heal,Heal
+Hostiles,Hostiles
+Immune,Immune
+LABYRINTH MAP,LABYRINTH MAP
+LOCATION,LOCATION
+Level %d · %s,Level %d · %s
+Level %d: %s,Level %d: %s
+Level up,Level up
+MANAGE PARTY,MANAGE PARTY
+MONSTERS,MONSTERS
+Main Menu,Main Menu
+MainMenu,MainMenu
+Make yourself comfortable.,Make yourself comfortable.
+Manage Party,Manage Party
+Map,Map
+"Map completion
+%.1f%%","Map completion
+%.1f%%"
+Master volume,Master volume
+Master volume · %d%%,Master volume · %d%%
+Max HP,Max HP
+Max Hp,Max Hp
+Max Mp,Max Mp
+Max SP,Max SP
+Maximum %d %s gear allowed.,Maximum %d %s gear allowed.
+Medallion,Medallion
+Medallion ready.,Medallion ready.
+Mental Acuity,Mental Acuity
+Mental Resilience,Mental Resilience
+Monsters,Monsters
+New Game,New Game
+No abilities available,No abilities available
+No designs available.,No designs available.
+No information discovered.,No information discovered.
+No monsters encountered yet.,No monsters encountered yet.
+No reserves,No reserves
+None,None
+Normal,Normal
+Not acceptable,Not acceptable
+Notes & settings,Notes & settings
+OPTIONS,OPTIONS
+Observe,Observe
+Options,Options
+PROJECT DANGO,PROJECT DANGO
+Party,Party
+Party (%d / 4),Party (%d / 4)
+Party (0 / 4),Party (0 / 4)
+Party order updated.,Party order updated.
+"Picked up items
+%d","Picked up items
+%d"
+Proceed with this round?,Proceed with this round?
+Prototype,Prototype
+Ready to equip.,Ready to equip.
+Requested goods,Requested goods
+Required enemies,Required enemies
+Reserve,Reserve
+Resistant,Resistant
+Rest a moment,Rest a moment
+Resume,Resume
+Return,Return
+Return (Esc),Return (Esc)
+Return to %s,Return to %s
+Return to Barracks,Return to Barracks
+Return to battle (Tab / Esc),Return to battle (Tab / Esc)
+Return to contents (Esc),Return to contents (Esc)
+Round %d,Round %d
+Round 1,Round 1
+Run,Run
+SAFE ZONE,SAFE ZONE
+SP  %d / %d,SP  %d / %d
+SP %d / %d,SP %d / %d
+STAT CHANGES,STAT CHANGES
+STATS,STATS
+Safe Zone,Safe Zone
+Save,Save
+Select a character,Select a character
+Select gear to see its effects. Weapons use their separate weapon slot.,Select gear to see its effects. Weapons use their separate weapon slot.
+Self,Self
+Shared stash,Shared stash
+Single ally,Single ally
+Single enemy,Single enemy
+Sleep,Sleep
+Sound,Sound
+Sound & display,Sound & display
+Special,Special
+Speed,Speed
+Status,Status
+Strength,Strength
+"Tab · Characters
+Esc · Menu","Tab · Characters
+Esc · Menu"
+This gear is invalid or depleted.,This gear is invalid or depleted.
+This item is already equipped.,This item is already equipped.
+Tinkerer,Tinkerer
+Unarmed,Unarmed
+Unequip,Unequip
+Unequip to return to the shared stash.,Unequip to return to the shared stash.
+Unique,Unique
+Uses: %d / %d · Target: %s,Uses: %d / %d · Target: %s
+Very resistant,Very resistant
+Very weak,Very weak
+Victory!,Victory!
+Wait,Wait
+Weak,Weak
+Weapon ready.,Weapon ready.
+Weapon stash,Weapon stash
+Your offer,Your offer
+all enemies,all enemies
+an enemy row,an enemy row
+critical damage,critical damage
+damage,damage
+healing,healing
+the party,the party

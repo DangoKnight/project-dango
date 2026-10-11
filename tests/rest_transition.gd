@@ -30,10 +30,10 @@ func run() -> void:
 	await create_timer(barracks.card_slide_duration * 0.4).timeout
 	check(barracks.get_node("PartyPanel").visible and barracks.get_node("PartyPanel").anchor_left < 0.03 and not barracks.get_node("Panel").visible, "Manage Party slides out before Barracks returns")
 	await create_timer(barracks.card_slide_duration * 1.7).timeout
-	var member: CharacterState = game.party[0]
+	var member: CharacterState = game.state.party[0]
 	member.current_hp = 1
 	member.current_mp = 0
-	game.highest_labyrinth_completion = 1.0
+	game.state.highest_labyrinth_completion = 1.0
 	member.store_experience(123, 350)
 	game.sleep_fade_duration = 0.2
 	barracks.get_node("Panel/Buttons/Sleep").pressed.emit()

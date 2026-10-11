@@ -126,7 +126,7 @@ func run() -> void:
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
 	game.new_game(false)
-	game.compendium = knowledge
+	game.state.compendium = knowledge
 	game.show_pause("town")
 	game.ui.get_child(0).command("Monsters").pressed.emit()
 	await create_timer(0.45).timeout
@@ -143,7 +143,7 @@ func run() -> void:
 	await create_timer(0.45).timeout
 	check(game.screen == "pause" and game.pause_return == "town", "Compendium returns to its menu context")
 	game.new_game(false)
-	check(game.compendium.entries.is_empty(), "New Game clears compendium knowledge")
+	check(game.state.compendium.entries.is_empty(), "New Game clears compendium knowledge")
 	game.queue_free()
 	await process_frame
 	print("Compendium tests complete: %d failure(s)" % failures)

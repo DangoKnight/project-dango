@@ -9,7 +9,9 @@ const OVERLAY := preload("res://scenes/ui/conversation.tscn")
 var can_start: Callable
 var active_event: ConversationEvent
 var overlay: ConversationOverlay
-var completed: Dictionary[StringName, bool] = {}
+var completed: Dictionary[StringName, bool]:
+	get:
+		return get_node("/root/GameState").completed_conversations
 var _pending: Array[ConversationEvent] = []
 var _previous_pause := false
 var _previous_mouse_mode: Input.MouseMode

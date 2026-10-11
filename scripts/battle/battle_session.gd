@@ -273,7 +273,7 @@ func resolve_next_action() -> void:
 		return
 	var action := _queue[_queue_index]
 	_queue_index += 1
-	var message := "%s cannot act." % action.actor.definition.display_name
+	var message := L10n.text("%s cannot act.") % L10n.text(action.actor.definition.display_name)
 	if action.actor.can_act():
 		if action.running:
 			if rng.randf() < escape_chance(action.actor):
@@ -282,13 +282,13 @@ func resolve_next_action() -> void:
 					character.discard_encounter_experience(get_instance_id())
 				phase = Phase.FINISHED
 				_clear_battle_effects()
-				action_resolved.emit("%s leads the party to safety." % action.actor.definition.display_name)
+				action_resolved.emit(L10n.text("%s leads the party to safety.") % L10n.text(action.actor.definition.display_name))
 				changed.emit()
 				return
 			_escape_failures[action.actor] = _escape_failures.get(action.actor, 0) + 1
-			message = "%s fails to escape." % action.actor.definition.display_name
+			message = L10n.text("%s fails to escape.") % L10n.text(action.actor.definition.display_name)
 		elif action.defending:
-			message = "%s defends." % action.actor.definition.display_name
+			message = L10n.text("%s defends.") % L10n.text(action.actor.definition.display_name)
 		elif action.consumable != null:
 			var item := action.consumable
 			var recipients: Array[CharacterState] = []
@@ -305,11 +305,11 @@ func resolve_next_action() -> void:
 						for recipient in recipients:
 							if recipient in enemies and damage_type != null:
 								compendium.learn_resistance(recipient, damage_type)
-				message = "%s uses %s: %d healing, %d damage, %d SP restored; effects applied. %d uses left%s." % [action.actor.definition.display_name, item.definition.display_name, result.healing, result.damage, result.sp_restored, result.remaining_uses, " (destroyed)" if result.destroyed else ""]
+				message = L10n.text("%s uses %s: %d healing, %d damage, %d SP restored; effects applied. %d uses left%s.") % [L10n.text(action.actor.definition.display_name), L10n.text(item.definition.display_name), result.healing, result.damage, result.sp_restored, result.remaining_uses, L10n.text(" (destroyed)") if result.destroyed else ""]
 			else:
-				message = "%s: %s failed (%s)." % [action.actor.definition.display_name, item.definition.display_name, result.reason]
+				message = L10n.text("%s: %s failed (%s).") % [L10n.text(action.actor.definition.display_name), L10n.text(item.definition.display_name), L10n.text(result.reason)]
 		elif action.ability == null and not action.basic_attack:
-			message = "%s waits." % action.actor.definition.display_name
+			message = L10n.text("%s waits.") % L10n.text(action.actor.definition.display_name)
 		else:
 			var ability := RPGCombat.BASIC_ATTACK if action.basic_attack else action.ability
 			# Enemy intent is committed during planning; current aggro can redirect it at execution.
@@ -335,19 +335,19 @@ func resolve_next_action() -> void:
 				result = RPGCombat.use_ability(action.actor, action.target, ability, rng)
 			_record_knowledge(action.actor, recipients, ability, result)
 			if not result.success:
-				message = "%s: %s failed (%s)." % [action.actor.definition.display_name, ability.display_name, result.reason]
+				message = L10n.text("%s: %s failed (%s).") % [L10n.text(action.actor.definition.display_name), L10n.text(ability.display_name), L10n.text(result.reason)]
 			elif result.missed:
-				message = "%s uses %s on %s: miss." % [action.actor.definition.display_name, ability.display_name, "the party" if ability.targeting == AbilityDefinition.Target.PARTY else "all enemies" if ability.targeting == AbilityDefinition.Target.ENEMIES else "an enemy row" if ability.targeting == AbilityDefinition.Target.ENEMY_ROW else action.target.definition.display_name]
+				message = L10n.text("%s uses %s on %s: miss.") % [L10n.text(action.actor.definition.display_name), L10n.text(ability.display_name), L10n.text("the party") if ability.targeting == AbilityDefinition.Target.PARTY else L10n.text("all enemies") if ability.targeting == AbilityDefinition.Target.ENEMIES else L10n.text("an enemy row") if ability.targeting == AbilityDefinition.Target.ENEMY_ROW else L10n.text(action.target.definition.display_name)]
 			elif ability.effect == AbilityDefinition.Effect.STATUS:
-				message = "%s uses %s on %s." % [action.actor.definition.display_name, ability.display_name, "the party" if ability.targeting == AbilityDefinition.Target.PARTY else "all enemies" if ability.targeting == AbilityDefinition.Target.ENEMIES else "an enemy row" if ability.targeting == AbilityDefinition.Target.ENEMY_ROW else action.target.definition.display_name]
+				message = L10n.text("%s uses %s on %s.") % [L10n.text(action.actor.definition.display_name), L10n.text(ability.display_name), L10n.text("the party") if ability.targeting == AbilityDefinition.Target.PARTY else L10n.text("all enemies") if ability.targeting == AbilityDefinition.Target.ENEMIES else L10n.text("an enemy row") if ability.targeting == AbilityDefinition.Target.ENEMY_ROW else L10n.text(action.target.definition.display_name)]
 			else:
-				message = "%s uses %s on %s: %d %s." % [action.actor.definition.display_name, ability.display_name, "the party" if ability.targeting == AbilityDefinition.Target.PARTY else "all enemies" if ability.targeting == AbilityDefinition.Target.ENEMIES else "an enemy row" if ability.targeting == AbilityDefinition.Target.ENEMY_ROW else action.target.definition.display_name, result.amount, "healing" if ability.effect == AbilityDefinition.Effect.HEAL else "critical damage" if result.critical else "damage"]
+				message = L10n.text("%s uses %s on %s: %d %s.") % [L10n.text(action.actor.definition.display_name), L10n.text(ability.display_name), L10n.text("the party") if ability.targeting == AbilityDefinition.Target.PARTY else L10n.text("all enemies") if ability.targeting == AbilityDefinition.Target.ENEMIES else L10n.text("an enemy row") if ability.targeting == AbilityDefinition.Target.ENEMY_ROW else L10n.text(action.target.definition.display_name), result.amount, L10n.text("healing") if ability.effect == AbilityDefinition.Effect.HEAL else L10n.text("critical damage") if result.critical else L10n.text("damage")]
 	elif action.actor.is_alive():
-		message = "%s is paralyzed and cannot act." % action.actor.definition.display_name
+		message = L10n.text("%s is paralyzed and cannot act.") % L10n.text(action.actor.definition.display_name)
 	if action.actor.is_alive():
 		var tick := action.actor.advance_status_turn()
 		if tick.damage > 0:
-			message += " %s takes %d status damage." % [action.actor.definition.display_name, tick.damage]
+			message += L10n.text(" %s takes %d status damage.") % [L10n.text(action.actor.definition.display_name), tick.damage]
 	_reward_defeated_enemies()
 	action_resolved.emit(message)
 	if _check_finished():

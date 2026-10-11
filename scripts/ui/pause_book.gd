@@ -12,6 +12,7 @@ var transitioning := false
 var map: Map
 var knowledge: MonsterCompendium
 var town_context := false
+var town_name := "Safe Zone"
 var commands: Dictionary[String, Button] = {}
 var widgets: Dictionary[String, Control] = {}
 
@@ -20,10 +21,11 @@ func _ready() -> void:
 	_build_index()
 
 
-func configure(current_map: Map, compendium: MonsterCompendium, in_town: bool) -> void:
+func configure(current_map: Map, compendium: MonsterCompendium, in_town: bool, current_town_name: String = "Safe Zone") -> void:
 	map = current_map
 	knowledge = compendium
 	town_context = in_town
+	town_name = current_town_name
 	_clear_pages()
 	_build_index()
 
@@ -93,7 +95,7 @@ func _clear_pages() -> void:
 
 func _label(parent: Node, text: String, font_size: int = 22) -> Label:
 	var label := Label.new()
-	label.text = text
+	label.text = L10n.text(text)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.add_theme_font_size_override("font_size", font_size)
 	parent.add_child(label)
@@ -102,7 +104,7 @@ func _label(parent: Node, text: String, font_size: int = 22) -> Label:
 
 func _button(parent: Node, text: String, callback: Callable) -> Button:
 	var button := Button.new()
-	button.text = text
+	button.text = L10n.text(text)
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -126,7 +128,7 @@ func _index_button(parent: Node, action: String, text: String) -> Button:
 
 func _back(parent: Node) -> void:
 	widgets["Back"] = _button(parent, "Back", func(): open_page("index"))
-	widgets["Back"].tooltip_text = "Return to contents (Esc)"
+	widgets["Back"].tooltip_text = L10n.text("Return to contents (Esc)")
 
 
 func _scroll(parent: Node) -> VBoxContainer:
@@ -142,16 +144,16 @@ func _scroll(parent: Node) -> VBoxContainer:
 
 func _build_index() -> void:
 	current_page = "index"
-	_label(left_page, "Field journal", 32)
-	_label(left_page, "Safe Zone" if town_context else map.display_name if map != null else "Rest a moment", 18)
+	_label(left_page, L10n.text("Field journal"), 32)
+	_label(left_page, town_name if town_context else L10n.text(map.display_name) if map != null else L10n.text("Rest a moment"), 18)
 	_index_button(left_page, "Resume", "Return" if town_context else "Resume")
 	var chart := _index_button(left_page, "Map", "Map")
 	chart.visible = not town_context
 	chart.disabled = not map is LabyrinthMap
 	_index_button(left_page, "Monsters", "Monsters")
-	_label(right_page, "Notes & settings", 30)
+	_label(right_page, L10n.text("Notes & settings"), 30)
 	_index_button(right_page, "Options", "Options")
-	_index_button(right_page, "MainMenu", "Main Menu")
+	_index_button(right_page, "MainMenu", L10n.text("Main Menu"))
 	command("Resume").grab_focus()
 
 
@@ -159,9 +161,9 @@ func _build_map() -> void:
 	var labyrinth := map as LabyrinthMap
 	_label(left_page, "Exploration", 30)
 	var stats := _scroll(left_page)
-	_label(stats, labyrinth.display_name)
+	_label(stats, L10n.text(labyrinth.display_name))
 	var completion := 100.0 * labyrinth.walked_cells.size() / labyrinth.layout.passages.size()
-	widgets["Completion"] = _label(stats, "Map completion\n%.1f%%" % completion)
+	widgets["Completion"] = _label(stats, L10n.text("Map completion\n%.1f%%") % completion)
 	var chart := Control.new()
 	chart.set_script(CHART)
 	chart.name = "MapCanvas"
@@ -174,8 +176,8 @@ func _build_map() -> void:
 	chart.configure(labyrinth)
 	widgets["MapCanvas"] = chart
 	var landmarks: Array[LabyrinthLandmark] = chart.visible_landmarks()
-	widgets["Landmarks"] = _label(stats, "Discovered landmarks\n%d" % landmarks.size())
-	widgets["Items"] = _label(stats, "Picked up items\n%d" % labyrinth.items_picked_up)
+	widgets["Landmarks"] = _label(stats, L10n.text("Discovered landmarks\n%d") % landmarks.size())
+	widgets["Items"] = _label(stats, L10n.text("Picked up items\n%d") % labyrinth.items_picked_up)
 	_back(left_page)
 
 
@@ -190,12 +192,12 @@ func _build_monsters() -> void:
 	if knowledge != null:
 		for id in knowledge.entries:
 			ids.append(id)
-			members.add_item(knowledge.entries[id].definition.display_name)
+			members.add_item(L10n.text(knowledge.entries[id].definition.display_name))
 	members.item_selected.connect(func(index: int): _show_monster(ids[index]))
 	_back(left_page)
 	if ids.is_empty():
-		_label(right_page, "Field notes", 30)
-		_label(right_page, "No monsters encountered yet.")
+		_label(right_page, L10n.text("Field notes"), 30)
+		_label(right_page, L10n.text("No monsters encountered yet."))
 	else:
 		members.select(0)
 		_show_monster(ids[0])
@@ -206,7 +208,7 @@ func _show_monster(id: StringName) -> void:
 		right_page.remove_child(child)
 		child.queue_free()
 	var content := _scroll(right_page)
-	_label(content, knowledge.entries[id].definition.display_name, 30)
+	_label(content, L10n.text(knowledge.entries[id].definition.display_name), 30)
 	var portrait := TextureRect.new()
 	portrait.texture = knowledge.entries[id].definition.combat_texture
 	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -223,14 +225,14 @@ func _show_monster(id: StringName) -> void:
 
 func _build_options() -> void:
 	_label(left_page, "Options", 32)
-	_label(left_page, "Sound & display")
-	_label(left_page, "Make yourself comfortable.", 18)
+	_label(left_page, L10n.text("Sound & display"))
+	_label(left_page, L10n.text("Make yourself comfortable."), 18)
 	var spacer := Control.new()
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	left_page.add_child(spacer)
 	_back(left_page)
 	_label(right_page, "Sound", 30)
-	var volume_label := _label(right_page, "Master volume")
+	var volume_label := _label(right_page, L10n.text("Master volume"))
 	var volume := HSlider.new()
 	volume.min_value = 0.0
 	volume.max_value = 1.0
@@ -240,7 +242,7 @@ func _build_options() -> void:
 	right_page.add_child(volume)
 	volume.value_changed.connect(func(value: float):
 		AudioServer.set_bus_volume_linear(0, value)
-		volume_label.text = "Master volume · %d%%" % roundi(value * 100.0)
+		volume_label.text = L10n.text("Master volume · %d%%") % roundi(value * 100.0)
 	)
 	widgets["Volume"] = volume
 	_label(right_page, "Display", 30)

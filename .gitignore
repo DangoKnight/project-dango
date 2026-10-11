@@ -2,3 +2,6 @@
 .godot/
 /android/
 textures.old/*
+
+# Generated from the translation CSV tables by Godot's importer.
+/localization/*.translation

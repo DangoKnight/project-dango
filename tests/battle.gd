@@ -236,7 +236,7 @@ func run() -> void:
 	check(game.world.visible and game.player.movement_enabled, "Returning from battle should restore map controls")
 	if DisplayServer.get_name() != "headless":
 		check(Input.mouse_mode == Input.MOUSE_MODE_CAPTURED, "Victory should recapture the first-person mouse")
-	for ally in game.party:
+	for ally in game.state.party:
 		ally.current_hp = 1
 	game.start_combat(false)
 	view = game.ui.get_child(0) as CombatScreen
@@ -274,7 +274,7 @@ func run() -> void:
 	var retreat_map: Node = game.world
 	game.start_combat(false)
 	view = game.ui.get_child(0) as CombatScreen
-	var retreat_hp: int = game.party[0].current_hp
+	var retreat_hp: int = game.state.party[0].current_hp
 	var consumable_placeholder: Button
 	for command in view.actions.get_children():
 		if command is Button and command.text == "Consumable":
@@ -290,7 +290,7 @@ func run() -> void:
 			run_index = command.get_index()
 	check(return_index >= 0 and return_index + 1 == run_index, "Named previous-character command sits immediately above Run")
 	press_command(view, "Return to Test Frontliner")
-	check(view.session.active_character() == game.party[0] and view.session.planned_actions.is_empty(), "Return reopens the previous character choice")
+	check(view.session.active_character() == game.state.party[0] and view.session.planned_actions.is_empty(), "Return reopens the previous character choice")
 
 	press_command(view, "Special")
 	check(view._special_open and view._panel_targets[view.portrait.name], "Special expands skills while retaining the portrait")
@@ -302,11 +302,11 @@ func run() -> void:
 		view.session.choose_defend()
 	resolve_round(view.session)
 	check(view.session.escaped, "Queued party Run should escape")
-	var escaped_hp: int = game.party[0].current_hp
+	var escaped_hp: int = game.state.party[0].current_hp
 	for frame in range(180):
 		if game.screen != "combat" and not game._battle_transition:
 			break
 		await create_timer(0.02).timeout
-	check(game.screen == "explore" and game.world == retreat_map and game.party[0].current_hp == escaped_hp and escaped_hp <= retreat_hp, "Retreat restores map without healing the party")
+	check(game.screen == "explore" and game.world == retreat_map and game.state.party[0].current_hp == escaped_hp and escaped_hp <= retreat_hp, "Retreat restores map without healing the party")
 	print("Battle tests complete: %d failure(s)" % failures)
 	quit(1 if failures else 0)

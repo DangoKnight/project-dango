@@ -19,6 +19,8 @@ enum Exit { INSTANT, TO_LEFT, TO_RIGHT, TO_TOP, TO_BOTTOM, FADE }
 @export_multiline var text: String
 ## Advance after typing and portrait transitions finish. Empty text hides the dialogue card.
 @export var auto_advance := false
+## Seconds from line entry before advancing is allowed, including portrait animations.
+@export_range(0.0, 30.0, 0.1) var minimum_duration := 0.0
 
 @export_group("Slot 1 (Left) Entrance")
 @export var left_entrance: Entrance = Entrance.INSTANT

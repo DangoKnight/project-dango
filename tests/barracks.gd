@@ -48,6 +48,8 @@ func drag_slot(source: Control, target: Control) -> void:
 func run() -> void:
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
+	game.starting_party_size = 4 # Exercise a full formation and occupied-slot swaps.
+	game.starting_characters.append(load("res://resources/rpg/characters/koumi.tres")) # Recruited only for this fixture.
 	game.new_game(false)
 	var town = game.ui.get_child(0)
 	check(town.get_node("Panel").anchor_left >= 1.0, "Safe Zone card begins beyond the right edge")
@@ -79,7 +81,7 @@ func run() -> void:
 	check(not barracks.get_node("PartyPanel").visible and game.screen == "location" and town.module_view == barracks, "Escape closes the party card before the module")
 	barracks.open_party()
 	await create_timer(barracks.card_slide_duration * 2 + 0.05).timeout
-	var original: CharacterState = game.party[0]
+	var original: CharacterState = game.state.party[0]
 	original.current_hp = 0
 	original.current_mp = 0
 	var permanent: Dictionary = original._permanent_stats.duplicate()
@@ -95,14 +97,14 @@ func run() -> void:
 	check(barracks.party_slots.get_child_count() == 4, "Party always displays four slots")
 	check(barracks.portrait.texture == original.definition.portrait, "Selected character uses their V03 portrait")
 	check(barracks.stats.text.contains("Mental Acuity") and not barracks.stats.text.to_lower().contains("growth"), "Selected stats include current values without hidden growth")
-	var second: CharacterState = game.party[1]
+	var second: CharacterState = game.state.party[1]
 	barracks.party_slots.get_child(1).pressed.emit()
 	check(barracks.selected_member == second and barracks.portrait.texture == second.definition.portrait, "Clicking a party name changes the portrait and stats")
 	var data := {"source": barracks, "character": original}
 	var reserve_target = barracks.reserve_slots.get_child(0)
 	check(reserve_target._can_drop_data(Vector2.ZERO, data), "Empty reserve area accepts an active member")
 	reserve_target._drop_data(Vector2.ZERO, data)
-	check(game.party.size() == 3 and original not in game.party and original in game.roster, "Dragging to reserve removes only active membership")
+	check(game.state.party.size() == 3 and original not in game.state.party and original in game.state.roster, "Dragging to reserve removes only active membership")
 	check(barracks.reserve_slots.get_child(0).member == original and barracks.party_slots.get_child(3).member == null, "Reserve names and empty party slots refresh after a drag")
 	original.current_hp = 1
 	original.current_mp = 0
@@ -113,14 +115,14 @@ func run() -> void:
 	var empty_slot = barracks.party_slots.get_child(3)
 	check(empty_slot._can_drop_data(Vector2.ZERO, data), "An empty party slot accepts a reserve")
 	empty_slot._drop_data(Vector2.ZERO, data)
-	check(game.party[-1] == original and game.party.size() == 4, "Dragging a reserve into an empty slot preserves their character state")
+	check(game.state.party[-1] == original and game.state.party.size() == 4, "Dragging a reserve into an empty slot preserves their character state")
 	barracks.party_slots.get_child(0)._drop_data(Vector2.ZERO, data)
-	check(game.party[0] == original, "Dragging between occupied party slots swaps party order")
+	check(game.state.party[0] == original, "Dragging between occupied party slots swaps party order")
 	check(not barracks.can_drop_character(data, true, 0), "Dropping onto the same slot is rejected")
 	check(not barracks.can_drop_character({"source": town, "character": original}, false, 0), "Foreign drag payloads are rejected")
 	check(not barracks.can_drop_character({"source": barracks, "character": CharacterState.new(original.definition)}, false, 0), "Unrecruited characters cannot be dragged into the party")
-	while game.party.size() > 1:
-		barracks.drop_character({"source": barracks, "character": game.party[-1]}, false, 0)
+	while game.state.party.size() > 1:
+		barracks.drop_character({"source": barracks, "character": game.state.party[-1]}, false, 0)
 	check(not barracks.can_drop_character(data, false, 0), "Cannot drag the final active member into reserve")
 	check(not barracks.drop_character(data, false, 0), "Drop validation enforces the minimum party size")
 
@@ -138,7 +140,7 @@ func run() -> void:
 		var reserve_column: Control = barracks.get_node("PartyPanel/Buttons/Content/Reserve")
 		check(character_panel.get_global_rect().end.x <= party_column.global_position.x and party_column.get_global_rect().end.x <= reserve_column.global_position.x, "Portrait and stats sit left of the party and reserve columns")
 	# Navigation preserves identity, selected membership, and planning order.
-	var saved_party: Array[CharacterState] = game.party.duplicate()
+	var saved_party: Array[CharacterState] = game.state.party.duplicate()
 	check(not barracks.has_node("Panel/Buttons/Town"), "Barracks has no Back to Safe Zone button")
 	town.get_node("Panel/Buttons/Barracks").pressed.emit()
 	check(town.module_view == null and barracks.is_inside_tree(), "Clicking Barracks again closes its current card with a slide")
@@ -152,7 +154,7 @@ func run() -> void:
 	var battle := game.ui.get_child(0) as CombatScreen
 	check(battle.session.party == saved_party and battle.session.active_character() == saved_party[0], "Battle uses the selected active party and order")
 	game.new_game(false)
-	check(game.party.size() == 4 and game.roster.size() == 4 and game.roster[0] != original, "New Game resets roster and formation")
+	check(game.state.party.size() == 4 and game.state.roster.size() == 4 and game.state.roster[0] != original, "New Game resets roster and formation")
 	# Future recruits stay available even when the initial party reaches capacity.
 	var extra := game.starting_characters[0].duplicate(true) as CharacterDefinition
 	extra.id = &"reserve_fixture"
@@ -162,13 +164,13 @@ func run() -> void:
 	barracks = game.ui.get_child(0).module_view
 	barracks.open_party()
 	await create_timer(barracks.card_slide_duration * 2 + 0.05).timeout
-	check(game.party.size() == 4 and game.roster.size() == 5 and barracks.reserve_slots.get_child_count() == 1, "Additional recruits start in reserve")
-	var recruit: CharacterState = game.roster[4]
-	var outgoing: CharacterState = game.party[1]
+	check(game.state.party.size() == 4 and game.state.roster.size() == 5 and barracks.reserve_slots.get_child_count() == 1, "Additional recruits start in reserve")
+	var recruit: CharacterState = game.state.roster[4]
+	var outgoing: CharacterState = game.state.party[1]
 	var swap_data := {"source": barracks, "character": recruit}
 	check(barracks.can_drop_character(swap_data, true, 1), "A reserve can replace a member of a full party")
 	barracks.party_slots.get_child(1)._drop_data(Vector2.ZERO, swap_data)
-	check(game.party.size() == 4 and game.party[1] == recruit and outgoing not in game.party and outgoing in game.roster, "Reserve-to-occupied-slot drop sends the previous member to reserve")
+	check(game.state.party.size() == 4 and game.state.party[1] == recruit and outgoing not in game.state.party and outgoing in game.state.roster, "Reserve-to-occupied-slot drop sends the previous member to reserve")
 	barracks.close_party()
 	await create_timer(barracks.card_slide_duration * 2 + 0.05).timeout
 	check(not barracks.get_node("PartyPanel").visible and barracks.get_node("Panel").visible, "Returning restores Barracks and hides Manage Party")
@@ -176,7 +178,7 @@ func run() -> void:
 	await create_timer(barracks.card_slide_duration * 2 + 0.05).timeout
 	check(is_equal_approx(barracks.get_node("PartyPanel").anchor_left, 0.03), "Repeated opening restores party card anchors")
 	await drag_slot(barracks.reserve_slots.get_child(0), barracks.party_slots.get_child(2))
-	check(game.party[2] == outgoing, "Native mouse drag exchanges a reserve with the targeted party member")
+	check(game.state.party[2] == outgoing, "Native mouse drag exchanges a reserve with the targeted party member")
 
 	game.queue_free()
 	await process_frame

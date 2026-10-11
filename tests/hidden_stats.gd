@@ -26,15 +26,15 @@ func run() -> void:
 	game.show_characters()
 	var characters = game.ui.get_child(0)
 	var damage_types: Array[DamageType] = characters.damage_types
-	for index in range(game.roster.size()):
+	for index in range(game.state.roster.size()):
 		characters._show_character(index)
 		check_hidden(characters.details.text, "Character information")
-		for ability in game.roster[index].get_abilities():
+		for ability in game.state.roster[index].get_abilities():
 			check_hidden(ability.description, "Ability tooltip")
 	game.show_location("Barracks")
 	var barracks = game.ui.get_child(0).module_view
 	barracks.open_party()
-	for member in game.roster:
+	for member in game.state.roster:
 		barracks.select_member(member)
 		check_hidden(barracks.stats.text, "Manage Party")
 		check(barracks.stats.text.contains("Strength") and barracks.stats.text.contains("SP"), "Primary stats and vitals remain visible")
@@ -44,7 +44,7 @@ func run() -> void:
 	gear.stat_modifiers = {&"strength": 3.0}
 	for stat in RPGStats.COMBAT_NAMES:
 		gear.stat_modifiers[stat] = 987.123
-	var item: GearInstance = game.gear_inventory.add(gear)
+	var item: GearInstance = game.state.gear_inventory.add(gear)
 	game.show_equipment()
 	var equipment = game.ui.get_child(0)
 	equipment._select(item)
@@ -60,7 +60,7 @@ func run() -> void:
 		var units := battle.session.enemies if enemies else battle.session.party
 		for member in units:
 			check_hidden(CharacterInformation.describe(member, damage_types, false), "Friendly and hostile battle information")
-	var takane: CharacterState = game.roster[1]
+	var takane: CharacterState = game.state.roster[1]
 	takane.apply_status(load("res://resources/rpg/statuses/lock_on.tres"))
 	check(is_equal_approx(takane.get_combat_stat(&"critical_rate"), 0.7) and is_equal_approx(takane.get_combat_stat(&"critical_damage"), 2.5), "Hidden stats and their buffs still work internally")
 	game.queue_free()

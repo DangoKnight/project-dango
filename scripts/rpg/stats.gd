@@ -22,6 +22,11 @@ func value(stat: StringName) -> float:
 ## Shared labels for stat keys used by resources and gameplay.
 static func display_name(stat: StringName) -> String:
 	match stat:
-		&"mental_acuity": return "Mental Acuity"
-		&"mental_resilience": return "Mental Resilience"
-	return String(stat).capitalize()
+		&"mental_acuity": return L10n.text("Mental Acuity")
+		&"mental_resilience": return L10n.text("Mental Resilience")
+		&"max_hp": return L10n.text("Max Hp")
+		&"max_mp": return L10n.text("Max Mp")
+		&"strength": return L10n.text("Strength")
+		&"defense": return L10n.text("Defense")
+		&"speed": return L10n.text("Speed")
+	return L10n.text(String(stat).capitalize())

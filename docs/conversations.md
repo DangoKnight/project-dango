@@ -55,6 +55,8 @@ Append one final **ConversationLine** to the event's **Lines** array. Clear both
 
 **Auto Advance** also supports intermediate animation steps: it waits for both slots' transitions and any text typing to finish before proceeding. Manual advance is ignored during an automatic step so departure animations finish fully. For text the player should read at their own pace, leave Auto Advance disabled.
 
+Set **Minimum Duration** to hold a step for a specified number of seconds from its start, including its portrait animations. Neither manual nor automatic advancement can shorten that time; longer animations still finish before automatic advancement. Opening step **10** uses **Auto Advance** and a **Minimum Duration** of **1.0**: its portraits slide out, the empty scene holds for the remainder of that second, then Koumi's next line begins.
+
 During the opening, the Safe Zone action card stays hidden through the scene fade and the entire conversation. It slides in from the right after the conversation and final departures finish.
 
 The overlay scene is `scenes/ui/conversation.tscn`. Edit its portrait anchors, dialogue panel, font sizes, or colors to change presentation for every event. These resources do not modify party membership or character stats.

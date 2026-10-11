@@ -20,11 +20,12 @@ func _ready() -> void:
 	members.item_selected.connect(_show_character)
 
 
-func configure(characters: Array[CharacterState]) -> void:
+func configure(characters: Array[CharacterState], town_name: String = "Safe Zone") -> void:
 	party = characters
+	$Panel/Buttons/Town.text = L10n.text("Back to %s") % L10n.text(town_name)
 	members.clear()
 	for character in party:
-		members.add_item(character.definition.display_name)
+		members.add_item(L10n.text(character.definition.display_name))
 	if not party.is_empty():
 		members.select(0)
 		_show_character(0)

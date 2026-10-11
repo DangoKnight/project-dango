@@ -23,6 +23,8 @@ func press_tab() -> void:
 func run() -> void:
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
+	game.starting_party_size = 4 # Inspect all four party members in this fixture.
+	game.starting_characters.append(load("res://resources/rpg/characters/koumi.tres"))
 	game.new_game(false)
 	game.explore()
 	game.start_combat(false)

@@ -173,12 +173,12 @@ func run() -> void:
 		check(closed_sides == 3 and open_sides == 1, "Each Safe Zone is physically enclosed on three sides with one open side")
 	var original_layout := map.layout
 	var cell: Vector2i = original_layout.rewards.keys()[0]
-	var inventory_count: int = game.gear_inventory.get_items().size()
+	var inventory_count: int = game.state.gear_inventory.get_items().size()
 	map.player.position = map.layout.world_position(cell)
 	map.interact()
-	check(game.gear_inventory.get_items().size() == inventory_count + 1 and not original_layout.rewards.has(cell), "Interacting collects a reward exactly once into inventory")
+	check(game.state.gear_inventory.get_items().size() == inventory_count + 1 and not original_layout.rewards.has(cell), "Interacting collects a reward exactly once into inventory")
 	map.interact()
-	check(game.gear_inventory.get_items().size() == inventory_count + 1, "Collected rewards cannot be collected twice")
+	check(game.state.gear_inventory.get_items().size() == inventory_count + 1, "Collected rewards cannot be collected twice")
 	var refuge := map.layout.landmark(&"distant_refuge")
 	check(map.has_node("distant_refugeDoorway/BlackFade"), "Safe Zone has a black gradient doorway")
 	map.player.position = map.layout.world_position(refuge.coordinate)
@@ -206,13 +206,13 @@ func run() -> void:
 	check(game.world.layout != original_layout, "Reentry creates a fresh layout instead of reusing the previous map")
 	check(game.world.layout.generation_seed != original_layout.generation_seed and game.world.layout.passages != original_layout.passages, "A randomized labyrinth changes on reentry")
 	check(game.world.layout.rewards.size() >= 4 and game.world.layout.rewards.size() <= 8, "Every entry regenerates rewards within the configured range")
-	check(game.gear_inventory.get_items().size() == inventory_count + 1, "Previously collected gear remains in inventory")
+	check(game.state.gear_inventory.get_items().size() == inventory_count + 1, "Previously collected gear remains in inventory")
 	check(game.world.player.position.is_equal_approx(game.world.layout.world_position(game.world.layout.landmark(&"distant_refuge").coordinate) + Vector3(0, 0.1, 0)), "Reentry starts at the last visited Safe Zone")
 	for frame in range(8):
 		await physics_frame
 	check(game.screen == "explore" and not game._battle_transition, "Reentry cannot immediately trigger the doorway")
 	game.new_game(false)
-	check(game.labyrinth_entries.is_empty(), "New Game resets the last visited refuges")
+	check(game.state.labyrinth_entries.is_empty(), "New Game resets the last visited refuges")
 	game.queue_free()
 	await process_frame
 	print("Labyrinth tests complete: %d failure(s)" % failures)

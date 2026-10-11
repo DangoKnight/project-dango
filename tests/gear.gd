@@ -189,8 +189,8 @@ func run() -> void:
 	view._select(view.equipped.get_item_metadata(0))
 	view._on_button_pressed("Unequip")
 	check(view.stash.item_count == 7, "Equipment UI returns gear to stash")
-	var ui_bomb: GearInstance = main.gear_inventory.get_available_items()[-1]
-	main.party[0].equip_gear(ui_bomb)
+	var ui_bomb: GearInstance = main.state.gear_inventory.get_available_items()[-1]
+	main.state.party[0].equip_gear(ui_bomb)
 	main.explore()
 	main.start_combat(false)
 	var battle := main.ui.get_child(0) as CombatScreen

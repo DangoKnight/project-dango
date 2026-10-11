@@ -14,9 +14,9 @@ func configure(knowledge: MonsterCompendium) -> void:
 	var members: ItemList = $Panel/Layout/Content/Members
 	for monster_id in compendium.entries:
 		_ids.append(monster_id)
-		members.add_item(compendium.entries[monster_id].definition.display_name)
+		members.add_item(L10n.text(compendium.entries[monster_id].definition.display_name))
 	if _ids.is_empty():
-		$Panel/Layout/Content/Entry/Details.text = "No monsters encountered yet."
+		$Panel/Layout/Content/Entry/Details.text = L10n.text("No monsters encountered yet.")
 	else:
 		members.select(0)
 		_select(0)

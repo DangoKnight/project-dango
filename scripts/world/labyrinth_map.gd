@@ -269,7 +269,7 @@ func _box(title: String, position: Vector3, size: Vector3, material: Material, p
 func _label(parent: Node3D, text: String, height: float, cell: Vector2i) -> void:
 	var label := Label3D.new()
 	label.visible = false
-	label.text = text
+	label.text = L10n.text(text)
 	label.position.y = height
 	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	label.font_size = 40

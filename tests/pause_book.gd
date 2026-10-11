@@ -27,8 +27,8 @@ func run() -> void:
 	check(map.items_picked_up == 2, "Collecting gear tracks the number actually picked up")
 	map.interact()
 	check(map.items_picked_up == 2, "Empty caches cannot increase the collected count")
-	game.compendium.encounter(load("res://resources/rpg/enemies/rat.tres"))
-	game.compendium.encounter(load("res://resources/rpg/enemies/ethereal_orb.tres"))
+	game.state.compendium.encounter(load("res://resources/rpg/enemies/rat.tres"))
+	game.state.compendium.encounter(load("res://resources/rpg/enemies/ethereal_orb.tres"))
 	game.show_pause()
 	var book := game.ui.get_child(0) as PauseBook
 	check(book != null and not map.player.movement_enabled, "Pause opens the book and stops navigation")
@@ -89,6 +89,10 @@ func run() -> void:
 	book.command("Resume").pressed.emit()
 	await create_timer(0.25).timeout
 	check(game.screen == "explore" and game.world == map and map.player.movement_enabled, "Resume fades the contents and restores the existing labyrinth")
+	game.show_town()
+	game.show_pause("town")
+	book = game.ui.get_child(0) as PauseBook
+	check(book.left_page.get_child(1).text == "Station 45-B", "Town journal displays the safe zone's name")
 	game.show_town()
 	game.explore()
 	game.show_pause()

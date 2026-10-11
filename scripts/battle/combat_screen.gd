@@ -125,7 +125,7 @@ func _refresh() -> void:
 	if session.phase != BattleSession.Phase.TARGET_SELECTION:
 		_waiting_for_drawer = false
 	_refresh_target_highlights()
-	round_counter.text = "Round %d" % session.round_number
+	round_counter.text = L10n.text("Round %d") % session.round_number
 	if session.phase == BattleSession.Phase.ACTION_SELECTION:
 		var actor := session.active_character()
 		_present_portrait(actor.definition)
@@ -141,14 +141,14 @@ func _refresh() -> void:
 	for index in range(session.party.size()):
 		var character := session.party[index]
 		var card := party_buttons[index]
-		card.get_node("Name").text = character.definition.display_name
+		card.get_node("Name").text = L10n.text(character.definition.display_name)
 		card.get_node("HP").max_value = character.get_stat(&"max_hp")
 		card.get_node("HP").value = character.current_hp
-		card.get_node("HP/Value").text = "HP  %d / %d" % [character.current_hp, character.get_stat(&"max_hp")]
+		card.get_node("HP/Value").text = L10n.text("HP  %d / %d") % [character.current_hp, character.get_stat(&"max_hp")]
 		# SP is the combat UI name for the existing MP pool.
 		card.get_node("SP").max_value = maxi(1, character.get_stat(&"max_mp"))
 		card.get_node("SP").value = character.current_mp
-		card.get_node("SP/Value").text = "SP  %d / %d" % [character.current_mp, character.get_stat(&"max_mp")]
+		card.get_node("SP/Value").text = L10n.text("SP  %d / %d") % [character.current_mp, character.get_stat(&"max_mp")]
 		card.disabled = character not in targets
 	if session.phase == BattleSession.Phase.TARGET_SELECTION:
 		for child in actions.get_children():
@@ -164,11 +164,11 @@ func _refresh() -> void:
 	if session.phase != BattleSession.Phase.ACTION_SELECTION:
 		_special_open = false
 	back.visible = false
-	var previous_name := session.planned_actions[-1].actor.definition.display_name if not session.planned_actions.is_empty() else ""
+	var previous_name := L10n.text(session.planned_actions[-1].actor.definition.display_name) if not session.planned_actions.is_empty() else ""
 	match session.phase:
 		BattleSession.Phase.ACTION_SELECTION:
 			var actor := session.active_character()
-			prompt.text = actor.definition.display_name + " — choose an action"
+			prompt.text = L10n.text("%s — choose an action") % L10n.text(actor.definition.display_name)
 			var attack := _command("Attack", session.choose_attack)
 			attack.disabled = not actor.can_act()
 			attack.grab_focus()
@@ -178,20 +178,20 @@ func _refresh() -> void:
 			for item in actor.get_equipped_gear():
 				if item.definition.kind == GearDefinition.Kind.CONSUMABLE and not item.is_destroyed():
 					has_consumable = true
-					var button := _command(item.definition.display_name, session.choose_consumable.bind(item))
-					button.tooltip_text = "%s (%d uses)" % [item.definition.description, item.remaining_uses()]
+					var button := _command(L10n.text(item.definition.display_name), session.choose_consumable.bind(item))
+					button.tooltip_text = L10n.text("%s (%d uses)") % [L10n.text(item.definition.description), item.remaining_uses()]
 					button.disabled = not actor.can_act()
 			if not has_consumable:
 				_command("Consumable", func(): pass).disabled = true
 			var observe := _command("Observe", _toggle_observe)
 			observe.toggle_mode = true
 			observe.set_pressed_no_signal(actor.observing)
-			observe.tooltip_text = "Halves strength, defense, mental acuity, mental resilience, and speed while active. Increases experience earned by 50%."
+			observe.tooltip_text = L10n.text("Halves strength, defense, mental acuity, mental resilience, and speed while active. Increases experience earned by 50%.")
 			if not previous_name.is_empty():
-				_command("Return to " + previous_name, _back)
+				_command(L10n.text("Return to %s") % previous_name, _back)
 			_command("Run", session.choose_run).disabled = not actor.can_act()
 			if not actor.can_act():
-				prompt.text = actor.definition.display_name + " — paralyzed (choose Wait)"
+				prompt.text = L10n.text("%s — paralyzed (choose Wait)") % L10n.text(actor.definition.display_name)
 				_command("Wait", session.choose_wait)
 
 		BattleSession.Phase.TARGET_SELECTION:
@@ -205,11 +205,11 @@ func _refresh() -> void:
 					party_buttons[index].grab_focus()
 					break
 		BattleSession.Phase.READY:
-			prompt.text = "All actions chosen"
-			$Confirmation/Layout/Return.text = "Return to " + previous_name
+			prompt.text = L10n.text("All actions chosen")
+			$Confirmation/Layout/Return.text = L10n.text("Return to %s") % previous_name
 			$Confirmation/Layout/Execute.grab_focus()
 		BattleSession.Phase.RESOLVING:
-			prompt.text = "Actions are resolving…"
+			prompt.text = L10n.text("Actions are resolving…")
 		BattleSession.Phase.FINISHED:
 			if not _ending:
 				_ending = true
@@ -331,9 +331,9 @@ func _update_portrait_pivot() -> void:
 
 func _command(title: String, callback: Callable, container: GridContainer = null) -> Button:
 	var button := Button.new()
-	button.text = title
+	button.text = L10n.text(title)
 	button.clip_text = true
-	button.tooltip_text = title
+	button.tooltip_text = L10n.text(title)
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.custom_minimum_size.y = 32
 	button.add_theme_font_size_override("font_size", 18)
@@ -371,7 +371,7 @@ func _select_target(character: CharacterState) -> void:
 func _toggle_observe() -> void:
 	session.toggle_observe()
 	for command in actions.get_children():
-		if command.text == "Observe":
+		if command.text == L10n.text("Observe"):
 			command.grab_focus()
 			break
 
@@ -385,11 +385,11 @@ func _open_special() -> void:
 		child.queue_free()
 	var actor := session.active_character()
 	for ability in actor.get_abilities():
-		var button := _command("%s (%d SP)" % [ability.display_name, ability.mana_cost], _choose_special.bind(ability), special_actions)
+		var button := _command(L10n.text("%s (%d SP)") % [L10n.text(ability.display_name), ability.mana_cost], _choose_special.bind(ability), special_actions)
 		button.disabled = not actor.can_act() or actor.current_mp < ability.mana_cost
-		button.tooltip_text = ability.description
+		button.tooltip_text = L10n.text(ability.description)
 	if special_actions.get_child_count() == 0:
-		_command("No abilities available", func(): pass, special_actions).disabled = true
+		_command(L10n.text("No abilities available"), func(): pass, special_actions).disabled = true
 	_special_open = true
 	_refresh()
 	$SpecialDrawer/SpecialPanel/Layout/Scroll.scroll_vertical = 0
@@ -401,7 +401,7 @@ func _close_special() -> void:
 	_slide_panel(special_panel, false)
 	if session.phase == BattleSession.Phase.ACTION_SELECTION:
 		for command in actions.get_children():
-			if command.text == "Special":
+			if command.text == L10n.text("Special"):
 				command.grab_focus()
 				break
 
@@ -454,7 +454,7 @@ func _execute_round() -> void:
 
 func _finish_battle() -> void:
 	information.close_immediately()
-	_log("Escaped!" if session.escaped else "Victory!" if session.victory else "Defeat.")
+	_log(L10n.text("Escaped!") if session.escaped else L10n.text("Victory!") if session.victory else L10n.text("Defeat."))
 	await get_tree().create_timer(1.0, false).timeout
 	if not is_inside_tree():
 		return

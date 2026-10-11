@@ -27,7 +27,7 @@ func settle() -> void:
 func snapshot(name_text: String) -> void:
 	if "--screenshots" in OS.get_cmdline_user_args() and DisplayServer.get_name() != "headless":
 		await RenderingServer.frame_post_draw
-		root.get_texture().get_image().save_png("/tmp/negi-layout-" + name_text + ".png")
+		root.get_texture().get_image().save_png("/tmp/dango-layout-" + name_text + ".png")
 
 
 func run() -> void:
@@ -38,11 +38,11 @@ func run() -> void:
 	var game: Node = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
 	game.new_game(false)
-	var adjusted_portrait := game.party[0].definition.duplicate() as CharacterDefinition
+	var adjusted_portrait := game.state.party[0].definition.duplicate() as CharacterDefinition
 	adjusted_portrait.portrait_offset = Vector2(-0.1, 0.05)
 	adjusted_portrait.portrait_scale = 0.85
 	adjusted_portrait.portrait_stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	game.party[0].definition = adjusted_portrait
+	game.state.party[0].definition = adjusted_portrait
 	game.explore()
 	var full_encounter := BattleEncounter.new()
 	for index in range(6):
@@ -51,7 +51,7 @@ func run() -> void:
 	game.start_combat(false)
 	var battle := game.ui.get_child(0) as CombatScreen
 	await create_timer(battle.menu_slide_duration + 0.05).timeout
-	var initial_hp: int = game.party[0].current_hp
+	var initial_hp: int = game.state.party[0].current_hp
 	var sizes: Array[Vector2i] = [Vector2i(1280, 720), Vector2i(800, 450), Vector2i(1024, 768), Vector2i(1920, 1080), Vector2i(2560, 1080), Vector2i(900, 1200)]
 	for window_size in sizes:
 		root.size = window_size
@@ -77,7 +77,7 @@ func run() -> void:
 				check(not battle.enemy_slots[first].get_global_rect().intersects(battle.enemy_slots[second].get_global_rect()), "Enemy target regions should not overlap at %s" % window_size)
 		check(battle.portrait_image.pivot_offset.is_equal_approx(battle.portrait_image.size * 0.5), "Portrait scale pivot should track resized bounds")
 		check(battle.portrait_image.scale.is_equal_approx(Vector2(0.85, 0.85)) and is_equal_approx(battle.portrait_image.anchor_left, -0.1) and is_equal_approx(battle.portrait_image.anchor_top, 0.05), "Resizing should preserve per-character portrait adjustments")
-		check(battle.session.active_character() == game.party[0] and battle.portrait.visible, "Resizing should preserve action selection")
+		check(battle.session.active_character() == game.state.party[0] and battle.portrait.visible, "Resizing should preserve action selection")
 		await snapshot("%dx%d-actions" % [window_size.x, window_size.y])
 		battle.session.choose_attack()
 		await create_timer(battle.menu_slide_duration + 0.05).timeout
@@ -87,7 +87,7 @@ func run() -> void:
 		await snapshot("%dx%d-targets" % [window_size.x, window_size.y])
 		battle.session.cancel_target()
 		await create_timer(battle.menu_slide_duration + 0.05).timeout
-	check(game.party[0].current_hp == initial_hp and battle.session.planned_actions.is_empty(), "Resizing must not alter combat state")
+	check(game.state.party[0].current_hp == initial_hp and battle.session.planned_actions.is_empty(), "Resizing must not alter combat state")
 	game.show_town()
 	for window_size in sizes:
 		root.size = window_size

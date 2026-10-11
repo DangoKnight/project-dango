@@ -13,7 +13,7 @@ func _get_drag_data(_position: Vector2) -> Variant:
 	var preview := PanelContainer.new()
 	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var label := Label.new()
-	label.text = member.definition.display_name
+	label.text = L10n.text(member.definition.display_name)
 	preview.add_child(label)
 	set_drag_preview(preview)
 	return {"source": manager, "character": member}

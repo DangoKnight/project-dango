@@ -10,7 +10,6 @@ const HUD := preload("res://scenes/ui/exploration_hud.tscn")
 const CHARACTERS := preload("res://scenes/ui/characters.tscn")
 const EQUIPMENT := preload("res://scenes/ui/equipment.tscn")
 const COMBAT := preload("res://scenes/battle/combat.tscn")
-var compendium := MonsterCompendium.new()
 @export var starting_town: PackedScene = preload("res://scenes/ui/town.tscn")
 @export var opening_conversation: ConversationEvent = preload("res://resources/conversations/station_check_in.tres")
 var _opening_event: ConversationEvent
@@ -18,8 +17,9 @@ var _opening_event: ConversationEvent
 	preload("res://resources/rpg/characters/usami.tres"),
 	preload("res://resources/rpg/characters/takane.tres"),
 	preload("res://resources/rpg/characters/kurako.tres"),
-	preload("res://resources/rpg/characters/koumi.tres"),
 ]
+## Remaining starting characters are available in the reserve roster.
+@export_range(1, 4) var starting_party_size := 3
 
 @export var starting_gear: Array[GearDefinition] = [
 	preload("res://resources/rpg/gear/iron_artifact.tres"),
@@ -40,16 +40,9 @@ var _battle_transition := false
 var level_up_notice: Control
 @onready var battle_fade: ColorRect = $UI/BattleFade
 
-var gear_inventory := GearInventory.new()
-var safe_zone_services: Dictionary[String, SafeZoneServices] = {}
-var weapon_inventory: Array[WeaponDefinition] = []
-var active_safe_zone_key := ""
-# Keep the last visited refuge, but rebuild the labyrinth on each entry.
-var labyrinth_entries: Dictionary[String, StringName] = {}
-var labyrinth_discoveries: Dictionary[String, Dictionary] = {}
-# Shared rest multiplier: highest completion across labyrinth visits since last rest.
-var highest_labyrinth_completion := 0.0
-var last_safe_zone_scene: PackedScene
+var state: RunState:
+	get:
+		return get_node("/root/GameState") as RunState
 
 @onready var ui: Control = $UI/Screens
 @onready var world_container: Node3D = $World
@@ -58,11 +51,8 @@ var player: CharacterBody3D
 var screen := "main"
 var options_return := "main"
 var pause_return := "explore"
-var party: Array[CharacterState] = []
-var roster: Array[CharacterState] = []
-var current_town_scene: PackedScene
-var current_map_scene: PackedScene
 var location_backgrounds: Dictionary[String, Texture2D] = {}
+var current_town_name := "Safe Zone"
 
 
 func _ready() -> void:
@@ -136,7 +126,7 @@ func show_town(town_scene: PackedScene = null) -> void:
 		ui.get_child(0).close_module()
 		screen = "town"
 		return
-	var destination := town_scene if town_scene != null else current_town_scene
+	var destination := town_scene if town_scene != null else state.current_town_scene
 	if destination == null:
 		destination = starting_town
 	if destination == null:
@@ -149,9 +139,10 @@ func show_town(town_scene: PackedScene = null) -> void:
 		return
 	var town := instance as Town
 	town.navigation_locked = _opening_event != null
-	current_town_scene = destination
+	state.current_town_scene = destination
+	current_town_name = town.display_name
 	location_backgrounds = town.location_backgrounds.duplicate()
-	current_map_scene = town.exploration_map
+	state.current_map_scene = town.exploration_map
 	_remove_world()
 	_show_view(town, "town")
 
@@ -159,29 +150,7 @@ func show_town(town_scene: PackedScene = null) -> void:
 func new_game(with_opening_conversation: bool = true) -> void:
 	Conversations.reset()
 	_opening_event = opening_conversation if with_opening_conversation and opening_conversation != null and opening_conversation.is_valid() else null
-	highest_labyrinth_completion = 0.0
-	safe_zone_services.clear()
-	weapon_inventory.clear()
-	active_safe_zone_key = starting_town.resource_path
-	last_safe_zone_scene = starting_town
-	labyrinth_entries.clear()
-	labyrinth_discoveries.clear()
-	compendium = MonsterCompendium.new()
-	current_town_scene = starting_town
-	party.clear()
-	roster.clear()
-	gear_inventory = GearInventory.new()
-	for gear in starting_gear:
-		gear_inventory.add(gear)
-	for character in starting_characters:
-		if character != null:
-			var member := CharacterState.new(character)
-			roster.append(member)
-			if party.size() < 4:
-				party.append(member)
-	for member in roster:
-		for item in member.get_equipped_gear():
-			gear_inventory.register(item)
+	state.start_new_game(starting_town, starting_characters, starting_gear, starting_party_size)
 	if with_opening_conversation:
 		_battle_transition = true
 		battle_fade.color.a = 1.0
@@ -209,12 +178,12 @@ func _on_conversation_finished(event: ConversationEvent) -> void:
 
 func show_equipment() -> void:
 	var view := _show_scene(EQUIPMENT, "equipment")
-	view.configure(roster, gear_inventory)
+	view.configure(state.roster, state.gear_inventory)
 
 
 func show_characters() -> void:
 	var view := _show_scene(CHARACTERS, "characters")
-	view.configure(roster)
+	view.configure(state.roster, current_town_name)
 
 
 func show_location(location: String) -> void:
@@ -233,14 +202,10 @@ func show_location(location: String) -> void:
 	town.open_module(view)
 	view.action_requested.connect(_on_action_requested)
 	if location == "Barracks":
-		view.configure(roster, party)
+		view.configure(state.roster, state.party)
 		view.sleep_requested.connect(_sleep_at_barracks.bind(view))
 	else:
-		if not safe_zone_services.has(active_safe_zone_key):
-			var services := SafeZoneServices.new()
-			services.configure(town)
-			safe_zone_services[active_safe_zone_key] = services
-		view.configure(safe_zone_services[active_safe_zone_key], gear_inventory, roster, weapon_inventory, location)
+		view.configure(state.services_for(town), state.gear_inventory, state.roster, state.weapon_inventory, location)
 	screen = "location"
 
 
@@ -263,8 +228,8 @@ func _sleep_at_barracks(view: Control) -> void:
 	battle_fade.color.a = 0.0
 	battle_fade.show()
 	await _fade_battle_to(1.0, sleep_fade_duration)
-	var reports: Array[Dictionary] = view.apply_rest(highest_labyrinth_completion)
-	highest_labyrinth_completion = 0.0
+	var reports: Array[Dictionary] = view.apply_rest(state.highest_labyrinth_completion)
+	state.highest_labyrinth_completion = 0.0
 	if not reports.is_empty():
 		level_up_notice = LEVEL_UP_NOTICE.instantiate()
 		$UI.add_child(level_up_notice)
@@ -295,7 +260,7 @@ func _options_back() -> void:
 
 
 func enter_labyrinth(map_scene: PackedScene = null) -> void:
-	if _battle_transition or (map_scene == null and current_map_scene == null):
+	if _battle_transition or (map_scene == null and state.current_map_scene == null):
 		return
 	_battle_transition = true
 	battle_fade.color.a = 0.0
@@ -319,17 +284,17 @@ func _enter_safe_zone(map_path: String, landmark: LabyrinthLandmark) -> void:
 	battle_fade.color.a = 0.0
 	battle_fade.show()
 	await _fade_battle_to(1.0, navigation_fade_duration)
-	labyrinth_entries[map_path] = landmark.id
-	active_safe_zone_key = map_path + "#" + String(landmark.id)
-	last_safe_zone_scene = load(landmark.town_scene_path) as PackedScene if not landmark.town_scene_path.is_empty() else current_town_scene
-	show_town(last_safe_zone_scene)
+	state.labyrinth_entries[map_path] = landmark.id
+	state.active_safe_zone_key = map_path + "#" + String(landmark.id)
+	state.last_safe_zone_scene = load(landmark.town_scene_path) as PackedScene if not landmark.town_scene_path.is_empty() else state.current_town_scene
+	show_town(state.last_safe_zone_scene)
 	await _fade_battle_to(0.0, navigation_fade_duration)
 	battle_fade.hide()
 	_battle_transition = false
 
 
 func explore(map_scene: PackedScene = null) -> void:
-	var destination := map_scene if map_scene != null else current_map_scene
+	var destination := map_scene if map_scene != null else state.current_map_scene
 	if destination == null:
 		return
 	var instance := destination.instantiate()
@@ -337,20 +302,17 @@ func explore(map_scene: PackedScene = null) -> void:
 		instance.free()
 		push_error("Map scenes must inherit scenes/base/map.tscn")
 		return
-	current_map_scene = destination
+	state.current_map_scene = destination
 	_remove_world()
 	world = instance as Map
 	if world is LabyrinthMap:
 		var labyrinth := world as LabyrinthMap
-		if not labyrinth_discoveries.has(destination.resource_path):
-			var discoveries: Dictionary[StringName, bool] = {}
-			labyrinth_discoveries[destination.resource_path] = discoveries
-		labyrinth.discovered_landmarks = labyrinth_discoveries[destination.resource_path]
-		labyrinth.entry_landmark = labyrinth_entries.get(destination.resource_path, &"")
+		labyrinth.discovered_landmarks = state.discoveries_for(destination.resource_path)
+		labyrinth.entry_landmark = state.labyrinth_entries.get(destination.resource_path, &"")
 		labyrinth.step_taken.connect(_advance_service_step)
 		labyrinth.encounter_requested.connect(start_combat)
 		labyrinth.exploration_changed.connect(_record_exploration_completion)
-		labyrinth.reward_collected.connect(func(reward: GearDefinition): gear_inventory.add(reward))
+		labyrinth.reward_collected.connect(func(reward: GearDefinition): state.gear_inventory.add(reward))
 		labyrinth.safe_zone_requested.connect(func(landmark: LabyrinthLandmark):
 			_enter_safe_zone(destination.resource_path, landmark)
 		)
@@ -361,21 +323,17 @@ func explore(map_scene: PackedScene = null) -> void:
 			return
 		# Give the initial town the same identity when its doorway is revisited.
 		var entry_key := destination.resource_path + "#" + String(world.entry_landmark)
-		if active_safe_zone_key == starting_town.resource_path:
-			if safe_zone_services.has(active_safe_zone_key):
-				safe_zone_services[entry_key] = safe_zone_services[active_safe_zone_key]
-				safe_zone_services.erase(active_safe_zone_key)
-			active_safe_zone_key = entry_key
+		state.adopt_initial_safe_zone(starting_town, entry_key)
 		_record_exploration_completion(world.exploration_completion())
 		# Remember the initial refuge as well as doorways visited later.
-		labyrinth_entries[destination.resource_path] = world.entry_landmark
-	last_safe_zone_scene = current_town_scene
+		state.labyrinth_entries[destination.resource_path] = world.entry_landmark
+	state.last_safe_zone_scene = state.current_town_scene
 	player = world.player
 	resume_exploration()
 
 
 func _record_exploration_completion(completion: float) -> void:
-	highest_labyrinth_completion = maxf(highest_labyrinth_completion, clampf(completion, 0.0, 1.0))
+	state.record_exploration_completion(completion)
 
 
 func resume_exploration() -> void:
@@ -401,7 +359,7 @@ func show_compendium() -> void:
 func show_pause(return_to: String = "explore") -> void:
 	pause_return = return_to
 	var view := _show_scene(PAUSE_MENU, "pause") as PauseBook
-	view.configure(world, compendium, return_to == "town")
+	view.configure(world, state.compendium, return_to == "town", current_town_name)
 
 func _resume_pause() -> void:
 	if pause_return == "town":
@@ -425,7 +383,7 @@ func start_combat(animated: bool = true) -> void:
 	world.visible = false
 	_show_view(view, "combat")
 	view.finished.connect(_on_combat_finished)
-	if not view.configure(party, world.encounter, compendium):
+	if not view.configure(state.party, world.encounter, state.compendium):
 		battle_fade.hide()
 		_battle_transition = false
 		world.visible = true
@@ -464,7 +422,7 @@ func _on_combat_finished(victory: bool) -> void:
 		world.set_active(false)
 	elif not victory:
 		_recover_from_party_wipe()
-		show_town(last_safe_zone_scene)
+		show_town(state.last_safe_zone_scene)
 	else:
 		show_town()
 	await _fade_battle_to(0.0, battle_return_fade_duration)
@@ -475,14 +433,7 @@ func _on_combat_finished(victory: bool) -> void:
 
 
 func _recover_from_party_wipe() -> void:
-	highest_labyrinth_completion = 0.0
-	for member in roster:
-		for item in member.get_equipped_gear():
-			if item.definition.kind == GearDefinition.Kind.CONSUMABLE:
-				item.destroy_consumable()
-	gear_inventory.discard_consumables()
-	for member in roster:
-		member.restore()
+	state.recover_from_party_wipe()
 
 
 func _input(event: InputEvent) -> void:
@@ -542,10 +493,8 @@ func _notification(what: int) -> void:
 
 
 func _advance_service_step() -> void:
-	for services in safe_zone_services.values():
-		services.advance_step()
+	state.advance_service_step()
 
 
 func _record_service_kill(species: StringName) -> void:
-	for services in safe_zone_services.values():
-		services.record_kill(species)
+	state.record_service_kill(species)
