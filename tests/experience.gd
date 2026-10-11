@@ -31,7 +31,7 @@ func resolve(session: BattleSession) -> void:
 
 
 func _initialize() -> void:
-	check(load("res://resources/rpg/enemies/sentinel.tres").base_experience_reward == 20 and load("res://resources/rpg/enemies/acolyte.tres").base_experience_reward == 30, "Shipped enemies expose their authored base XP rewards")
+	check(load("res://resources/rpg/enemies/rat.tres").base_experience_reward == 20 and load("res://resources/rpg/enemies/ethereal_orb.tres").base_experience_reward == 30, "Shipped enemies expose their authored base XP rewards")
 	var actor := unit()
 	var ally := unit()
 	var enemy := unit(8, 1)
@@ -40,14 +40,14 @@ func _initialize() -> void:
 	resolve(battle)
 	check(actor.stored_experience() == 8 and ally.stored_experience() == 8, "Each living character stores enemy base experience on round one")
 	resolve(battle)
-	check(actor.stored_experience() == 12, "Round two contributes half the base reward")
+	check(actor.stored_experience() == 10, "Round two contributes a quarter of the base reward")
 	enemy.current_hp = 1
 	battle.choose_attack()
 	battle.select_target(enemy)
 	resolve(battle)
-	check(battle.victory and actor.stored_experience() == 18 and ally.stored_experience() == 18, "Round three contributes a quarter plus the literal four-XP defeat bonus")
+	check(battle.victory and actor.stored_experience() == 11 and ally.stored_experience() == 11, "Round three contributes one sixteenth of base XP plus an equal defeat bonus")
 	battle.resolve_next_action()
-	check(actor.stored_experience() == 18 and actor.level == 1, "Finished fights cannot duplicate rewards or apply levels")
+	check(actor.stored_experience() == 11 and actor.level == 1, "Finished fights cannot duplicate rewards or apply levels")
 	# Accumulated XP survives fights, but retreat rolls back only the current one.
 	var second := unit(4, 1)
 	enemy = unit(8, 1)
@@ -56,10 +56,11 @@ func _initialize() -> void:
 	battle.choose_attack()
 	battle.select_target(enemy)
 	resolve(battle)
-	check(actor.stored_experience() == 31, "Multiple enemies contribute, including a separate defeat bonus")
+	check(actor.stored_experience() == 31, "Multiple enemies contribute, with the defeated enemy's own base reward paid again")
+	battle._escape_failures[battle.active_character()] = 7 # Guarantee the successful-retreat fixture.
 	battle.choose_run()
 	resolve(battle)
-	check(battle.escaped and actor.stored_experience() == 18 and ally.stored_experience() == 18, "Running removes all round and kill rewards from this encounter for the entire party")
+	check(battle.escaped and actor.stored_experience() == 11 and ally.stored_experience() == 11, "Running removes all round and kill rewards from this encounter for the entire party")
 	# Direct damage, status damage, and other HP changes all use the same knockout rule.
 	actor.store_experience(1001, 40)
 	actor.current_hp = 0
@@ -84,19 +85,27 @@ func _initialize() -> void:
 	ally.store_experience(2001, 99)
 	enemy = unit(8, 100)
 	battle = BattleSession.new([actor, ally], [enemy])
+	# Select the fragile ally for this knockout fixture under weighted targeting.
+	var targeting_seed := 0
+	while true:
+		battle.rng.seed = targeting_seed
+		if battle._aggro_target([actor, ally], actor) == actor:
+			battle.rng.seed = targeting_seed
+			break
+		targeting_seed += 1
 	resolve(battle)
 	check(not actor.is_alive() and actor.stored_experience() == 0 and ally.stored_experience() == 107, "Combat knockout wipes only the downed character's complete bank")
 	resolve(battle)
-	check(actor.stored_experience() == 0 and ally.stored_experience() == 111, "Downed party members gain no XP in later rounds")
+	check(actor.stored_experience() == 0 and ally.stored_experience() == 109, "Downed party members gain no XP in later rounds")
 	# Fractions remain exact instead of rounding away diminishing rewards.
 	actor = unit()
 	enemy = unit(0.5, 1)
 	battle = BattleSession.new([actor], [enemy])
 	resolve(battle)
 	resolve(battle)
-	check(actor.stored_experience() == 0.75, "Fractional per-round rewards accumulate")
+	check(actor.stored_experience() == 0.625, "Fractional per-round rewards accumulate")
 	actor.apply_stored_experience()
-	check(actor.experience == 0.75, "Applied fractional XP remains available for future levels")
+	check(actor.experience == 0.625, "Applied fractional XP remains available for future levels")
 	# Poison defeats pay once through the same battle reward path.
 	actor = unit()
 	enemy = unit(8, 1)
@@ -104,6 +113,14 @@ func _initialize() -> void:
 	enemy.current_hp = 1
 	enemy.apply_status(load("res://resources/rpg/statuses/painful_poison.tres"))
 	resolve(battle)
-	check(battle.victory and actor.stored_experience() == 9, "Poison defeats grant the round-one kill bonus")
+	check(battle.victory and actor.stored_experience() == 16, "First-round poison defeat awards twice the enemy's base XP")
+	actor = unit()
+	enemy = unit(0.5, 1)
+	battle = BattleSession.new([actor], [enemy])
+	resolve(battle)
+	enemy.current_hp = 1
+	enemy.apply_status(load("res://resources/rpg/statuses/painful_poison.tres"))
+	resolve(battle)
+	check(battle.victory and actor.stored_experience() == 0.75, "Fractional defeat bonus matches the round-two eighth-XP turn reward")
 	print("Experience tests complete: %d failure(s)" % failures)
 	quit(1 if failures else 0)

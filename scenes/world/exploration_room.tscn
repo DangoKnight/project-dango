@@ -7,9 +7,10 @@
 [sub_resource type="Environment" id="Environment"]
 background_mode = 1
 background_color = Color(0.2, 0.2, 0.2, 1)
-ambient_light_source = 3
+ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_energy = 0.75
+ambient_light_sky_contribution = 0.0
 [sub_resource type="BoxMesh" id="GroundMesh"]
 size = Vector3(40, 1, 40)
 material = ExtResource("ground")

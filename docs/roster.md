@@ -13,20 +13,20 @@ These values are starting balance choices for the requested minor/moderate/massi
 
 | Skill | Target | MP / SP | Effect |
 | --- | --- | --- | --- |
-| Jolly cheer | One ally | 4 | +25% Strength and +25% Defense for 3 turns |
-| Caring friend | Living party | 5 | Each ally heals 8 + 0.3 × caster Mental Acuity HP, rounded and capped at maximum HP |
+| Jolly cheer | Living party | 4 | +25% Strength and +25% Defense for 3 turns |
+| Caring friend | One ally | 5 | Heals 8 + 0.6 × caster Mental Resilience HP, rounded and capped at maximum HP |
 | Lock-on | Self | 5 | +65 percentage points critical rate and +100 percentage points critical damage for 3 turns; default 5% / 150% becomes 70% / 250% |
 | Ride the gale | Self | 3 | +25% Speed for 3 turns; affects subsequent round initiative |
 | Graceful assault | One enemy | 4 | Pierce damage: power 8 + Strength, minus Defense and adjusted for Pierce resistance; cannot miss |
 | Painful stab | One enemy | 4 | Weak poison: 3 Poison damage before resistance at the end of each affected turn, for exactly 5 ticks |
 | Immobilizing stab | One enemy | 5 | Paralysis blocks the next 2 action opportunities, including an already queued action |
-| I am scary! | Entire living enemy party | 6 | -20% Strength and -20% Mental Acuity for 3 turns |
+| I am scary! | One enemy row | 6 | -20% Strength and -20% Mental Acuity for 3 turns |
 | Bonk | One enemy | 3 | Moderate bash attack using the existing Blunt damage type: power 12 + 1.2 × Strength, minus Defense and adjusted for resistance |
 | Cover | Self | 4 | +25% Defense and +100% aggro weight for 3 turns; increases the probability of receiving enemy attacks |
 
 Poison and paralysis are status applications with no additional immediate stab damage. Status applications and healing do not roll accuracy or criticals. Damage abilities, including Bonk and Graceful assault, can critically hit. Graceful assault bypasses accuracy and evasion, but still respects Defense and Pierce resistance.
 
-Group actions confirm through any living member of the group and spend MP once. Dead members are excluded. Identical status IDs refresh rather than stack. Poison and paralysis clear with other statuses when battle ends. Consumables are also unusable while paralyzed.
+Group actions confirm through any living member of the group and spend MP once. I am scary! affects the selected enemy’s row (slots 1–3 or 4–6), and hovering a target highlights every living recipient. Dead members are excluded. Identical status IDs refresh rather than stack. Poison and paralysis clear with other statuses when battle ends. Consumables are also unusable while paralyzed.
 
 Explorer adds balanced primary stats and growth as described in [core mechanics](core_mechanics.md). Permanent stats retain the initial class base and every earned level's growth. Class changes affect only growth on later levels; they do not reroll or replace earned stats. Class abilities, resistances, and weapon restrictions still follow the current class.
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3]
 [ext_resource type="Script" path="res://scripts/world/town.gd" id="1"]
 [ext_resource type="Theme" path="res://resources/themes/default.tres" id="2"]
-[ext_resource type="Texture2D" path="res://textures/safe_zone.svg" id="3"]
+[ext_resource type="Texture2D" path="res://textures/safe_zone.png" id="3"]
 
 [node name="Town" type="Control"]
 layout_mode = 3
@@ -55,10 +55,10 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 48)
 text = "Tinkerer"
 
-[node name="Chemist" type="Button" parent="Panel/Buttons"]
+[node name="Barterer" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 48)
-text = "Chemist"
+text = "Barterer"
 
 [node name="Explore" type="Button" parent="Panel/Buttons"]
 layout_mode = 2

@@ -2,7 +2,7 @@ class_name AbilityDefinition
 extends Resource
 
 enum Effect { DAMAGE, HEAL, STATUS }
-enum Target { ENEMY, ALLY, SELF, ANY, PARTY, ENEMIES }
+enum Target { ENEMY, ALLY, SELF, ANY, PARTY, ENEMIES, ENEMY_ROW }
 
 @export var id: StringName
 @export var display_name: String
@@ -22,7 +22,7 @@ enum Target { ENEMY, ALLY, SELF, ANY, PARTY, ENEMIES }
 
 
 func is_valid() -> bool:
-	if id.is_empty() or mana_cost < 0 or not is_finite(hit_chance) or hit_chance < 0 or hit_chance > 1 or targeting not in [Target.ENEMY, Target.ALLY, Target.SELF, Target.ANY, Target.PARTY, Target.ENEMIES]:
+	if id.is_empty() or mana_cost < 0 or not is_finite(hit_chance) or hit_chance < 0 or hit_chance > 1 or targeting not in [Target.ENEMY, Target.ALLY, Target.SELF, Target.ANY, Target.PARTY, Target.ENEMIES, Target.ENEMY_ROW]:
 		return false
 	if effect == Effect.STATUS:
 		return status_effect != null and status_effect.is_valid()

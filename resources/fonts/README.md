@@ -1,0 +1,1 @@
+JournalItalic.ttf is the unmodified Noto Serif Medium Italic font, bundled for portable journal typography. It is distributed under the included Apache 2.0 license. Source: the system noto-fonts package (Noto / Google).

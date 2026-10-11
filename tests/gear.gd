@@ -77,6 +77,8 @@ func run() -> void:
 	ally.restore()
 	ally.current_hp -= 10
 	var enemy := CharacterState.new(FRONTLINER)
+	# Isolate healing from a randomized enemy attack later in the same round.
+	enemy.apply_status(load("res://resources/rpg/statuses/paralysis.tres"))
 	var session := BattleSession.new([actor, ally], [enemy])
 	check(session.choose_consumable(healing), "Choose friendly consumable")
 	check(enemy not in session.valid_targets() and ally in session.valid_targets(), "Friendly targeting enforces faction")
@@ -177,7 +179,7 @@ func run() -> void:
 	# Exercise actual navigation and UI handlers.
 	var main = load("res://scenes/main.tscn").instantiate()
 	root.add_child(main)
-	main.new_game()
+	main.new_game(false)
 	main.show_equipment()
 	var view = main.ui.get_child(0)
 	check(view.stash.item_count == 7, "Starter stash is available through equipment UI")

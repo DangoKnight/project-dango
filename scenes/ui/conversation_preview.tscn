@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/ui/conversation_trigger.tscn" id="Trigger"]
+[ext_resource type="Resource" path="res://resources/conversations/station_check_in.tres" id="Example"]
+
+[node name="ConversationPreview" instance=ExtResource("Trigger")]
+event = ExtResource("Example")
+on_scene_entry = true

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="FabricationRecipe" format=3]
+
+[ext_resource type="Script" path="res://scripts/rpg/fabrication_recipe.gd" id="Script"]
+[ext_resource type="Resource" path="res://resources/rpg/gear/spell_medallion.tres" id="Medallion"]
+
+[resource]
+script = ExtResource("Script")
+medallion = ExtResource("Medallion")
+required_kills = Dictionary[StringName, int]({&"rat": 2, &"ethereal_orb": 3})
+enemy_names = Dictionary[StringName, String]({&"rat": "Rats", &"ethereal_orb": "Ethereal Orbs"})

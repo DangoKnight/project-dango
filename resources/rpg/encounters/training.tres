@@ -1,9 +1,9 @@
 [gd_resource type="Resource" load_steps=5 format=3]
 [ext_resource type="Script" path="res://scripts/battle/encounter.gd" id="Script"]
 [ext_resource type="Script" path="res://scripts/rpg/character_definition.gd" id="Character"]
-[ext_resource type="Resource" path="res://resources/rpg/enemies/sentinel.tres" id="Sentinel"]
-[ext_resource type="Resource" path="res://resources/rpg/enemies/acolyte.tres" id="Acolyte"]
+[ext_resource type="Resource" path="res://resources/rpg/enemies/rat.tres" id="Rat"]
+[ext_resource type="Resource" path="res://resources/rpg/enemies/ethereal_orb.tres" id="Orb"]
 [resource]
 script = ExtResource("Script")
 display_name = "Training Encounter"
-enemies = Array[ExtResource("Character")]([ExtResource("Sentinel"), ExtResource("Acolyte")])
+enemies = Array[ExtResource("Character")]([ExtResource("Rat"), ExtResource("Orb")])

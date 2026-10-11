@@ -22,7 +22,7 @@ func check_hidden(text: String, context: String) -> void:
 func run() -> void:
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
-	game.new_game()
+	game.new_game(false)
 	game.show_characters()
 	var characters = game.ui.get_child(0)
 	var damage_types: Array[DamageType] = characters.damage_types

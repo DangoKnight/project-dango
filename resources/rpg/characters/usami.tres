@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CharacterDefinition" format=3 uid="uid://dvyjvvqp4xbwp"]
 
-[ext_resource type="Texture2D" uid="uid://vthm3gr5njv7" path="res://textures/Characters/Alpha/Usami-chan.png" id="6_yqqym"]
+[ext_resource type="Texture2D" uid="uid://urdig3456yob" path="res://textures/Characters/Alpha/Usami-chan_Portrait.png" id="6_yqqym"]
 [ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="12_yqqym"]
 [ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="AbilityScript"]
 [ext_resource type="Resource" path="res://resources/rpg/weapon_types/axe.tres" id="axe"]
@@ -26,7 +26,7 @@ max_mp = 25.0
 strength = 3.0
 defense = 4.0
 mental_acuity = 4.0
-mental_resilience = 3.0
+mental_resilience = 3.5
 speed = 5.0
 
 [sub_resource type="Resource" id="fireResistance"]
@@ -45,8 +45,8 @@ max_hp = 1.5
 max_mp = 2.5
 strength = 0.5
 defense = 1.0
-mental_acuity = 1.0
-mental_resilience = 0.5
+mental_acuity = 0.5
+mental_resilience = 1.0
 speed = 1.0
 
 [resource]
@@ -56,7 +56,6 @@ display_name = "Usami"
 title = "The friendly rabbit"
 description = "A warm-hearted rabbit girl who keeps the group together when the labyrinth feels endless. Usami lifts spirits with a cheerful word and tends to companions when the journey takes its toll. Seeing everyone safe and healthy puts an extra spring in her step."
 starting_class = ExtResource("Class")
-base_experience_reward = null
 base_stats = SubResource("Base")
 stat_growth = SubResource("Growth")
 resistances = Array[ExtResource("ResistanceScript")]([SubResource("fireResistance"), SubResource("frostResistance")])
@@ -67,6 +66,4 @@ starting_weapon = ExtResource("StartingWeapon")
 critical_rate = 0.05
 accuracy = 0.95
 portrait = ExtResource("6_yqqym")
-portrait_offset = Vector2(0, 0.2)
-portrait_scale = 1.4
 combat_texture = ExtResource("6_yqqym")

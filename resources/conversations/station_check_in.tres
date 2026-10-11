@@ -1,0 +1,90 @@
+[gd_resource type="Resource" script_class="ConversationEvent" format=3 uid="uid://c2dfl67pdjt5f"]
+
+[ext_resource type="Script" uid="uid://cu3lcycu15kpr" path="res://scripts/conversation/conversation_event.gd" id="Event"]
+[ext_resource type="Resource" uid="uid://5i8ornk5ktfl" path="res://resources/rpg/characters/kurako.tres" id="Kurako"]
+[ext_resource type="Script" uid="uid://j6qkokwt15" path="res://scripts/conversation/conversation_line.gd" id="Line"]
+[ext_resource type="Resource" uid="uid://dtoao4rtk4kh1" path="res://resources/rpg/characters/takane.tres" id="Takane"]
+[ext_resource type="Resource" uid="uid://dvyjvvqp4xbwp" path="res://resources/rpg/characters/usami.tres" id="Usami"]
+
+[sub_resource type="Resource" id="First"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+speaker = 1
+text = "Usami! Are you ready?!"
+left_entrance = 1
+
+[sub_resource type="Resource" id="Second"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Usami")
+speaker = 2
+text = "I'm ready, Kurako-chan! This is so exciting!"
+right_entrance = 2
+
+[sub_resource type="Resource" id="Third"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Usami")
+speaker = 1
+text = "Just think of all the people waiting to be pranked! This is gonna be so much fun!"
+
+[sub_resource type="Resource" id="Fourth"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Takane")
+speaker = 2
+text = "This is not a game, Kurako. It is very dangerous out there. Someone could get seriously hurt."
+right_entrance = 2
+right_exit = 2
+
+[sub_resource type="Resource" id="Fifth"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Takane")
+speaker = 2
+text = "It should go without saying. If something bad happens I'm taking Usami and running back to the Station."
+
+[sub_resource type="Resource" id="Sixth"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Takane")
+speaker = 1
+text = "W-What about me?!"
+
+[sub_resource type="Resource" id="Seventh"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Usami")
+speaker = 2
+text = "Don't worry, Kurako-chan! Takane-chan is a really sweet girl. There's no way she would ever leave you behind! Right, Takane-chan?"
+right_entrance = 2
+right_exit = 2
+
+[sub_resource type="Resource" id="Eighth"]
+script = ExtResource("Line")
+left_character = ExtResource("Takane")
+right_character = ExtResource("Usami")
+speaker = 1
+text = "..."
+left_entrance = 1
+left_exit = 1
+
+[sub_resource type="Resource" id="Nineth"]
+script = ExtResource("Line")
+left_character = ExtResource("Takane")
+right_character = ExtResource("Kurako")
+speaker = 2
+text = "Now I'm getting scared..."
+right_entrance = 2
+right_exit = 2
+
+[sub_resource type="Resource" id="Departure"]
+script = ExtResource("Line")
+auto_advance = true
+left_exit = 1
+right_exit = 2
+
+[resource]
+script = ExtResource("Event")
+id = &"station_check_in"
+lines = Array[ExtResource("Line")]([SubResource("First"), SubResource("Second"), SubResource("Third"), SubResource("Fourth"), SubResource("Fifth"), SubResource("Sixth"), SubResource("Seventh"), SubResource("Eighth"), SubResource("Nineth"), SubResource("Departure")])

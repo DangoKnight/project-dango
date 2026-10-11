@@ -32,7 +32,7 @@ func run() -> void:
 	town_template.free()
 	var game: Node = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
-	game.new_game()
+	game.new_game(false)
 	var party_member: CharacterState = game.party[0]
 	check(game.ui.get_child(0) is Town, "Starting town should be a Town instance")
 	game.show_town(second_town)
@@ -40,8 +40,14 @@ func run() -> void:
 	check(town.town_id == &"second_town", "Router should open the selected town")
 	check(town.get_node("Panel/Buttons/Title").text == "SECOND TOWN", "Town should apply its own display name")
 	town.get_node("Panel/Buttons/Explore").pressed.emit()
+	for frame in range(100):
+		if not game._battle_transition:
+			break
+		await create_timer(0.02).timeout
 	check(game.world.map_id == &"second_map", "Explore should use this town's configured map")
-	check(game.player.global_position.is_equal_approx(Vector3(3, 0.1, 4)), "Map should place the player at its own spawn point")
+	check(game.world.spawn_point.global_position.is_equal_approx(Vector3(3, 0.1, 4)), "Map retains its configured spawn point")
+	# Gravity can settle the player's height after the entry fade releases movement.
+	check(Vector2(game.player.global_position.x, game.player.global_position.z).is_equal_approx(Vector2(3, 4)) and game.player.global_position.y >= -0.01 and game.player.global_position.y <= 0.101, "Map places the player at its own spawn and supports them on the floor")
 	check(is_equal_approx(game.player.rotation.y, 0.5), "Map should use the spawn orientation")
 	check(game.player.movement_enabled, "Entering a map should activate its player")
 	game.show_pause()
@@ -57,7 +63,7 @@ func run() -> void:
 	check(game.ui.get_child(0).get_node("Background").texture == load("res://textures/wall.png"), "Locations should use the town's configured background")
 	game.show_town()
 	check(game.party[0] == party_member, "Changing towns and maps should preserve party state")
-	game.new_game()
+	game.new_game(false)
 	check(game.ui.get_child(0).town_id == &"starting_town", "New Game should reset the starting town")
 	# A town without an exploration destination cannot navigate to an invalid map.
 	var base_town: Town = load("res://scenes/base/town.tscn").instantiate()

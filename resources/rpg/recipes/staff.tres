@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="FabricationRecipe" format=3]
+
+[ext_resource type="Script" path="res://scripts/rpg/fabrication_recipe.gd" id="Script"]
+[ext_resource type="Resource" path="res://resources/rpg/weapons/apprentice_staff.tres" id="Weapon"]
+
+[resource]
+script = ExtResource("Script")
+weapon = ExtResource("Weapon")
+required_kills = Dictionary[StringName, int]({&"ethereal_orb": 3})
+enemy_names = Dictionary[StringName, String]({&"rat": "Rats", &"ethereal_orb": "Ethereal Orbs"})

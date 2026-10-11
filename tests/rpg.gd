@@ -46,7 +46,7 @@ func run() -> void:
 	check(is_equal_approx(frontliner.get_resistance(FIRE), 0.2), "Character resistance applies")
 	check(is_equal_approx(caster.get_resistance(ARCANE), 0.2), "Class resistance applies")
 	check(is_equal_approx(frontliner.get_resistance(FROST), -0.25), "Weakness applies")
-	check(RPGCombat.calculate_amount(caster, frontliner, EMBER) == 20, "Damage uses scaling, defense, and resistance")
+	check(RPGCombat.calculate_amount(caster, frontliner, EMBER) == 19, "Damage uses scaling, defense, and resistance")
 	var neutral_fire := DamageType.new()
 	neutral_fire.id = FIRE.id
 	check(is_equal_approx(frontliner.get_resistance(neutral_fire), 0.2), "Types match by stable ID, not resource identity")
@@ -56,7 +56,7 @@ func run() -> void:
 	var hp := frontliner.current_hp
 	var mp := caster.current_mp
 	var result := RPGCombat.use_ability(caster, frontliner, EMBER)
-	check(result.success and result.amount == 20 and frontliner.current_hp == hp - 20, "Using an ability deals calculated damage")
+	check(result.success and result.amount == 19 and frontliner.current_hp == hp - 19, "Using an ability deals calculated damage")
 	check(caster.current_mp == mp - EMBER.mana_cost, "Successful abilities spend MP")
 	result = RPGCombat.use_ability(frontliner, caster, EMBER)
 	check(not result.success and result.reason == "ability_not_known", "Unknown abilities are rejected")

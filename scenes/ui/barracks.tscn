@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/ui/barracks.gd" id="Script"]
 [ext_resource type="Theme" path="res://resources/themes/default.tres" id="Theme"]
-[ext_resource type="Texture2D" path="res://textures/barracks.svg" id="Background"]
+[ext_resource type="Texture2D" path="res://textures/barracks.png" id="Background"]
 
 [node name="Barracks" type="Control"]
 layout_mode = 3

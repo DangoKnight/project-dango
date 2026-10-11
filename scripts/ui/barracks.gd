@@ -96,10 +96,10 @@ func sleep() -> void:
 	sleep_requested.emit()
 
 
-func apply_rest() -> Array[Dictionary]:
+func apply_rest(exploration_multiplier: float = 1.0) -> Array[Dictionary]:
 	var reports: Array[Dictionary] = []
 	for member in roster:
-		member.apply_stored_experience(reports)
+		member.apply_stored_experience(reports, exploration_multiplier)
 		member.restore()
 	$Panel/Buttons/Feedback.text = "Everyone is rested. HP and SP fully restored."
 	select_member(selected_member)

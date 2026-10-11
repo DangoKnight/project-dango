@@ -16,7 +16,7 @@ func check(condition: bool, message: String) -> void:
 func run() -> void:
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
-	game.new_game()
+	game.new_game(false)
 	game.show_location("Barracks")
 	var town = game.ui.get_child(0)
 	var barracks = town.module_view
@@ -33,6 +33,7 @@ func run() -> void:
 	var member: CharacterState = game.party[0]
 	member.current_hp = 1
 	member.current_mp = 0
+	game.highest_labyrinth_completion = 1.0
 	member.store_experience(123, 350)
 	game.sleep_fade_duration = 0.2
 	barracks.get_node("Panel/Buttons/Sleep").pressed.emit()
@@ -43,7 +44,7 @@ func run() -> void:
 	tab.action = "party_information"
 	tab.pressed = true
 	game._input(tab)
-	game._on_action_requested("Chemist")
+	game._on_action_requested("Barterer")
 	check(town.module_view == barracks and game.screen == "location", "Sleep blocks shortcuts and navigation")
 	await create_timer(0.16).timeout
 	check(member.level == 3 and member.experience == 50 and member.stored_experience() == 0, "XP is applied at black using the agreed level curve")
@@ -69,7 +70,7 @@ func run() -> void:
 	await create_timer(0.22).timeout
 	check(not game.battle_fade.visible and not game._battle_transition and town.module_view == barracks, "Fade returns to the same Barracks and releases input")
 	check(barracks.get_node("Panel").visible and not barracks.get_node("PartyPanel").visible, "Sleep finishes at the Barracks menu")
-	town.get_node("Panel/Buttons/Chemist").pressed.emit()
+	town.get_node("Panel/Buttons/Barterer").pressed.emit()
 	check(barracks.is_inside_tree() and barracks.get_node("Panel").visible, "Replacing a module retains the outgoing card during its slide")
 	await create_timer(barracks.card_slide_duration + 0.05).timeout
 	check(not is_instance_valid(barracks), "Outgoing module is removed only after the slide")
@@ -79,7 +80,12 @@ func run() -> void:
 	town.get_node("Panel/Buttons/Explore").pressed.emit()
 	check(game.screen == "location", "Entering the labyrinth waits for the module card to slide out")
 	await create_timer(barracks.card_slide_duration + 0.05).timeout
-	check(game.screen == "explore", "Navigation continues after the card exits")
+	check(game.battle_fade.visible and game._battle_transition, "Navigation fades after the card exits")
+	for frame in range(100):
+		if not game._battle_transition:
+			break
+		await create_timer(0.02).timeout
+	check(game.screen == "explore" and not game.battle_fade.visible, "Navigation continues after the entry fade")
 	game.queue_free()
 	await process_frame
 	print("Rest transition tests complete: %d failure(s)" % failures)

@@ -10,4 +10,7 @@ display_name = "Immobilizing stab"
 description = "Briefly paralyzes a single enemy, preventing them from acting."
 effect = 2
 status_effect = ExtResource("Status")
+power = 3
 mana_cost = 5
+scaling_stat = "mental_acuity"
+defending_stat = "mental_resilience"

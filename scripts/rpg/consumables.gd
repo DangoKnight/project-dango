@@ -38,7 +38,7 @@ static func use_item(user: CharacterState, item: GearInstance, targets: Array[Ch
 					restored += target.current_mp - old_mp
 				ConsumableEffect.Kind.DAMAGE:
 					var defense := 0 if effect.defending_stat == "none" else target.get_stat(StringName(effect.defending_stat))
-					var dealt := maxi(0, int(round(maxi(0, effect.amount - defense) * (1.0 - target.get_resistance(effect.damage_type)) * user.get_damage_multiplier())))
+					var dealt := maxi(0, int(round(RPGCombat.mitigate_damage(effect.amount, defense) * (1.0 - target.get_resistance(effect.damage_type)) * user.get_damage_multiplier())))
 					if target.defending:
 						dealt = int(ceil(dealt * 0.5))
 					dealt = mini(target.current_hp, dealt)

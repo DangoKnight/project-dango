@@ -16,7 +16,7 @@ func check(condition: bool, message: String) -> void:
 func run() -> void:
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
-	game.new_game()
+	game.new_game(false)
 	game.explore()
 	check(is_equal_approx(game.battle_reveal_duration, 2.0), "Battle reveal defaults to two seconds")
 	game.start_combat()

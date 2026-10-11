@@ -48,7 +48,7 @@ func drag_slot(source: Control, target: Control) -> void:
 func run() -> void:
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
-	game.new_game()
+	game.new_game(false)
 	var town = game.ui.get_child(0)
 	check(town.get_node("Panel").anchor_left >= 1.0, "Safe Zone card begins beyond the right edge")
 	await create_timer(town.card_slide_duration * 0.4).timeout
@@ -56,7 +56,7 @@ func run() -> void:
 	root.size = Vector2i(1600, 900)
 	await create_timer(town.card_slide_duration + 0.05).timeout
 	check(is_equal_approx(town.get_node("Panel").anchor_left, 0.69), "Safe Zone finishes at its anchors after resize")
-	for location in ["Tinkerer", "Chemist", "Barracks"]:
+	for location in ["Tinkerer", "Barterer", "Barracks"]:
 		town.get_node("Panel/Buttons/" + location).pressed.emit()
 		var view = game.ui.get_child(0).module_view
 		check(view.get_node("Panel").anchor_right <= 0.0, "Module begins beyond the left edge: " + location)
@@ -151,13 +151,13 @@ func run() -> void:
 	game.start_combat(false)
 	var battle := game.ui.get_child(0) as CombatScreen
 	check(battle.session.party == saved_party and battle.session.active_character() == saved_party[0], "Battle uses the selected active party and order")
-	game.new_game()
+	game.new_game(false)
 	check(game.party.size() == 4 and game.roster.size() == 4 and game.roster[0] != original, "New Game resets roster and formation")
 	# Future recruits stay available even when the initial party reaches capacity.
 	var extra := game.starting_characters[0].duplicate(true) as CharacterDefinition
 	extra.id = &"reserve_fixture"
 	game.starting_characters.append(extra)
-	game.new_game()
+	game.new_game(false)
 	game.show_location("Barracks")
 	barracks = game.ui.get_child(0).module_view
 	barracks.open_party()

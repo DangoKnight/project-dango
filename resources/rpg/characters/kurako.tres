@@ -8,7 +8,7 @@
 [ext_resource type="Resource" path="res://resources/rpg/damage_types/frost.tres" id="frost"]
 [ext_resource type="Resource" path="res://resources/rpg/passives/easy_target.tres" id="HiddenPassive"]
 [ext_resource type="Script" uid="uid://cgpdt2kimfbak" path="res://scripts/rpg/passive_ability.gd" id="PassiveScript"]
-[ext_resource type="Texture2D" uid="uid://54as2yaama2u" path="res://textures/Characters/Alpha/Kurako-chan.png" id="Portrait"]
+[ext_resource type="Texture2D" uid="uid://4xshlyus414d" path="res://textures/Characters/Alpha/Kurako-chan_Portrait.png" id="Portrait"]
 [ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="ResistanceScript"]
 [ext_resource type="Script" uid="uid://cftevjhnkln3e" path="res://scripts/rpg/character_definition.gd" id="Script"]
 [ext_resource type="Resource" path="res://resources/rpg/weapon_types/spear.tres" id="spear"]
@@ -57,7 +57,6 @@ display_name = "Kurako"
 title = "The prankster jellyfish"
 description = "A mischievous jellyfish who treats danger as an opportunity for a prank. Kurako's stinging tricks leave hostiles weakened, poisoned, or unable to move, and seeing a weakened target really boosts her spirit."
 starting_class = ExtResource("Class")
-base_experience_reward = null
 base_stats = SubResource("Base")
 stat_growth = SubResource("Growth")
 resistances = Array[ExtResource("ResistanceScript")]([SubResource("fireResistance"), SubResource("frostResistance")])
@@ -68,6 +67,4 @@ starting_weapon = ExtResource("StartingWeapon")
 critical_rate = 0.05
 accuracy = 0.95
 portrait = ExtResource("Portrait")
-portrait_offset = Vector2(0, 0.3)
-portrait_scale = 1.55
 combat_texture = ExtResource("Portrait")

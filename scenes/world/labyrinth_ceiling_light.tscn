@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/labyrinth_ceiling_light.gd" id="Script"]
+
+[sub_resource type="StandardMaterial3D" id="HousingMaterial"]
+albedo_color = Color(0.24, 0.25, 0.24, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="HousingMesh"]
+material = SubResource("HousingMaterial")
+size = Vector3(1.65, 0.08, 0.7)
+
+[sub_resource type="BoxMesh" id="DiffuserMesh"]
+size = Vector3(1.5, 0.025, 0.55)
+
+[node name="CeilingLight" type="Node3D"]
+script = ExtResource("Script")
+
+[node name="Housing" type="MeshInstance3D" parent="."]
+mesh = SubResource("HousingMesh")
+cast_shadow = 0
+
+[node name="Diffuser" type="MeshInstance3D" parent="."]
+position = Vector3(0, -0.05, 0)
+mesh = SubResource("DiffuserMesh")
+cast_shadow = 0
+
+[node name="Light" type="OmniLight3D" parent="."]
+position = Vector3(0, -0.18, 0)
+visible = false
+light_color = Color(1, 0.94, 0.79, 1)
+light_energy = 0.0
+light_bake_mode = 0
+shadow_enabled = true
+shadow_bias = 0.03
+shadow_normal_bias = 0.2

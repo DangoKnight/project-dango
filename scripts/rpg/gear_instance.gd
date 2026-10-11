@@ -33,3 +33,12 @@ func _spend_use() -> bool:
 		return false
 	_uses_left -= 1
 	return true
+
+
+func destroy_consumable() -> void:
+	if definition == null or definition.kind != GearDefinition.Kind.CONSUMABLE:
+		return
+	var carrier := get_carrier()
+	if carrier != null:
+		carrier.unequip_gear(self)
+	_uses_left = 0

@@ -3,6 +3,7 @@ extends RefCounted
 
 signal changed
 signal action_resolved(message: String)
+signal enemy_defeated(species: StringName)
 
 enum Phase { ACTION_SELECTION, TARGET_SELECTION, READY, RESOLVING, FINISHED }
 
@@ -22,15 +23,19 @@ var _selected_basic := false
 var _queue: Array[BattleAction] = []
 var _queue_index := 0
 var _rewarded_enemies: Dictionary = {}
+var _escape_failures: Dictionary = {}
+var compendium: MonsterCompendium
 
 
-func _init(allies: Array[CharacterState], opponents: Array[CharacterState]) -> void:
+func _init(allies: Array[CharacterState], opponents: Array[CharacterState], knowledge: MonsterCompendium = null) -> void:
+	compendium = knowledge if knowledge != null else MonsterCompendium.new()
 	party = allies.duplicate()
 	enemies = opponents.duplicate()
 	rng.randomize()
 	for character in party + enemies:
 		character.bind_battle(self)
 	for enemy in enemies:
+		compendium.encounter(enemy.definition)
 		if not enemy.is_alive():
 			_rewarded_enemies[enemy] = true
 	_start_round()
@@ -115,7 +120,7 @@ func _targets_for(actor: CharacterState, ability: AbilityDefinition) -> Array[Ch
 	var foes: Array[CharacterState] = enemies if actor in party else party
 	var candidates: Array[CharacterState] = []
 	match ability.targeting:
-		AbilityDefinition.Target.ENEMY, AbilityDefinition.Target.ENEMIES: candidates = foes
+		AbilityDefinition.Target.ENEMY, AbilityDefinition.Target.ENEMIES, AbilityDefinition.Target.ENEMY_ROW: candidates = foes
 		AbilityDefinition.Target.ALLY, AbilityDefinition.Target.PARTY: candidates = friends
 		AbilityDefinition.Target.SELF: candidates = [actor]
 		AbilityDefinition.Target.ANY: candidates = friends + foes
@@ -124,6 +129,43 @@ func _targets_for(actor: CharacterState, ability: AbilityDefinition) -> Array[Ch
 		if character.is_alive():
 			result.append(character)
 	return result
+
+
+## Enemy spots 1–3 form the upper row, 4–6 the lower row. Dead slots never shift rows.
+func affected_targets(target: CharacterState) -> Array[CharacterState]:
+	if target not in valid_targets():
+		return []
+	if _selected_consumable != null:
+		if _selected_consumable.definition.consumable_target in [GearDefinition.Target.PARTY, GearDefinition.Target.ENEMIES]:
+			return valid_targets()
+		return [target]
+	return _ability_recipients(active_character(), selected_ability(), target)
+
+
+func _ability_recipients(actor: CharacterState, ability: AbilityDefinition, target: CharacterState) -> Array[CharacterState]:
+	if ability.targeting in [AbilityDefinition.Target.PARTY, AbilityDefinition.Target.ENEMIES]:
+		return _targets_for(actor, ability)
+	if ability.targeting == AbilityDefinition.Target.ENEMY_ROW:
+		var opponents: Array[CharacterState] = enemies if actor in party else party
+		var row := opponents.find(target) / 3
+		var result: Array[CharacterState] = []
+		for index in range(opponents.size()):
+			if index / 3 == row and opponents[index].is_alive():
+				result.append(opponents[index])
+		return result
+	return [target]
+
+
+## Each runner has their own accumulated failure bonus for this encounter.
+func escape_chance(actor: CharacterState) -> float:
+	var opponents: Array[CharacterState] = enemies if actor in party else party
+	var fastest := 0.0
+	var living_opponents := _living(opponents)
+	for opponent in living_opponents:
+		fastest = maxf(fastest, opponent.get_stat(&"speed"))
+	if living_opponents.is_empty():
+		return 1.0
+	return clampf(0.6 * actor.get_stat(&"speed") / maxf(1.0, fastest) + 0.15 * _escape_failures.get(actor, 0), 0.2, 1.0)
 
 
 func select_target(target: CharacterState) -> bool:
@@ -218,7 +260,7 @@ func begin_resolution() -> bool:
 	phase = Phase.RESOLVING
 	var round_experience := 0.0
 	for enemy in _living(enemies):
-		round_experience += enemy.definition.base_experience_reward / pow(2.0, round_number - 1)
+		round_experience += _enemy_round_experience(enemy)
 	for character in party:
 		character.store_experience(get_instance_id(), round_experience * character.experience_multiplier())
 	changed.emit()
@@ -234,14 +276,17 @@ func resolve_next_action() -> void:
 	var message := "%s cannot act." % action.actor.definition.display_name
 	if action.actor.can_act():
 		if action.running:
-			escaped = true
-			for character in party:
-				character.discard_encounter_experience(get_instance_id())
-			phase = Phase.FINISHED
-			_clear_battle_effects()
-			action_resolved.emit("%s leads the party to safety." % action.actor.definition.display_name)
-			changed.emit()
-			return
+			if rng.randf() < escape_chance(action.actor):
+				escaped = true
+				for character in party:
+					character.discard_encounter_experience(get_instance_id())
+				phase = Phase.FINISHED
+				_clear_battle_effects()
+				action_resolved.emit("%s leads the party to safety." % action.actor.definition.display_name)
+				changed.emit()
+				return
+			_escape_failures[action.actor] = _escape_failures.get(action.actor, 0) + 1
+			message = "%s fails to escape." % action.actor.definition.display_name
 		elif action.defending:
 			message = "%s defends." % action.actor.definition.display_name
 		elif action.consumable != null:
@@ -254,6 +299,12 @@ func resolve_next_action() -> void:
 				recipients = [action.target]
 			var result := RPGConsumables.use_item(action.actor, item, recipients)
 			if result.success:
+				if action.actor in party:
+					for effect in item.definition.effects:
+						var damage_type: DamageType = effect.damage_type if effect.kind == ConsumableEffect.Kind.DAMAGE else effect.status.damage_type if effect.kind == ConsumableEffect.Kind.APPLY_STATUS and effect.status.turn_damage > 0 else null
+						for recipient in recipients:
+							if recipient in enemies and damage_type != null:
+								compendium.learn_resistance(recipient, damage_type)
 				message = "%s uses %s: %d healing, %d damage, %d SP restored; effects applied. %d uses left%s." % [action.actor.definition.display_name, item.definition.display_name, result.healing, result.damage, result.sp_restored, result.remaining_uses, " (destroyed)" if result.destroyed else ""]
 			else:
 				message = "%s: %s failed (%s)." % [action.actor.definition.display_name, item.definition.display_name, result.reason]
@@ -270,21 +321,27 @@ func resolve_next_action() -> void:
 				if not replacements.is_empty():
 					action.target = replacements[0]
 			var result: Dictionary
-			var group := ability.targeting in [AbilityDefinition.Target.PARTY, AbilityDefinition.Target.ENEMIES]
+			var group := ability.targeting in [AbilityDefinition.Target.PARTY, AbilityDefinition.Target.ENEMIES, AbilityDefinition.Target.ENEMY_ROW]
+			var recipients: Array[CharacterState] = []
+			if group:
+				recipients = _ability_recipients(action.actor, ability, action.target)
+			else:
+				recipients.append(action.target)
 			if action.basic_attack:
 				result = RPGCombat.use_basic_attack(action.actor, action.target, rng)
 			elif group:
-				result = RPGCombat.use_ability_on_targets(action.actor, _targets_for(action.actor, ability), ability, rng)
+				result = RPGCombat.use_ability_on_targets(action.actor, recipients, ability, rng)
 			else:
 				result = RPGCombat.use_ability(action.actor, action.target, ability, rng)
+			_record_knowledge(action.actor, recipients, ability, result)
 			if not result.success:
 				message = "%s: %s failed (%s)." % [action.actor.definition.display_name, ability.display_name, result.reason]
 			elif result.missed:
-				message = "%s uses %s on %s: miss." % [action.actor.definition.display_name, ability.display_name, "the party" if ability.targeting == AbilityDefinition.Target.PARTY else "all enemies" if ability.targeting == AbilityDefinition.Target.ENEMIES else action.target.definition.display_name]
+				message = "%s uses %s on %s: miss." % [action.actor.definition.display_name, ability.display_name, "the party" if ability.targeting == AbilityDefinition.Target.PARTY else "all enemies" if ability.targeting == AbilityDefinition.Target.ENEMIES else "an enemy row" if ability.targeting == AbilityDefinition.Target.ENEMY_ROW else action.target.definition.display_name]
 			elif ability.effect == AbilityDefinition.Effect.STATUS:
-				message = "%s uses %s on %s." % [action.actor.definition.display_name, ability.display_name, "the party" if ability.targeting == AbilityDefinition.Target.PARTY else "all enemies" if ability.targeting == AbilityDefinition.Target.ENEMIES else action.target.definition.display_name]
+				message = "%s uses %s on %s." % [action.actor.definition.display_name, ability.display_name, "the party" if ability.targeting == AbilityDefinition.Target.PARTY else "all enemies" if ability.targeting == AbilityDefinition.Target.ENEMIES else "an enemy row" if ability.targeting == AbilityDefinition.Target.ENEMY_ROW else action.target.definition.display_name]
 			else:
-				message = "%s uses %s on %s: %d %s." % [action.actor.definition.display_name, ability.display_name, "the party" if ability.targeting == AbilityDefinition.Target.PARTY else "all enemies" if ability.targeting == AbilityDefinition.Target.ENEMIES else action.target.definition.display_name, result.amount, "healing" if ability.effect == AbilityDefinition.Effect.HEAL else "critical damage" if result.critical else "damage"]
+				message = "%s uses %s on %s: %d %s." % [action.actor.definition.display_name, ability.display_name, "the party" if ability.targeting == AbilityDefinition.Target.PARTY else "all enemies" if ability.targeting == AbilityDefinition.Target.ENEMIES else "an enemy row" if ability.targeting == AbilityDefinition.Target.ENEMY_ROW else action.target.definition.display_name, result.amount, "healing" if ability.effect == AbilityDefinition.Effect.HEAL else "critical damage" if result.critical else "damage"]
 	elif action.actor.is_alive():
 		message = "%s is paralyzed and cannot act." % action.actor.definition.display_name
 	if action.actor.is_alive():
@@ -302,29 +359,46 @@ func resolve_next_action() -> void:
 		changed.emit()
 
 
-## Each enemy defeat pays its round-dependent bonus once to living party members.
+func _record_knowledge(actor: CharacterState, recipients: Array[CharacterState], ability: AbilityDefinition, result: Dictionary) -> void:
+	if not result.success:
+		return
+	if actor in enemies:
+		compendium.learn_ability(actor.definition, ability)
+		return
+	var damage_type: DamageType = ability.damage_type if ability.effect == AbilityDefinition.Effect.DAMAGE else ability.status_effect.damage_type if ability.effect == AbilityDefinition.Effect.STATUS and ability.status_effect.turn_damage > 0 else null
+	if damage_type == null:
+		return
+	var hits: Array = result.get("targets", [result])
+	for index in range(recipients.size()):
+		if recipients[index] in enemies and not hits[index].get("missed", false):
+			compendium.learn_resistance(recipients[index], damage_type)
+
+
+func _enemy_round_experience(enemy: CharacterState) -> float:
+	return enemy.definition.base_experience_reward / pow(4.0, round_number - 1)
+
+
+## Each enemy defeat pays its current round reward again, once per living member.
 func _reward_defeated_enemies() -> void:
 	for enemy in enemies:
 		if not enemy.is_alive() and not _rewarded_enemies.has(enemy):
 			_rewarded_enemies[enemy] = true
+			enemy_defeated.emit(enemy.definition.id)
 			for character in party:
-				character.store_experience(get_instance_id(), pow(2.0, round_number - 1) * character.experience_multiplier())
+				character.store_experience(get_instance_id(), _enemy_round_experience(enemy) * character.experience_multiplier())
 
 
-## Neutral weights preserve the existing enemy spread. Increased aggro uses weighted targeting.
+## Max HP sets the base weight; gear and statuses such as Cover modify that weight.
 func _aggro_target(candidates: Array[CharacterState], fallback: CharacterState) -> CharacterState:
-	var increased := false
+	if candidates.is_empty():
+		return fallback
 	var total := 0.0
 	for candidate in candidates:
-		var weight := candidate.get_combat_stat(&"aggro")
-		increased = increased or not is_equal_approx(weight, 1.0)
-		total += weight
-	if not increased:
-		return fallback if fallback in candidates else candidates[0]
+		total += candidate.get_combat_stat(&"aggro")
 	var roll := rng.randf() * total
 	for candidate in candidates:
 		roll -= candidate.get_combat_stat(&"aggro")
-		if roll <= 0.0:
+		if roll < 0.0:
 			return candidate
 	return candidates[-1]
 

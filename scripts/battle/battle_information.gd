@@ -103,5 +103,5 @@ func show_side(enemies: bool) -> void:
 func _select_member(index: int) -> void:
 	_selected[int(showing_enemies)] = index
 	var units: Array[CharacterState] = session.enemies if showing_enemies else session.party
-	details.text = CharacterInformation.describe(units[index], damage_types, false)
+	details.text = session.compendium.describe(units[index].definition.id) if showing_enemies else CharacterInformation.describe(units[index], damage_types, false)
 	details.scroll_to_line(0)

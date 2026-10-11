@@ -1,0 +1,29 @@
+{
+  "id": "office_labyrinth",
+  "display_name": "The Office Labyrinth",
+  "size": [6, 9],
+  "cell_size": 5.0,
+  "wall_height": 3.5,
+  "generation_seed": 0,
+  "spawn_landmark": "entry_refuge",
+  "landmarks": [
+	{"id": "entry_refuge", "display_name": "Station 45-B", "kind": "safe_zone", "coordinate": [1, 1]},
+	{"id": "distant_refuge", "display_name": "Distant Safe Zone", "kind": "safe_zone", "coordinate": [4, 8]},
+	{"id": "service_hub", "display_name": "Service Junction", "kind": "landmark", "coordinate": [5, 4]}
+  ],
+  "reward_node_min": 4,
+  "reward_node_max": 8,
+  "possible_rewards": [
+	"res://resources/rpg/gear/healing_draught.tres",
+	"res://resources/rpg/gear/rally_flask.tres",
+    "res://resources/rpg/gear/frailty_bomb.tres"
+  ],
+  "encounters": [
+	"res://resources/rpg/encounters/rat_pair.tres",
+	"res://resources/rpg/encounters/orb_pair.tres",
+    "res://resources/rpg/encounters/office_patrol.tres"
+  ],
+  "encounters_enabled": true,
+  "encounter_steps_min": 4,
+  "encounter_steps_max": 8
+}

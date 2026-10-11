@@ -234,9 +234,9 @@ func discard_encounter_experience(encounter_id: int) -> void:
 	changed.emit()
 
 
-func apply_stored_experience(reports: Array[Dictionary] = []) -> int:
+func apply_stored_experience(reports: Array[Dictionary] = [], exploration_multiplier: float = 1.0) -> int:
 	var previous_level := level
-	experience += stored_experience()
+	experience += stored_experience() * clampf(exploration_multiplier, 0.0, 1.0)
 	_stored_experience.clear()
 	while level < MAX_LEVEL and experience >= experience_to_next_level():
 		experience -= experience_to_next_level()
@@ -406,10 +406,12 @@ func get_combat_stat(stat: StringName) -> float:
 		if item.definition.kind == GearDefinition.Kind.ARTIFACT:
 			total += float(item.definition.stat_modifiers.get(stat, 0.0))
 	if stat in [&"critical_rate", &"accuracy", &"evasion"]:
-		return clampf(total + _status_stat_percent(stat), 0.0, 1.0) * _observe_factor()
+		return clampf(total + _status_stat_percent(stat), 0.0, 1.0)
 	if stat == &"critical_damage":
-		return maxf(1.0, total + _status_stat_percent(stat)) * _observe_factor()
-	return maxf(0.01, total * _status_stat_multiplier(stat)) * _observe_factor()
+		return maxf(1.0, total + _status_stat_percent(stat))
+	if stat == &"aggro":
+		total *= get_stat(&"max_hp")
+	return maxf(0.01, total * _status_stat_multiplier(stat))
 
 
 func _status_stat_multiplier(stat: StringName) -> float:

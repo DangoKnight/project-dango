@@ -1,6 +1,8 @@
 class_name RPGCombat
 extends RefCounted
 
+const MITIGATION_CONSTANT := 20.0
+
 const BASIC_ATTACK: AbilityDefinition = preload("res://resources/rpg/abilities/basic_attack.tres")
 
 
@@ -21,7 +23,11 @@ static func calculate_amount(user: CharacterState, target: CharacterState, abili
 	if ability.effect == AbilityDefinition.Effect.HEAL:
 		return maxi(0, int(round(raw)))
 	var defense := 0 if ability.defending_stat == "none" else target.get_stat(StringName(ability.defending_stat))
-	return maxi(0, int(round(maxf(0.0, raw - defense) * (1.0 - target.get_resistance(ability.damage_type)) * user.get_damage_multiplier())))
+	return maxi(0, int(round(mitigate_damage(raw, defense) * (1.0 - target.get_resistance(ability.damage_type)) * user.get_damage_multiplier())))
+
+
+static func mitigate_damage(raw: float, defense: float) -> float:
+	return maxf(0.0, raw) * MITIGATION_CONSTANT / (MITIGATION_CONSTANT + maxf(0.0, defense))
 
 
 static func use_ability(user: CharacterState, target: CharacterState, ability: AbilityDefinition, rng: RandomNumberGenerator = null) -> Dictionary:
@@ -40,7 +46,7 @@ static func use_ability_on_targets(user: CharacterState, targets: Array[Characte
 		return _failure("ability_not_known")
 	if user.current_mp < ability.mana_cost:
 		return _failure("insufficient_mp")
-	if ability.targeting not in [AbilityDefinition.Target.PARTY, AbilityDefinition.Target.ENEMIES] and targets.size() != 1:
+	if ability.targeting not in [AbilityDefinition.Target.PARTY, AbilityDefinition.Target.ENEMIES, AbilityDefinition.Target.ENEMY_ROW] and targets.size() != 1:
 		return _failure("invalid_target")
 	if ability.targeting == AbilityDefinition.Target.SELF and targets[0] != user:
 		return _failure("invalid_target")

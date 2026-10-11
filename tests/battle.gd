@@ -2,7 +2,7 @@ extends SceneTree
 
 const FRONTLINER = preload("res://tests/fixtures/frontliner.tres")
 const CASTER = preload("res://tests/fixtures/caster.tres")
-const SENTINEL = preload("res://resources/rpg/enemies/sentinel.tres")
+const RAT = preload("res://resources/rpg/enemies/rat.tres")
 const ENCOUNTER = preload("res://resources/rpg/encounters/training.tres")
 const EMBER = preload("res://resources/rpg/abilities/ember.tres")
 const MEND = preload("res://resources/rpg/abilities/mend.tres")
@@ -53,7 +53,7 @@ func press_command(view: CombatScreen, title: String) -> void:
 func run() -> void:
 	var frontliner := CharacterState.new(FRONTLINER, null, 2)
 	var caster := CharacterState.new(CASTER, null, 2)
-	var enemy := CharacterState.new(SENTINEL)
+	var enemy := CharacterState.new(RAT)
 	var session := BattleSession.new([frontliner, caster], [enemy])
 	check(not session.begin_resolution(), "Resolution cannot start before all player choices")
 	check(not session.choose_ability(EMBER), "Characters cannot plan unknown abilities")
@@ -102,6 +102,14 @@ func run() -> void:
 	var survivor := fighter("Survivor", 100, 1, 0)
 	var killer := fighter("Killer", 100, 10, 10)
 	var skipped := BattleSession.new([doomed, survivor], [killer])
+	# Force this timing fixture to target the fragile ally despite its lower HP weight.
+	var targeting_seed := 0
+	while true:
+		skipped.rng.seed = targeting_seed
+		if skipped._aggro_target([doomed, survivor], doomed) == doomed:
+			skipped.rng.seed = targeting_seed
+			break
+		targeting_seed += 1
 	messages.clear()
 	skipped.action_resolved.connect(func(message: String): messages.append(message))
 	attack(skipped, killer)
@@ -123,6 +131,17 @@ func run() -> void:
 	adjusted_character.portrait_stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	check(view.configure([CharacterState.new(adjusted_character), CharacterState.new(CASTER)], ENCOUNTER), "Combat scene should accept the encounter")
 	check(view.enemy_slots.size() == 6 and view.party_buttons.size() == 4, "Combat should provide six enemy spots and four character cards")
+	check(ENCOUNTER.enemies[0].id == &"rat" and ENCOUNTER.enemies[1].id == &"ethereal_orb", "Starter encounter uses rats and ethereal orbs")
+	for slot_index in range(2):
+		var enemy_slot: Button = view.enemy_slots[slot_index]
+		check(enemy_slot.text.is_empty() and enemy_slot.tooltip_text.is_empty() and not enemy_slot.has_node("Name"), "Enemy slots show no text or hover labels")
+		for style in ["normal", "hover", "pressed", "hover_pressed", "disabled", "focus"]:
+			check(enemy_slot.get_theme_stylebox(style) is StyleBoxEmpty, "Enemy holder remains transparent in state: " + style)
+		var health: ProgressBar = enemy_slot.get_node("HP")
+		var image: TextureRect = enemy_slot.get_node("Image")
+		check(not health.show_percentage and health.value == 1.0 and health.max_value == 1.0, "Enemy health bar shows relative health without exposing maximum HP")
+		check(health.anchor_bottom < image.anchor_top and image.anchor_bottom - image.anchor_top > 0.9, "Compact enemy health bar sits above the enlarged sprite")
+		check(image.texture.get_width() == image.texture.get_height(), "Starter enemy sprites have a square canvas")
 	check(view._panel_targets[view.portrait.name] and view.session.active_character().definition.display_name == "Test Frontliner", "Choosing actions should overlay the active portrait")
 	check(view.portrait_image.scale.is_equal_approx(Vector2(0.8, 0.8)), "Character portrait should use its own scale")
 	check(is_equal_approx(view.portrait_image.anchor_left, -0.1) and is_equal_approx(view.portrait_image.anchor_top, 0.05), "Character portrait should use proportional offsets")
@@ -169,7 +188,7 @@ func run() -> void:
 	# Fill every spot and verify the last enemy is reachable and all four characters plan.
 	var full_encounter := BattleEncounter.new()
 	for index in range(6):
-		full_encounter.enemies.append(SENTINEL)
+		full_encounter.enemies.append(RAT)
 	view = load("res://scenes/battle/combat.tscn").instantiate() as CombatScreen
 	root.add_child(view)
 	check(view.configure([CharacterState.new(FRONTLINER), CharacterState.new(CASTER), CharacterState.new(FRONTLINER), CharacterState.new(CASTER)], full_encounter), "Combat should accept six enemies and four characters")
@@ -191,8 +210,9 @@ func run() -> void:
 	# Keep the two-member defeat fixture: this encounter has two enemy actions.
 	var fixture_characters: Array[CharacterDefinition] = [FRONTLINER, CASTER]
 	game.starting_characters = fixture_characters
-	game.new_game()
+	game.new_game(false)
 	game.explore()
+	game.world.encounter = ENCOUNTER
 	await create_timer(0.3).timeout
 	var original_map: Map = game.world
 	var original_position: Vector3 = game.player.position
@@ -208,7 +228,10 @@ func run() -> void:
 	resolve_round(view.session)
 	check(view.session.victory, "Defeating all enemies should end battle in victory")
 	check(view.session.party[0].get_active_statuses().is_empty(), "Combat statuses should clear after battle")
-	await create_timer(2.1).timeout
+	for frame in range(180):
+		if game.screen != "combat" and not game._battle_transition:
+			break
+		await create_timer(0.02).timeout
 	check(game.screen == "explore" and game.world == original_map and game.player.position.is_equal_approx(original_position), "Victory should return to the existing map and player position")
 	check(game.world.visible and game.player.movement_enabled, "Returning from battle should restore map controls")
 	if DisplayServer.get_name() != "headless":
@@ -221,7 +244,10 @@ func run() -> void:
 		view.session.choose_wait()
 	resolve_round(view.session)
 	check(view.session.phase == BattleSession.Phase.FINISHED and not view.session.victory, "Defeated party should end combat")
-	await create_timer(2.1).timeout
+	for frame in range(180):
+		if game.screen != "combat" and not game._battle_transition:
+			break
+		await create_timer(0.02).timeout
 	check(game.screen == "town" and game.world == null, "Defeat should return to the originating town")
 	await process_frame
 	# Guard protects even against faster enemies, expires, and does not spend MP.
@@ -238,11 +264,12 @@ func run() -> void:
 	while guard_session.phase == BattleSession.Phase.RESOLVING:
 		guard_session.resolve_next_action()
 	check(not defender.defending and defender.current_mp == guard_mp, "Guard expires next round without spending MP")
+	guard_session._escape_failures[defender] = 7
 	check(guard_session.choose_run(), "Run should commit without a target")
 	resolve_round(guard_session)
 	check(guard_session.escaped and not guard_session.victory and guard_session.phase == BattleSession.Phase.FINISHED, "Run ends combat without victory")
 	# Retreat returns to the same map and preserves resources.
-	game.new_game()
+	game.new_game(false)
 	game.explore()
 	var retreat_map: Node = game.world
 	game.start_combat(false)
@@ -269,13 +296,17 @@ func run() -> void:
 	check(view._special_open and view._panel_targets[view.portrait.name], "Special expands skills while retaining the portrait")
 	view.back.pressed.emit()
 	check(not view._special_open, "Back closes Special before editing choices")
+	view.session._escape_failures[view.session.active_character()] = 7
 	press_command(view, "Run")
 	while view.session.phase != BattleSession.Phase.READY:
 		view.session.choose_defend()
 	resolve_round(view.session)
 	check(view.session.escaped, "Queued party Run should escape")
 	var escaped_hp: int = game.party[0].current_hp
-	await create_timer(2.1).timeout
+	for frame in range(180):
+		if game.screen != "combat" and not game._battle_transition:
+			break
+		await create_timer(0.02).timeout
 	check(game.screen == "explore" and game.world == retreat_map and game.party[0].current_hp == escaped_hp and escaped_hp <= retreat_hp, "Retreat restores map without healing the party")
 	print("Battle tests complete: %d failure(s)" % failures)
 	quit(1 if failures else 0)

@@ -26,13 +26,12 @@ func run() -> void:
 	var takane := unit("takane")
 	var kurako := unit("kurako")
 	var koumi := unit("koumi")
-	var foe := CharacterState.new(load("res://resources/rpg/enemies/sentinel.tres"), null, 2)
+	var foe := CharacterState.new(load("res://resources/rpg/enemies/rat.tres"), null, 2)
 	var base_speed := usami.get_stat(&"speed")
 	var base_acuity := kurako.get_stat(&"mental_acuity")
 	var koumi_base: Dictionary = {}
 	for stat in RPGStats.NAMES:
 		koumi_base[stat] = koumi.get_stat(stat)
-	var normal_damage := RPGCombat.calculate_amount(takane, foe, RPGCombat.BASIC_ATTACK)
 	var battle := BattleSession.new([usami, takane, kurako, koumi], [foe])
 	check(usami.get_stat(&"speed") == int(floor(base_speed * 1.2)), "Happy friends activates for a healthy party")
 	usami.current_hp = 70
@@ -46,7 +45,8 @@ func run() -> void:
 	check(is_equal_approx(takane.get_damage_multiplier(), 1.0), "Overprotective sister does not activate at exactly half health")
 	usami.current_hp = 49
 	check(is_equal_approx(takane.get_damage_multiplier(), 1.2), "Hurt Usami activates 120 percent damage")
-	var expected := int(round(normal_damage * 1.2))
+	var unrounded := RPGCombat.mitigate_damage(RPGCombat.BASIC_ATTACK.power + takane.get_stat(&"strength") * RPGCombat.BASIC_ATTACK.scaling, foe.get_stat(&"defense")) * (1.0 - foe.get_resistance(RPGCombat.BASIC_ATTACK.damage_type))
+	var expected := int(round(unrounded * 1.2))
 	check(RPGCombat.calculate_amount(takane, foe, RPGCombat.BASIC_ATTACK) == expected, "Passive affects calculated attack damage")
 	usami.current_hp = 0
 	check(is_equal_approx(takane.get_damage_multiplier(), 1.5), "Downed Usami grants 150 percent, without stacking")

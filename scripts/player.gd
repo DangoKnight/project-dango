@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+signal walked(distance: float)
+
 @export var speed := 7.0
 @export var mouse_sensitivity := 0.0025
 @export var gravity := 20.0
@@ -25,4 +27,8 @@ func _physics_process(delta: float) -> void:
 		velocity.y -= gravity * delta
 	else:
 		velocity.y = 0.0
+	var previous_position := position
 	move_and_slide()
+	var distance := Vector2(position.x - previous_position.x, position.z - previous_position.z).length()
+	if distance > 0.0001:
+		walked.emit(distance)

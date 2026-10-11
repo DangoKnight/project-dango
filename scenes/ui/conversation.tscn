@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://bo1h4yu0f61t"]
+
+[ext_resource type="Script" uid="uid://cfapb1fl0p0au" path="res://scripts/conversation/conversation_overlay.gd" id="Script"]
+
+[sub_resource type="StyleBoxFlat" id="DialogueStyle"]
+bg_color = Color(0.035, 0.045, 0.055, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.62, 0.65, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Conversation" type="CanvasLayer" unique_id=1801348545]
+process_mode = 3
+layer = 100
+script = ExtResource("Script")
+
+[node name="Root" type="Control" parent="." unique_id=881939347]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Shade" type="ColorRect" parent="Root" unique_id=1404192215]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5)
+
+[node name="LeftPortrait" type="TextureRect" parent="Root" unique_id=1129431301]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+mouse_filter = 2
+expand_mode = 3
+stretch_mode = 5
+
+[node name="RightPortrait" type="TextureRect" parent="Root" unique_id=1411847900]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Dialogue" type="PanelContainer" parent="Root" unique_id=1490789047]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.04
+anchor_top = 0.7
+anchor_right = 0.96
+anchor_bottom = 0.97
+theme_override_styles/panel = SubResource("DialogueStyle")
+
+[node name="Margin" type="MarginContainer" parent="Root/Dialogue" unique_id=1471716320]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 14
+
+[node name="Content" type="VBoxContainer" parent="Root/Dialogue/Margin" unique_id=1637963807]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Speaker" type="Label" parent="Root/Dialogue/Margin/Content" unique_id=748079901]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 0.8, 1)
+theme_override_font_sizes/font_size = 24
+
+[node name="Text" type="RichTextLabel" parent="Root/Dialogue/Margin/Content" unique_id=40360448]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 22
+
+[node name="Next" type="Button" parent="Root/Dialogue/Margin/Content" unique_id=1483840771]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Continue"

@@ -38,7 +38,7 @@ func run() -> void:
 	var ids := [["jolly_cheer", "caring_friend"], ["lock_on", "ride_the_gale", "graceful_assault"], ["painful_stab", "immobilizing_stab", "i_am_scary"], ["bonk", "cover"]]
 	for index in range(names.size()):
 		var unit := character(names[index])
-		check(unit.definition.portrait != null and unit.definition.portrait.resource_path.get_file() == names[index].capitalize() + "-chan.png", "Character uses the renamed portrait: " + names[index])
+		check(unit.definition.portrait != null and unit.definition.portrait.resource_path.get_file() == names[index].capitalize() + "-chan_Portrait.png", "Character uses the renamed portrait: " + names[index])
 		check(unit.character_class == EXPLORER and unit.definition.title == titles[index], "Explorer class and requested title for " + names[index])
 		check(unit.get_abilities().size() == ids[index].size(), "No old unique/class abilities on " + names[index])
 		for ability_id in ids[index]:
@@ -90,41 +90,47 @@ func run() -> void:
 	temporary_unit.unequip_gear(iron)
 	temporary_unit.remove_status(&"jolly_cheer")
 	check(temporary_unit.get_stat(&"strength") == int(floor(original_strength + temporary_unit.get_growth(&"strength"))), "Temporary buffs and gear never become permanent during class changes or level-ups")
-	# Usami: single-ally buff and a group heal with one MP cost.
+	# Usami: single-ally healing and a party-wide buff with one MP cost.
 	var usami := character("usami")
 	var takane := character("takane")
 	var kurako := character("kurako")
 	var koumi := character("koumi")
 	var old_strength := takane.get_stat(&"strength")
 	var old_defense := takane.get_stat(&"defense")
-	check(RPGCombat.use_ability(usami, takane, skill("jolly_cheer")).success, "Jolly cheer applies to one ally")
-	check(takane.get_stat(&"strength") == int(floor(old_strength * 1.25)) and takane.get_stat(&"defense") == int(floor(old_defense * 1.25)) and usami.get_active_statuses().is_empty(), "Jolly cheer affects only chosen ally")
 	for unit in [usami, takane, kurako, koumi]:
 		unit.current_hp -= 15
+	var untouched_hp := kurako.current_hp
+	var chosen_hp := takane.current_hp
 	var session := BattleSession.new([usami, takane, kurako, koumi], [target()])
+	check(session.choose_ability(skill("caring_friend")), "Single-ally healing permits friendly selection")
+	check(session.affected_targets(takane) == [takane], "Caring friend previews only the selected ally")
+	session.cancel_target()
+	check(RPGCombat.use_ability(usami, takane, skill("caring_friend")).success, "Caring friend heals a single ally")
+	check(takane.current_hp > chosen_hp and kurako.current_hp == untouched_hp, "Caring friend leaves other allies unchanged")
+	check(not RPGCombat.use_ability_on_targets(usami, [takane, kurako], skill("caring_friend")).success, "Caring friend rejects multiple recipients")
 	mp = usami.current_mp
-	check(session.choose_ability(skill("caring_friend")) and session.valid_targets().size() == 4, "Group healing permits friendly confirmation targets")
+	check(session.choose_ability(skill("jolly_cheer")) and session.valid_targets().size() == 4, "Party buff permits friendly confirmation targets")
+	check(session.affected_targets(takane).size() == 4, "Jolly cheer previews every living ally")
 	session.select_target(takane)
 	check(usami.current_mp == mp, "Group planning does not spend MP")
 	while session.phase == BattleSession.Phase.ACTION_SELECTION:
 		session.choose_wait()
 	resolve_round(session)
-	check(usami.current_mp == mp - skill("caring_friend").mana_cost, "Full-party heal spends MP once")
+	check(usami.current_mp == mp - skill("jolly_cheer").mana_cost, "Party buff spends MP once")
 	for unit in [usami, takane, kurako, koumi]:
-		check(unit.current_hp > unit.get_stat(&"max_hp") - 15, "Full-party heal affects every living ally")
+		check(not unit.get_active_statuses().is_empty(), "Party buff affects every living ally")
+	check(takane.get_stat(&"strength") == int(floor(old_strength * 1.25)) and takane.get_stat(&"defense") == int(floor(old_defense * 1.25)), "Jolly cheer increases strength and defense by 25 percent")
 	usami.restore()
 	var invalid_target := target()
 	invalid_target.current_hp = 0
 	mp = usami.current_mp
-	hp = takane.current_hp
-	check(not RPGCombat.use_ability_on_targets(usami, [takane, invalid_target], skill("caring_friend")).success and usami.current_mp == mp and takane.current_hp == hp, "Group validation finishes before spending MP or healing any target")
-	check(not RPGCombat.use_ability_on_targets(usami, [takane, takane], skill("caring_friend")).success and usami.current_mp == mp, "Group casts reject duplicate recipients")
-	# A selected group member can die before execution; other living allies still receive healing.
+	check(not RPGCombat.use_ability_on_targets(usami, [takane, invalid_target], skill("jolly_cheer")).success and usami.current_mp == mp, "Group validation finishes before spending MP")
+	check(not RPGCombat.use_ability_on_targets(usami, [takane, takane], skill("jolly_cheer")).success and usami.current_mp == mp, "Group casts reject duplicate recipients")
+	# A selected group member can die before execution; living allies still receive the buff.
 	var alive_ally := character("takane")
 	var dying_ally := character("koumi")
-	alive_ally.current_hp -= 15
 	session = BattleSession.new([usami, alive_ally, dying_ally], [target()])
-	session.choose_ability(skill("caring_friend"))
+	session.choose_ability(skill("jolly_cheer"))
 	session.select_target(dying_ally)
 	while session.phase == BattleSession.Phase.ACTION_SELECTION:
 		session.choose_wait()
@@ -132,7 +138,7 @@ func run() -> void:
 	dying_ally.current_hp = 0
 	while session.phase == BattleSession.Phase.RESOLVING:
 		session.resolve_next_action()
-	check(alive_ally.current_hp > alive_ally.get_stat(&"max_hp") - 15 and dying_ally.current_hp == 0, "Group heal uses living recipients at execution and never revives")
+	check(not alive_ally.get_active_statuses().is_empty() and dying_ally.get_active_statuses().is_empty(), "Party buff uses living recipients even if the selected ally dies")
 	# Takane: crit boost, self speed buff, and unavoidable pierce attack.
 	takane.restore()
 	check(RPGCombat.use_ability(takane, takane, skill("lock_on")).success, "Lock-on executes")
@@ -222,7 +228,7 @@ func run() -> void:
 	koumi.restore()
 	old_defense = koumi.get_stat(&"defense")
 	RPGCombat.use_ability(koumi, koumi, skill("cover"))
-	check(koumi.get_stat(&"defense") == int(floor(old_defense * 1.25)) and koumi.get_combat_stat(&"aggro") == 2, "Cover boosts self defense and aggro")
+	check(koumi.get_stat(&"defense") == int(floor(old_defense * 1.25)) and koumi.get_combat_stat(&"aggro") == 2 * koumi.get_stat(&"max_hp"), "Cover boosts self defense and aggro")
 	session = BattleSession.new([usami, koumi], [target()])
 	session.rng.seed = 42
 	var cover_targets := 0
@@ -233,7 +239,7 @@ func run() -> void:
 	var cover_defense := koumi.get_stat(&"defense")
 	for turn in range(3):
 		koumi.advance_status_turn()
-	check(koumi.get_stat(&"defense") < cover_defense and koumi.get_active_statuses().is_empty() and koumi.get_combat_stat(&"aggro") == 1, "Cover expires and restores defense/aggro")
+	check(koumi.get_stat(&"defense") < cover_defense and koumi.get_active_statuses().is_empty() and koumi.get_combat_stat(&"aggro") == koumi.get_stat(&"max_hp"), "Cover expires and restores defense/aggro")
 	# Poison can end battle, and action-blocking effects still permit Wait planning.
 	fast_kurako.restore()
 	var fragile := target(3)
@@ -251,10 +257,10 @@ func run() -> void:
 	var view := load("res://scenes/battle/combat.tscn").instantiate() as CombatScreen
 	root.add_child(view)
 	var encounter := BattleEncounter.new()
-	encounter.enemies = [load("res://resources/rpg/enemies/sentinel.tres")]
+	encounter.enemies = [load("res://resources/rpg/enemies/rat.tres")]
 	usami = character("usami")
 	view.configure([usami, character("takane"), character("kurako"), character("koumi")], encounter)
-	view.session.choose_ability(skill("caring_friend"))
+	view.session.choose_ability(skill("jolly_cheer"))
 	check(not view._panel_targets[view.portrait.name] and view.prompt.text.is_empty() and not view.party_buttons[3].disabled, "Group spell UI hides portrait and permits fourth friendly target")
 	view.session.select_target(view.session.party[3])
 	check(view.session.active_character().definition.id == &"takane", "Group action advances to next character")

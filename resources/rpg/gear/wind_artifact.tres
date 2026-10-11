@@ -3,6 +3,7 @@
 
 
 [resource]
+hidden_value = 25
 script = ExtResource("Gear")
 id = &"wind_artifact"
 display_name = "Wind Artifact"

@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://nluluu3e2s8q"]
+
+[ext_resource type="PackedScene" path="res://scenes/base/map.tscn" id="Map"]
+[ext_resource type="Script" uid="uid://cvusrrk0niqcl" path="res://scripts/world/labyrinth_map.gd" id="Script"]
+
+[sub_resource type="Environment" id="Environment"]
+background_mode = 1
+background_color = Color(0.006, 0.0055, 0.005, 1)
+ambient_light_source = 2
+ambient_light_color = Color(1, 0.95, 0.85, 1)
+ambient_light_sky_contribution = 0.0
+ambient_light_energy = 0.002
+
+[node name="OfficeLabyrinth" unique_id=1501131634 instance=ExtResource("Map")]
+script = ExtResource("Script")
+definition = null
+definition_json = "res://resources/labyrinths/office.json"
+
+[node name="SpawnPoint" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="2" unique_id=934437829]
+environment = SubResource("Environment")

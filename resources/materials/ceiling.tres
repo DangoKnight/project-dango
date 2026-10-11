@@ -3,4 +3,5 @@
 [resource]
 albedo_texture = ExtResource("1")
 roughness = 1.0
-uv1_scale = Vector3(4, 4, 4)
+uv1_scale = Vector3(20, 20, 20)
+texture_filter = 5

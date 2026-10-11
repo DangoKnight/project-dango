@@ -4,13 +4,14 @@ extends Control
 signal finished(victory: bool)
 
 const FALLBACK_PORTRAIT := preload("res://textures/portrait.png")
-const FALLBACK_ENEMY := preload("res://textures/enemy.png")
+const FALLBACK_ENEMY := preload("res://textures/rat.png")
 @export var default_encounter: BattleEncounter
 @export_range(0.0, 3.0, 0.05) var action_delay: float = 0.65
 @export_range(0.0, 1.0, 0.05) var menu_slide_duration := 0.25
 var _panel_homes: Dictionary = {}
 var _panel_progress: Dictionary = {}
 var _panel_targets: Dictionary = {}
+var _hovered_target: CharacterState
 var _panel_tweens: Dictionary = {}
 @onready var action_panel: PanelContainer = $ActionPanel
 @onready var special_panel: PanelContainer = $SpecialDrawer/SpecialPanel
@@ -69,7 +70,9 @@ func _ready() -> void:
 	back.pressed.connect(_back)
 	information.closed.connect(_close_information)
 	information.dismissed.connect(_restore_information_focus)
-	information.visibility_changed.connect(func(): $InformationBlocker.visible = information.visible)
+	information.visibility_changed.connect(func():
+		$InformationBlocker.visible = information.visible
+		_refresh_target_highlights())
 	# F6 preview uses separate runtime instances; gameplay supplies the current party.
 	if get_tree().current_scene == self:
 		var preview_party: Array[CharacterState] = [
@@ -81,7 +84,7 @@ func _ready() -> void:
 		configure(preview_party, default_encounter)
 
 
-func configure(party: Array[CharacterState], encounter: BattleEncounter) -> bool:
+func configure(party: Array[CharacterState], encounter: BattleEncounter, compendium: MonsterCompendium = null) -> bool:
 	if encounter == null or encounter.enemies.is_empty() or encounter.enemies.size() > enemy_slots.size() or party.is_empty() or party.size() > party_buttons.size():
 		push_error("Combat needs 1–%d characters and 1–%d enemies." % [party_buttons.size(), enemy_slots.size()])
 		return false
@@ -96,7 +99,7 @@ func configure(party: Array[CharacterState], encounter: BattleEncounter) -> bool
 	var enemies: Array[CharacterState] = []
 	for definition in encounter.enemies:
 		enemies.append(CharacterState.new(definition, null, encounter.enemy_level))
-	session = BattleSession.new(party, enemies)
+	session = BattleSession.new(party, enemies, compendium)
 	session.changed.connect(_refresh)
 	session.action_resolved.connect(_log)
 	for index in range(enemy_slots.size()):
@@ -106,8 +109,12 @@ func configure(party: Array[CharacterState], encounter: BattleEncounter) -> bool
 			var enemy := enemies[index]
 			slot.get_node("Image").texture = enemy.definition.combat_texture if enemy.definition.combat_texture != null else FALLBACK_ENEMY
 			slot.pressed.connect(_select_target.bind(enemy))
+			slot.mouse_entered.connect(_hover_target.bind(enemy))
+			slot.mouse_exited.connect(_unhover_target.bind(enemy))
 	for index in range(party.size()):
 		party_buttons[index].pressed.connect(_select_target.bind(party[index]))
+		party_buttons[index].mouse_entered.connect(_hover_target.bind(party[index]))
+		party_buttons[index].mouse_exited.connect(_unhover_target.bind(party[index]))
 	_refresh()
 	return true
 
@@ -117,6 +124,7 @@ func _refresh() -> void:
 		return
 	if session.phase != BattleSession.Phase.TARGET_SELECTION:
 		_waiting_for_drawer = false
+	_refresh_target_highlights()
 	round_counter.text = "Round %d" % session.round_number
 	if session.phase == BattleSession.Phase.ACTION_SELECTION:
 		var actor := session.active_character()
@@ -127,11 +135,9 @@ func _refresh() -> void:
 	for index in range(session.enemies.size()):
 		var enemy := session.enemies[index]
 		var slot := enemy_slots[index]
-		slot.get_node("Name").text = "%s %d%s" % [enemy.definition.display_name, index + 1, "" if enemy.is_alive() else " (defeated)"]
-		slot.tooltip_text = slot.get_node("Name").text
-		slot.get_node("HP").text = "HP %d/%d" % [enemy.current_hp, enemy.get_stat(&"max_hp")]
-		slot.disabled = enemy not in targets
-		slot.modulate = Color.WHITE if enemy.is_alive() else Color(0.4, 0.4, 0.4)
+		slot.get_node("HP").max_value = 1.0
+		slot.get_node("HP").value = float(enemy.current_hp) / enemy.get_stat(&"max_hp")
+		slot.present(enemy.is_alive(), enemy in targets)
 	for index in range(session.party.size()):
 		var character := session.party[index]
 		var card := party_buttons[index]
@@ -180,7 +186,7 @@ func _refresh() -> void:
 			var observe := _command("Observe", _toggle_observe)
 			observe.toggle_mode = true
 			observe.set_pressed_no_signal(actor.observing)
-			observe.tooltip_text = "Halves effective stats except HP and SP while active and increases experience earned by 50%."
+			observe.tooltip_text = "Halves strength, defense, mental acuity, mental resilience, and speed while active. Increases experience earned by 50%."
 			if not previous_name.is_empty():
 				_command("Return to " + previous_name, _back)
 			_command("Run", session.choose_run).disabled = not actor.can_act()
@@ -260,7 +266,7 @@ func _set_panel_progress(progress: float, panel: Control) -> void:
 		shift = Vector2(-1.02, 0.0)
 	elif panel == action_panel:
 		shift = Vector2(-(home.z + 0.02), 0.0)
-	elif panel in [round_counter, battle_log]:
+	elif panel in [round_counter, battle_log, enemy_stage]:
 		var panel_height := maxf(home.w - home.y, panel.get_combined_minimum_size().y / maxf(size.y, 1.0))
 		shift = Vector2(0.0, -(home.y + panel_height + 0.02))
 	elif panel == portrait:
@@ -334,6 +340,27 @@ func _command(title: String, callback: Callable, container: GridContainer = null
 	button.pressed.connect(callback)
 	(container if container != null else actions).add_child(button)
 	return button
+
+
+func _hover_target(character: CharacterState) -> void:
+	_hovered_target = character
+	_refresh_target_highlights()
+
+
+func _unhover_target(character: CharacterState) -> void:
+	if _hovered_target == character:
+		_hovered_target = null
+	_refresh_target_highlights()
+
+
+func _refresh_target_highlights() -> void:
+	var affected: Array[CharacterState] = []
+	if session != null and not intro_playing and not _waiting_for_drawer and not information.visible:
+		affected = session.affected_targets(_hovered_target)
+	for index in range(enemy_slots.size()):
+		enemy_slots[index].set_group_highlight(session != null and index < session.enemies.size() and session.enemies[index] in affected)
+	for index in range(party_buttons.size()):
+		party_buttons[index].self_modulate = Color(1.4, 1.4, 1.1) if session != null and index < session.party.size() and session.party[index] in affected else Color.WHITE
 
 
 func _select_target(character: CharacterState) -> void:
@@ -414,13 +441,13 @@ func _execute_round() -> void:
 	_messages.clear()
 	$BattleLog/Log.text = ""
 	while session.phase == BattleSession.Phase.RESOLVING:
-		while information.visible:
+		while information.visible or get_tree().paused:
 			await get_tree().process_frame
 			if not is_inside_tree():
 				return
 		session.resolve_next_action()
 		if session.phase == BattleSession.Phase.RESOLVING:
-			await get_tree().create_timer(action_delay).timeout
+			await get_tree().create_timer(action_delay, false).timeout
 			if not is_inside_tree():
 				return
 
@@ -428,12 +455,16 @@ func _execute_round() -> void:
 func _finish_battle() -> void:
 	information.close_immediately()
 	_log("Escaped!" if session.escaped else "Victory!" if session.victory else "Defeat.")
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().create_timer(1.0, false).timeout
 	if not is_inside_tree():
 		return
+	for slot in enemy_slots:
+		await slot.wait_for_disappearance()
+		if not is_inside_tree():
+			return
 	_exiting = true
 	_refresh()
-	await get_tree().create_timer(maxf(menu_slide_duration, 0.001)).timeout
+	await get_tree().create_timer(maxf(menu_slide_duration, 0.001), false).timeout
 	if is_inside_tree():
 		finished.emit(session.victory or session.escaped)
 

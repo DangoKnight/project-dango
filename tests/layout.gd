@@ -37,7 +37,7 @@ func run() -> void:
 			check(not DisplayServer.window_get_flag(DisplayServer.WINDOW_FLAG_RESIZE_DISABLED), "Native window must not disable border resizing")
 	var game: Node = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
-	game.new_game()
+	game.new_game(false)
 	var adjusted_portrait := game.party[0].definition.duplicate() as CharacterDefinition
 	adjusted_portrait.portrait_offset = Vector2(-0.1, 0.05)
 	adjusted_portrait.portrait_scale = 0.85
@@ -46,7 +46,7 @@ func run() -> void:
 	game.explore()
 	var full_encounter := BattleEncounter.new()
 	for index in range(6):
-		full_encounter.enemies.append(load("res://resources/rpg/enemies/sentinel.tres"))
+		full_encounter.enemies.append(load("res://resources/rpg/enemies/rat.tres"))
 	game.world.encounter = full_encounter
 	game.start_combat(false)
 	var battle := game.ui.get_child(0) as CombatScreen
@@ -70,7 +70,7 @@ func run() -> void:
 		for slot in battle.enemy_slots:
 			if slot.visible:
 				fits(slot, stage.get_global_rect(), "Enemy slot at %s" % window_size)
-				for child_name in ["Image", "Name", "HP"]:
+				for child_name in ["Image", "HP"]:
 					fits(slot.get_node(child_name), slot.get_global_rect(), "%s in enemy slot at %s" % [child_name, window_size])
 		for first in range(battle.enemy_slots.size()):
 			for second in range(first + 1, battle.enemy_slots.size()):

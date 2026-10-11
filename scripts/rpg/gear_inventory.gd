@@ -33,3 +33,21 @@ func register(item: GearInstance) -> bool:
 		return false
 	_items.append(item)
 	return true
+
+
+func discard_consumables() -> void:
+	for item in _items.duplicate():
+		if item.definition != null and item.definition.kind == GearDefinition.Kind.CONSUMABLE:
+			item.destroy_consumable()
+			_items.erase(item)
+
+
+## Removes a traded item from the stash or its carrier without destroying it.
+func take(item: GearInstance) -> bool:
+	if item not in get_items():
+		return false
+	var carrier := item.get_carrier()
+	if carrier != null:
+		carrier.unequip_gear(item)
+	_items.erase(item)
+	return true

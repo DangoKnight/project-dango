@@ -49,7 +49,7 @@ func run() -> void:
 		var factor := 1.0 if stat in [&"max_hp", &"max_mp"] else 0.5
 		check(actor.get_stat(stat) == int(floor(before[stat] * factor)), "Observe affects only non-vital stats: " + stat)
 	for stat in RPGStats.COMBAT_NAMES:
-		check(is_equal_approx(actor.get_combat_stat(stat), before[stat] * 0.5), "Observe halves hidden stat internally: " + stat)
+		check(is_equal_approx(actor.get_combat_stat(stat), before[stat]), "Observe leaves hidden combat stat unchanged: " + stat)
 	check(actor.current_hp == 41 and actor.current_mp == 11, "Observe leaves current HP and SP unchanged")
 	for cycle in range(10):
 		session.toggle_observe()
@@ -84,15 +84,16 @@ func run() -> void:
 	check(actor.observing, "Observe cannot toggle after round commitment")
 	while session.phase == BattleSession.Phase.RESOLVING:
 		session.resolve_next_action()
-	check(session.victory and actor.stored_experience() == 71 and ally.stored_experience() == 14, "Observe also boosts defeat XP independently for that character")
+	check(session.victory and actor.stored_experience() == 68 and ally.stored_experience() == 12, "Observe boosts matching round and defeat XP independently for that character")
 	check(not actor.observing and actor.get_stat(&"max_hp") == 41, "Battle end clears Observe and restores ordinary stats")
 	# Retreat removes boosted rewards, and knockout still clears every unspent reward.
 	enemy = unit(8, 1)
 	session = BattleSession.new([actor, ally], [enemy])
 	session.toggle_observe()
+	session._escape_failures[session.active_character()] = 7 # Guarantee the successful-retreat fixture.
 	session.choose_run()
 	resolve(session)
-	check(actor.stored_experience() == 71 and ally.stored_experience() == 14 and not actor.observing, "Retreat discards current boosted XP and clears Observe")
+	check(actor.stored_experience() == 68 and ally.stored_experience() == 12 and not actor.observing, "Retreat discards current boosted XP and clears Observe")
 	actor.current_hp = 0
 	check(actor.stored_experience() == 0, "Observe rewards obey the full knockout penalty")
 	# Verify the actual battle button remains checked and leaves the action menu open.

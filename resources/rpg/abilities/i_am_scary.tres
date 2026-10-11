@@ -7,8 +7,8 @@
 script = ExtResource("Ability")
 id = &"i_am_scary"
 display_name = "I am scary!"
-description = "Temporarily reduces all living enemies' strength and mental acuity."
+description = "Temporarily reduces one enemy row's strength and mental acuity."
 effect = 2
-targeting = 5
+targeting = 6
 status_effect = ExtResource("Status")
 mana_cost = 6

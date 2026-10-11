@@ -10,4 +10,7 @@ display_name = "Painful stab"
 description = "Inflicts a lingering, weak poison on a single enemy."
 effect = 2
 status_effect = ExtResource("Status")
+power = 2
 mana_cost = 4
+scaling_stat = "mental_acuity"
+defending_stat = "mental_resilience"

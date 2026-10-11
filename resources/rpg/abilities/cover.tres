@@ -12,3 +12,5 @@ effect = 2
 targeting = 2
 status_effect = ExtResource("Status")
 mana_cost = 4
+scaling_stat = "defense"
+scaling = 1.1

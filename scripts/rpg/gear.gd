@@ -7,6 +7,8 @@ enum Target { ALLY, PARTY, SELF, ENEMY, ENEMIES }
 @export var id: StringName
 @export var display_name: String
 @export_multiline var description: String
+## Developer-only barter value; never shown in player-facing information.
+@export_range(1, 100000) var hidden_value: int = 10
 @export var kind: Kind = Kind.ARTIFACT
 ## Artifact-only flat modifiers, including negative values for penalties.
 @export var stat_modifiers: Dictionary[StringName, float] = {}
@@ -21,7 +23,7 @@ enum Target { ALLY, PARTY, SELF, ENEMY, ENEMIES }
 
 
 func is_valid() -> bool:
-	if id.is_empty() or kind not in [Kind.ARTIFACT, Kind.MEDALLION, Kind.CONSUMABLE]:
+	if id.is_empty() or hidden_value < 1 or kind not in [Kind.ARTIFACT, Kind.MEDALLION, Kind.CONSUMABLE]:
 		return false
 	for stat in stat_growth_modifiers:
 		if stat not in RPGStats.NAMES or not is_finite(stat_growth_modifiers[stat]):
