@@ -43,6 +43,9 @@ func run() -> void:
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
 	game.new_game(false)
+	# These checks exercise module UI after its introductory dialogue.
+	for introduction in game.ui.get_child(0).module_conversations.values():
+		game.state.completed_conversations[introduction.id] = true
 	check(game.ui.get_child(0).get_node("Panel/Buttons/Title").text == "GARE 45-B", "Town translates its name before capitalization")
 	check(game.state.roster[0].definition.display_name == "Usami", "Localization never mutates resource names")
 	check(RPGStats.display_name(&"strength") == "Force", "Stat names are translated")

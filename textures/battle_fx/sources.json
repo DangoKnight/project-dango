@@ -1,0 +1,1393 @@
+{
+  "pack": "1050 RPG Effects 64x64 \u2014 free bundle",
+  "author": "BDragon1727",
+  "source": "https://bdragon1727.itch.io/1050-rpg-effects-64x64",
+  "download": "RPG Effect All Free.zip",
+  "download_sha256": "e5df337cf19139949510a40ff5a50d55dfbfd523ff5730e1ee76c5cc23447e8f",
+  "imported": "2026-10-11",
+  "license": "Custom; noncommercial free; contribution required for commercial use; standalone redistribution prohibited. See CREDITS.txt.",
+  "frame_size": [
+    64,
+    64
+  ],
+  "color_rows": [
+    "red_orange",
+    "purple",
+    "cyan",
+    "green",
+    "gold",
+    "white",
+    "pastel",
+    "red",
+    "dark_purple"
+  ],
+  "catalog": {
+    "766": {
+      "path": "textures/battle_fx/bdragon/Part 16/766.png",
+      "frame_count": 8,
+      "sha256": "8ff947263945b6a7a5d5e27fd6ff9d90bc1b4d7cc7b8ea82ab3c73670bbae1d2"
+    },
+    "767": {
+      "path": "textures/battle_fx/bdragon/Part 16/767.png",
+      "frame_count": 8,
+      "sha256": "7dcaf8769cfe8a882e602f540e85688cdcbf2961567c3f88056385fe39cf60f8"
+    },
+    "768": {
+      "path": "textures/battle_fx/bdragon/Part 16/768.png",
+      "frame_count": 8,
+      "sha256": "28ea1b299c25be38061d66c488b49861f203da8e0d0e127d43f9bc1a0532330a"
+    },
+    "769": {
+      "path": "textures/battle_fx/bdragon/Part 16/769.png",
+      "frame_count": 8,
+      "sha256": "dea752550c45559eaa21f87916e6ac352f1ed8519c500cb59427632d25626399"
+    },
+    "776": {
+      "path": "textures/battle_fx/bdragon/Part 16/776.png",
+      "frame_count": 8,
+      "sha256": "6aae9da667d121711e1acc62a35eb00427866c92301cfb50d4a6621aca3bcacf"
+    },
+    "777": {
+      "path": "textures/battle_fx/bdragon/Part 16/777.png",
+      "frame_count": 8,
+      "sha256": "223aca8bbf9cf8dc3749741720cd43ae7c12fa7475bb37dfd414795878d69e47"
+    },
+    "778": {
+      "path": "textures/battle_fx/bdragon/Part 16/778.png",
+      "frame_count": 8,
+      "sha256": "1a95688a89a2d0dd9383eba953858bcd9b2b2543e4f90a6374ecf91875058755"
+    },
+    "779": {
+      "path": "textures/battle_fx/bdragon/Part 16/779.png",
+      "frame_count": 8,
+      "sha256": "311fe652b53660f348e394f27e9222ace26dd89bc3f5b0fabe6d7eca375500e0"
+    },
+    "786": {
+      "path": "textures/battle_fx/bdragon/Part 16/786.png",
+      "frame_count": 8,
+      "sha256": "488d0a92f1361ccf368f257c0859c066c13d1ecade4b85cce3c037e987a112ed"
+    },
+    "787": {
+      "path": "textures/battle_fx/bdragon/Part 16/787.png",
+      "frame_count": 8,
+      "sha256": "92dfe02a967c3d85de47c8f26e223ad202f92bdd709b272d94bd1682975a588a"
+    },
+    "788": {
+      "path": "textures/battle_fx/bdragon/Part 16/788.png",
+      "frame_count": 8,
+      "sha256": "21bbd83a65357b5893f81e70c9939e139fcca57b942b28d3d7964d6401c7a5e9"
+    },
+    "789": {
+      "path": "textures/battle_fx/bdragon/Part 16/789.png",
+      "frame_count": 8,
+      "sha256": "d2c5d4d74c3dd931cd2248679996995bae8150194e16e6e47bf557a30d6a780f"
+    },
+    "825": {
+      "path": "textures/battle_fx/bdragon/Part 17/825.png",
+      "frame_count": 10,
+      "sha256": "630aa12ab2761ff25b7a05aea1d15ef064f4623ce70bf92852fa8083a067164b"
+    },
+    "826": {
+      "path": "textures/battle_fx/bdragon/Part 17/826.png",
+      "frame_count": 10,
+      "sha256": "3f18d76514b0a13dce9fcb8bb08e1fa977d10d385a511ce1c79661c112423293"
+    },
+    "827": {
+      "path": "textures/battle_fx/bdragon/Part 17/827.png",
+      "frame_count": 10,
+      "sha256": "b64038faecd79820e54f454fa71b17a43d0a709327cde66f6303d604a3ff8e68"
+    },
+    "828": {
+      "path": "textures/battle_fx/bdragon/Part 17/828.png",
+      "frame_count": 10,
+      "sha256": "5d3072b0c77a8be92f565aa4d2324c46e77b13f5180bc499b3d3fbe7bb3e4daf"
+    },
+    "835": {
+      "path": "textures/battle_fx/bdragon/Part 17/835.png",
+      "frame_count": 10,
+      "sha256": "ab7c29977e6ebff778546590d4b07b35b5720e8f05cb9b44726bd2b367e91163"
+    },
+    "836": {
+      "path": "textures/battle_fx/bdragon/Part 17/836.png",
+      "frame_count": 10,
+      "sha256": "650e5a87d8a08123fa69c5a94a323a74af5d357eb15fedc52ed22e1d40f5e889"
+    },
+    "837": {
+      "path": "textures/battle_fx/bdragon/Part 17/837.png",
+      "frame_count": 10,
+      "sha256": "feae1b0ce50628e4d764908a5b0abf669e02c4a8db02bbbcfdd1b040f65f599c"
+    },
+    "838": {
+      "path": "textures/battle_fx/bdragon/Part 17/838.png",
+      "frame_count": 10,
+      "sha256": "8fe4718844aa84b4d531bdce3700dae6c20996d7fabb1d312b71f7a95c818d2e"
+    },
+    "845": {
+      "path": "textures/battle_fx/bdragon/Part 17/845.png",
+      "frame_count": 11,
+      "sha256": "ec806d0cc75444c9bc2c7529fd0accdd4449585743c08aa793196c61c3bdea42"
+    },
+    "846": {
+      "path": "textures/battle_fx/bdragon/Part 17/846.png",
+      "frame_count": 11,
+      "sha256": "8105b535a5531fbb4480759aa98c8a3d78a552fa5d3aea454055b013a17f51c6"
+    },
+    "847": {
+      "path": "textures/battle_fx/bdragon/Part 17/847.png",
+      "frame_count": 11,
+      "sha256": "9de1912fac3c860a5b652b3acb7c4df85fb0ac8939b5ebac270cf8c6bc71fe90"
+    },
+    "848": {
+      "path": "textures/battle_fx/bdragon/Part 17/848.png",
+      "frame_count": 11,
+      "sha256": "fe43155442383445d9b45d0b10ba5bed0d3ec80158f333756b29c0e87d02c056"
+    },
+    "861": {
+      "path": "textures/battle_fx/bdragon/Part 18/861.png",
+      "frame_count": 11,
+      "sha256": "2921ecee4a63c68901cf29cc5b157f53c19fc191884049cc41b616085781e988"
+    },
+    "862": {
+      "path": "textures/battle_fx/bdragon/Part 18/862.png",
+      "frame_count": 11,
+      "sha256": "2c60af1d69f42e19190a12c2f7a02954f76a5384de1b5a9a7011ea94e3716aa1"
+    },
+    "863": {
+      "path": "textures/battle_fx/bdragon/Part 18/863.png",
+      "frame_count": 11,
+      "sha256": "57aed2a40f3a8fefe08349a137fd2aaee39116b1128b8428c63764a281fd6681"
+    },
+    "864": {
+      "path": "textures/battle_fx/bdragon/Part 18/864.png",
+      "frame_count": 11,
+      "sha256": "0ff568210883d06c97419599856243787b1415c30c86fa720cb2dc7efe752720"
+    },
+    "871": {
+      "path": "textures/battle_fx/bdragon/Part 18/871.png",
+      "frame_count": 11,
+      "sha256": "4fe1b80e043c55a7b9b8d496b96e7148d446445b098a0fde92f461f17e73c805"
+    },
+    "872": {
+      "path": "textures/battle_fx/bdragon/Part 18/872.png",
+      "frame_count": 11,
+      "sha256": "cd4d7f11a98b61cd774c062dcecb0efbf41b5791bee11d2805cb5c26596b68c9"
+    },
+    "873": {
+      "path": "textures/battle_fx/bdragon/Part 18/873.png",
+      "frame_count": 11,
+      "sha256": "96607171711a993fb227c13740e10170f0cb0fac31958a91f7e5bae2f1adff8b"
+    },
+    "874": {
+      "path": "textures/battle_fx/bdragon/Part 18/874.png",
+      "frame_count": 11,
+      "sha256": "063df61f84e471d3544886ecba96e198bc02260664fb31813a2a5bf2f306107e"
+    },
+    "881": {
+      "path": "textures/battle_fx/bdragon/Part 18/881.png",
+      "frame_count": 11,
+      "sha256": "99a196401e30f0e82117802a2c3d3dc07ec49a5ba2073be71a0e35e2fd806791"
+    },
+    "882": {
+      "path": "textures/battle_fx/bdragon/Part 18/882.png",
+      "frame_count": 11,
+      "sha256": "106c98db3ceb814e7b34f8e94eefd2c56ccd739a8417177dfdb26736ccb79bd4"
+    },
+    "883": {
+      "path": "textures/battle_fx/bdragon/Part 18/883.png",
+      "frame_count": 11,
+      "sha256": "e9fb733fa2998e849458ed43221c2a047bafd9274d9bb492869a84c0baf7dfcc"
+    },
+    "884": {
+      "path": "textures/battle_fx/bdragon/Part 18/884.png",
+      "frame_count": 11,
+      "sha256": "7221063704eb9d867d91e5792223ad3289ef6c95bb985ba888cb790fcfd9d3a5"
+    },
+    "925": {
+      "path": "textures/battle_fx/bdragon/Part 19/925.png",
+      "frame_count": 12,
+      "sha256": "89c469bcdcce872c81387ce9e0eb90de28bc5e388db4a421d9b2f81fe6c9ae91"
+    },
+    "926": {
+      "path": "textures/battle_fx/bdragon/Part 19/926.png",
+      "frame_count": 12,
+      "sha256": "329c3f03db921d031feda6e5d2a1eeeea712f04a17a890ab9b91043734e71351"
+    },
+    "927": {
+      "path": "textures/battle_fx/bdragon/Part 19/927.png",
+      "frame_count": 12,
+      "sha256": "6b72a628da6bebd3135fa804359557daff8b8a083f40a7fc6b18bd53c8a773fe"
+    },
+    "928": {
+      "path": "textures/battle_fx/bdragon/Part 19/928.png",
+      "frame_count": 12,
+      "sha256": "58cb96806b6ce2428267741d38cb86d2692186f5034740333cb90f16200e163d"
+    },
+    "935": {
+      "path": "textures/battle_fx/bdragon/Part 19/935.png",
+      "frame_count": 12,
+      "sha256": "e017dce5e3b6acf13008404c74905451895a8033e4d5bb260133ff686e9e547d"
+    },
+    "936": {
+      "path": "textures/battle_fx/bdragon/Part 19/936.png",
+      "frame_count": 12,
+      "sha256": "f74a2e3ca4fe9a354feb5713c8628019b61f24cbfc8885bd11fbec9ded59e10c"
+    },
+    "937": {
+      "path": "textures/battle_fx/bdragon/Part 19/937.png",
+      "frame_count": 12,
+      "sha256": "476ba5473b7d31ac902c952b3416cf3cd209e447e711f0acd169cf3ad98f0604"
+    },
+    "938": {
+      "path": "textures/battle_fx/bdragon/Part 19/938.png",
+      "frame_count": 12,
+      "sha256": "862c60fb8dea1edfec920e645c7dc40f5a8386965df0a79e6991430018308026"
+    },
+    "945": {
+      "path": "textures/battle_fx/bdragon/Part 19/945.png",
+      "frame_count": 12,
+      "sha256": "7a22198918db2d6344c6b9fe156290cb9828fb930738aad29d73cdc147045bf6"
+    },
+    "946": {
+      "path": "textures/battle_fx/bdragon/Part 19/946.png",
+      "frame_count": 12,
+      "sha256": "eedcd88a95c42ab5089c19bcc48cbc0ebb7a4fa4534df5e650b96355770422c2"
+    },
+    "947": {
+      "path": "textures/battle_fx/bdragon/Part 19/947.png",
+      "frame_count": 12,
+      "sha256": "c007cbceeb1654abe0a7273d0cd41ad357466c1e38dee97991f5c5822adf9582"
+    },
+    "948": {
+      "path": "textures/battle_fx/bdragon/Part 19/948.png",
+      "frame_count": 12,
+      "sha256": "4e0952dc32de5d63f53a022246cc68620acb518e695bc36b4a085b219e53acb1"
+    },
+    "975": {
+      "path": "textures/battle_fx/bdragon/Part 20/975.png",
+      "frame_count": 12,
+      "sha256": "0c46a9ba5bd522d6ce31e794465777e2537f92e4af507e4e2a1dbc66dd597ae0"
+    },
+    "976": {
+      "path": "textures/battle_fx/bdragon/Part 20/976.png",
+      "frame_count": 12,
+      "sha256": "f64723d3f46212ca4ed52e51077a286717c6bf2f0e1a4deec2b076419933c76c"
+    },
+    "977": {
+      "path": "textures/battle_fx/bdragon/Part 20/977.png",
+      "frame_count": 12,
+      "sha256": "ea6998eabd042115cd7ed5217e92d9a854b234877bf7b0340d5ee72abccf0007"
+    },
+    "978": {
+      "path": "textures/battle_fx/bdragon/Part 20/978.png",
+      "frame_count": 12,
+      "sha256": "bbb144ae2ac9aec967c3b9489767d58474fb7b169075171d50ef2d83ff7b69a6"
+    },
+    "985": {
+      "path": "textures/battle_fx/bdragon/Part 20/985.png",
+      "frame_count": 12,
+      "sha256": "201d710275920d9fea0f920b64267f4cc89c52493e62eaae7d5e66454e7ce024"
+    },
+    "986": {
+      "path": "textures/battle_fx/bdragon/Part 20/986.png",
+      "frame_count": 12,
+      "sha256": "e5764fbc363c1152fdc9d17bd53368c35350672f1353ed8d5f8a543b188819ab"
+    },
+    "987": {
+      "path": "textures/battle_fx/bdragon/Part 20/987.png",
+      "frame_count": 12,
+      "sha256": "06e9593e656a924cb2011d7066d796fb10d6c447f415e58b2c8ff0520e831285"
+    },
+    "988": {
+      "path": "textures/battle_fx/bdragon/Part 20/988.png",
+      "frame_count": 12,
+      "sha256": "cf12c585360975c586a209808910a2023d70d1c6cf5c291d5a5f4a687a6c146c"
+    },
+    "995": {
+      "path": "textures/battle_fx/bdragon/Part 20/995.png",
+      "frame_count": 12,
+      "sha256": "46d9f79ea44fdbe4439a1ba2d0082fcf6c6c16d2092e8d768de425e82687554a"
+    },
+    "996": {
+      "path": "textures/battle_fx/bdragon/Part 20/996.png",
+      "frame_count": 12,
+      "sha256": "5fcb93f95e88acb6086f82f5bf02a812f179d60f048ac118361e8938d9890f74"
+    },
+    "997": {
+      "path": "textures/battle_fx/bdragon/Part 20/997.png",
+      "frame_count": 12,
+      "sha256": "3f187843f95655f57c133fcc6c8eaca254b8e87601287ddf39aa67ef6434541f"
+    },
+    "998": {
+      "path": "textures/battle_fx/bdragon/Part 20/998.png",
+      "frame_count": 12,
+      "sha256": "43fc2ec77801a07d8095142926a58fcddaee63f9140497bb6b15bbe5b64e4487"
+    },
+    "1010": {
+      "path": "textures/battle_fx/bdragon/Part 21/1010.png",
+      "frame_count": 12,
+      "sha256": "fbaf0134d49bf01a3cf0a84b030f92a4bade7ddef11b6ed6cd2bb161893c1ed1"
+    },
+    "1011": {
+      "path": "textures/battle_fx/bdragon/Part 21/1011.png",
+      "frame_count": 12,
+      "sha256": "a74858a45bd4498d86adb31509ae9def958a4f957be43764188a0602fede0cd3"
+    },
+    "1012": {
+      "path": "textures/battle_fx/bdragon/Part 21/1012.png",
+      "frame_count": 12,
+      "sha256": "e5699109d70f091cf79b39dd9b6247324facba9da85890494ac6144897a58565"
+    },
+    "1013": {
+      "path": "textures/battle_fx/bdragon/Part 21/1013.png",
+      "frame_count": 12,
+      "sha256": "a6a4838a55601cca7d214bb45fd820dcf91611b2d42d5df71d46b66d03288cbb"
+    },
+    "1020": {
+      "path": "textures/battle_fx/bdragon/Part 21/1020.png",
+      "frame_count": 12,
+      "sha256": "5008263cf44e459d6519e78400486e04f38e7824ae0e4263fad43cd42fffcff6"
+    },
+    "1021": {
+      "path": "textures/battle_fx/bdragon/Part 21/1021.png",
+      "frame_count": 12,
+      "sha256": "e3c6d6c37ed744ddf5ce7f244eaf46d78a6dcb87e385d34f9cbf6a1d3679e6ac"
+    },
+    "1022": {
+      "path": "textures/battle_fx/bdragon/Part 21/1022.png",
+      "frame_count": 12,
+      "sha256": "17bbe5e2d87c60f18250afa08fe745710ed8f3231b3bee01b525e78f6ce7818f"
+    },
+    "1023": {
+      "path": "textures/battle_fx/bdragon/Part 21/1023.png",
+      "frame_count": 12,
+      "sha256": "24ae5b96363b2816333a79ec252241f160980dacefdf21f61bfef5af8bbb6349"
+    },
+    "1030": {
+      "path": "textures/battle_fx/bdragon/Part 21/1030.png",
+      "frame_count": 12,
+      "sha256": "fbfe53a6442bb9535f1ac33418de7a555acb7d3636045d5502b9f3fcfdf7c71c"
+    },
+    "1031": {
+      "path": "textures/battle_fx/bdragon/Part 21/1031.png",
+      "frame_count": 12,
+      "sha256": "fe0f9578192c2a1f7f27433e0234ef893ee453ba71e50b4d520a0735220be0fd"
+    },
+    "1032": {
+      "path": "textures/battle_fx/bdragon/Part 21/1032.png",
+      "frame_count": 12,
+      "sha256": "a8710b4eec14c128fc46d32017bea1574283afa265bd6560d786b1180b6f463c"
+    },
+    "1033": {
+      "path": "textures/battle_fx/bdragon/Part 21/1033.png",
+      "frame_count": 12,
+      "sha256": "0cf96e950050eae1f5f3ce1a7db3c0238ef456213f5f0a83d1e8ad2dea1a0f34"
+    },
+    "1053": {
+      "path": "textures/battle_fx/bdragon/Part 22/1053.png",
+      "frame_count": 12,
+      "sha256": "2ba1ade11b8f071d31c2e082b4545e21aaf82f79be9b7f1745da80d340813b20"
+    },
+    "1054": {
+      "path": "textures/battle_fx/bdragon/Part 22/1054.png",
+      "frame_count": 12,
+      "sha256": "6f459b006c5793b3c4b566431b90f2a662c4696aa8f7b5a2b15f8dacc2891ac3"
+    },
+    "1055": {
+      "path": "textures/battle_fx/bdragon/Part 22/1055.png",
+      "frame_count": 12,
+      "sha256": "e8ea170e5cd977b96da5290241a99a1a477e7b3a60c396aeee61f5db2889c822"
+    },
+    "1056": {
+      "path": "textures/battle_fx/bdragon/Part 22/1056.png",
+      "frame_count": 12,
+      "sha256": "15446d4b44814ba2e0c5df41a4b578f080666eb1959327cbb3efd1b4c01b5a18"
+    },
+    "1063": {
+      "path": "textures/battle_fx/bdragon/Part 22/1063.png",
+      "frame_count": 12,
+      "sha256": "c8d56539fd34a3768eb4d9e84aea5fb48330d417eab918a312f62c7dbf7367be"
+    },
+    "1064": {
+      "path": "textures/battle_fx/bdragon/Part 22/1064.png",
+      "frame_count": 12,
+      "sha256": "2d3052ce7a71dc3fc7bd75f41a02f566b0d161796a49519d382130441e8dd0a1"
+    },
+    "1065": {
+      "path": "textures/battle_fx/bdragon/Part 22/1065.png",
+      "frame_count": 12,
+      "sha256": "92cde105768d55cf90ef3190401db2cb75cd1c45a5ae971891ef0827a826d115"
+    },
+    "1066": {
+      "path": "textures/battle_fx/bdragon/Part 22/1066.png",
+      "frame_count": 12,
+      "sha256": "e2aac055c2cb97b812ee80b6c84f7441fb5940798cf46c7e7bda7f7babdd4d5f"
+    },
+    "1073": {
+      "path": "textures/battle_fx/bdragon/Part 22/1073.png",
+      "frame_count": 12,
+      "sha256": "8a34aa2f9d0c3cba46293c71f8e4ed508ce658483bf975c0fc7d1d415346152d"
+    },
+    "1074": {
+      "path": "textures/battle_fx/bdragon/Part 22/1074.png",
+      "frame_count": 12,
+      "sha256": "80be6017c175f99df2f5c32e21871296b47a3b6c766bca7fefdb587395f831a1"
+    },
+    "1075": {
+      "path": "textures/battle_fx/bdragon/Part 22/1075.png",
+      "frame_count": 12,
+      "sha256": "3e0fe47e9061e6bb04e2361ac41b5fc10b13b13ccbce0a33b31c9d0d9b21c7df"
+    },
+    "1076": {
+      "path": "textures/battle_fx/bdragon/Part 22/1076.png",
+      "frame_count": 12,
+      "sha256": "e46ab616513aca885c44be50e7e5e3a1eef8b7c7144dc602d60a9e52ba013e97"
+    },
+    "1101": {
+      "path": "textures/battle_fx/bdragon/Part 23/1101.png",
+      "frame_count": 7,
+      "sha256": "90ee00238b00ae62f1aad055c5554cdb7f771653a7313c9ec72af79f5bccf556"
+    },
+    "1102": {
+      "path": "textures/battle_fx/bdragon/Part 23/1102.png",
+      "frame_count": 7,
+      "sha256": "290b72f53eb3563f53be7a26f018c5c0635b890134a761c544b977941534e0ce"
+    },
+    "1103": {
+      "path": "textures/battle_fx/bdragon/Part 23/1103.png",
+      "frame_count": 7,
+      "sha256": "09531b7a228b0edaa9750af0a83fa88c8f3a0a11a79801ed87078f929c0c5cb1"
+    },
+    "1104": {
+      "path": "textures/battle_fx/bdragon/Part 23/1104.png",
+      "frame_count": 7,
+      "sha256": "692357c42bba60a6048242c72bb91630cf377b6da77177d16a4b48e6af07c2f6"
+    },
+    "1111": {
+      "path": "textures/battle_fx/bdragon/Part 23/1111.png",
+      "frame_count": 7,
+      "sha256": "d1b5ed4a16a126ae3831753b70810c244084d2bdd331e11deeb90effb8831d32"
+    },
+    "1112": {
+      "path": "textures/battle_fx/bdragon/Part 23/1112.png",
+      "frame_count": 7,
+      "sha256": "f094b3299004f7160fe2effa822d47c443d812455549c7976524a4decd29238c"
+    },
+    "1113": {
+      "path": "textures/battle_fx/bdragon/Part 23/1113.png",
+      "frame_count": 7,
+      "sha256": "c86b19c28468096c17f323b8c7c14ae3278f5b5615642cf654a1e48023395b57"
+    },
+    "1114": {
+      "path": "textures/battle_fx/bdragon/Part 23/1114.png",
+      "frame_count": 7,
+      "sha256": "0536042b08430a7f197bbd7825516895bcc99df6a1a298337e01bd163d9fa75a"
+    },
+    "1121": {
+      "path": "textures/battle_fx/bdragon/Part 23/1121.png",
+      "frame_count": 8,
+      "sha256": "ddb906bf4667f58863b63ecf7ecf961d672fc87a171e45ee92a62f3d29743487"
+    },
+    "1122": {
+      "path": "textures/battle_fx/bdragon/Part 23/1122.png",
+      "frame_count": 8,
+      "sha256": "abb439db47afad7b9ca42b24cebba6ca2a6fa045c191f3f2e610f8b2b94eedd3"
+    },
+    "1123": {
+      "path": "textures/battle_fx/bdragon/Part 23/1123.png",
+      "frame_count": 8,
+      "sha256": "84403dd70819f33ed17e7cccab776abd40f2d1a8873a1a393406fc24e0e56ffb"
+    },
+    "1124": {
+      "path": "textures/battle_fx/bdragon/Part 23/1124.png",
+      "frame_count": 8,
+      "sha256": "7e0b08697b2d167119aacc8ba656c616790dfbb390a2eba46a3c6a0e623d6bda"
+    },
+    "1156": {
+      "path": "textures/battle_fx/bdragon/Part 24/1156.png",
+      "frame_count": 8,
+      "sha256": "7826e587e19331c6df1323756e96a55d43acd4d998bef90176dd3b6875b29209"
+    },
+    "1157": {
+      "path": "textures/battle_fx/bdragon/Part 24/1157.png",
+      "frame_count": 8,
+      "sha256": "7cf9555edea93491fed205a108e6dca244e9e278daf07550c24c9b8fe92553dc"
+    },
+    "1158": {
+      "path": "textures/battle_fx/bdragon/Part 24/1158.png",
+      "frame_count": 8,
+      "sha256": "195f7d44b4f5075005467163c963b48d656a073d25c2557c3e3a5c179a391f15"
+    },
+    "1159": {
+      "path": "textures/battle_fx/bdragon/Part 24/1159.png",
+      "frame_count": 8,
+      "sha256": "1071340aeb7d3c9e987daac6c46dfbcd5abfa44b171954cee4317855154f7daa"
+    },
+    "1166": {
+      "path": "textures/battle_fx/bdragon/Part 24/1166.png",
+      "frame_count": 8,
+      "sha256": "caa67d76be62c9b36b36f8a89f6b12457a1ae10aa7e2ee7f36fbfc4b2694c810"
+    },
+    "1167": {
+      "path": "textures/battle_fx/bdragon/Part 24/1167.png",
+      "frame_count": 8,
+      "sha256": "b14404246a431298c6e2a9059749cd27cd73c280768799c3b8961269db97107c"
+    },
+    "1168": {
+      "path": "textures/battle_fx/bdragon/Part 24/1168.png",
+      "frame_count": 8,
+      "sha256": "da79aa9b32a097872eb5911ad3ee5cc57720a9754d6e1db8de33532489400272"
+    },
+    "1169": {
+      "path": "textures/battle_fx/bdragon/Part 24/1169.png",
+      "frame_count": 8,
+      "sha256": "54fe7204c055e757dc4e60392bbc553a048468d288edf2e916a3a59e8fb241fe"
+    },
+    "1176": {
+      "path": "textures/battle_fx/bdragon/Part 24/1176.png",
+      "frame_count": 9,
+      "sha256": "87cca6c65566c2acfed42d7fd5478a9323162bd6149bcf13107beaca66c49285"
+    },
+    "1177": {
+      "path": "textures/battle_fx/bdragon/Part 24/1177.png",
+      "frame_count": 9,
+      "sha256": "dd970fd12a1f847cab72de03476f114c25a5ec6b0f4c491145e5ca55c4d9b063"
+    },
+    "1178": {
+      "path": "textures/battle_fx/bdragon/Part 24/1178.png",
+      "frame_count": 9,
+      "sha256": "5e2ce2ee4e279663b0ef7164aa04feba0f0d8ba501eb395cecc47999c0693489"
+    },
+    "1179": {
+      "path": "textures/battle_fx/bdragon/Part 24/1179.png",
+      "frame_count": 9,
+      "sha256": "2e2359fff9b1d848ad6c7ee94cedbaf37abf5af45b0d61bae357c7284a51d604"
+    },
+    "1224": {
+      "path": "textures/battle_fx/bdragon/Part 25/1224.png",
+      "frame_count": 9,
+      "sha256": "ae6083abf0d103ad955c6c2702905365ca1443144fd0a6ebc9988861e72cd685"
+    },
+    "1225": {
+      "path": "textures/battle_fx/bdragon/Part 25/1225.png",
+      "frame_count": 9,
+      "sha256": "95a831478cd938b28ec438e04625c605d5247f97dec16aa9ff3029cb4bcd2b1a"
+    },
+    "1226": {
+      "path": "textures/battle_fx/bdragon/Part 25/1226.png",
+      "frame_count": 9,
+      "sha256": "4b4519db1c7003c9cae2cd37dbec2d2a656843cabbb3df3e35c36e636fb0326f"
+    },
+    "1227": {
+      "path": "textures/battle_fx/bdragon/Part 25/1227.png",
+      "frame_count": 9,
+      "sha256": "90496f30463b79d5154eb43b734a3fed558fb34462c8b60683c6fe804b28a6e0"
+    },
+    "1234": {
+      "path": "textures/battle_fx/bdragon/Part 25/1234.png",
+      "frame_count": 10,
+      "sha256": "7cc7f8fcbe80914d66376e1a30ca7f341e6ab69c277b5687dd145b5238c6cc00"
+    },
+    "1235": {
+      "path": "textures/battle_fx/bdragon/Part 25/1235.png",
+      "frame_count": 10,
+      "sha256": "2cafc7dca19d5dc18e04033bf3043bf24d3f9aa6c493b1f8f178f68781e54a63"
+    },
+    "1236": {
+      "path": "textures/battle_fx/bdragon/Part 25/1236.png",
+      "frame_count": 10,
+      "sha256": "925c8bd8581ddb2566d408a38e8d980e4c6cca6a7a484c3c35181ae7458e1407"
+    },
+    "1237": {
+      "path": "textures/battle_fx/bdragon/Part 25/1237.png",
+      "frame_count": 10,
+      "sha256": "33bdd8afadff7a527003df4359ca29bc9b0657aa812026402792996fdcb92ea1"
+    },
+    "1244": {
+      "path": "textures/battle_fx/bdragon/Part 25/1244.png",
+      "frame_count": 10,
+      "sha256": "81aa84338821b2a44d138643d792fd334c9363ec2a4a64fd4a95041911773eed"
+    },
+    "1245": {
+      "path": "textures/battle_fx/bdragon/Part 25/1245.png",
+      "frame_count": 10,
+      "sha256": "60f5ac7f114099a837fe89fc884f1f0182e319d341f81497c7535d8834bbdfe9"
+    },
+    "1246": {
+      "path": "textures/battle_fx/bdragon/Part 25/1246.png",
+      "frame_count": 10,
+      "sha256": "b334c02f27801991fde9d4c96a735a0cb7aa02ce16deb18c9b502b13f90a4357"
+    },
+    "1247": {
+      "path": "textures/battle_fx/bdragon/Part 25/1247.png",
+      "frame_count": 10,
+      "sha256": "b7f717048f87e6c48216a04d08bb86cf97e658b83c7fd0539632864ac19f771e"
+    },
+    "1250": {
+      "path": "textures/battle_fx/bdragon/Part 26/1250.png",
+      "frame_count": 10,
+      "sha256": "701c741afd447ebadc95d5ff4870a95635eef289a0175475289f4a2e9a23c52f"
+    },
+    "1251": {
+      "path": "textures/battle_fx/bdragon/Part 26/1251.png",
+      "frame_count": 10,
+      "sha256": "b5700a291dae3056d4a89cae8066922776bb41a7a219da259cbe99deacf90007"
+    },
+    "1252": {
+      "path": "textures/battle_fx/bdragon/Part 26/1252.png",
+      "frame_count": 10,
+      "sha256": "08664c6c80e1c29c7a8ccb8a6346a5d8ed23c46b8883be8844b873579ffba162"
+    },
+    "1253": {
+      "path": "textures/battle_fx/bdragon/Part 26/1253.png",
+      "frame_count": 10,
+      "sha256": "1f807c1b7a630ba9a73d85d28859c0046f22740907dc493403e52bf603b3e9e2"
+    },
+    "1260": {
+      "path": "textures/battle_fx/bdragon/Part 26/1260.png",
+      "frame_count": 10,
+      "sha256": "9f7029c58410ac1bf078158feed070707f1c43614ce904d796120b9ee9f01b50"
+    },
+    "1261": {
+      "path": "textures/battle_fx/bdragon/Part 26/1261.png",
+      "frame_count": 10,
+      "sha256": "34a8dc9a83482e641a04ef96e7ec249ab4748d96080b0d420b99b9a0399fc5ab"
+    },
+    "1262": {
+      "path": "textures/battle_fx/bdragon/Part 26/1262.png",
+      "frame_count": 10,
+      "sha256": "384e51626998e45a92bbd1cf58a2f80d66593f58670bdb9a0bc079789c9ebfd5"
+    },
+    "1263": {
+      "path": "textures/battle_fx/bdragon/Part 26/1263.png",
+      "frame_count": 10,
+      "sha256": "db193ac3dc4297981c41d8af945241b8cab39154dac2191b365c945b4ff3bd5f"
+    },
+    "1270": {
+      "path": "textures/battle_fx/bdragon/Part 26/1270.png",
+      "frame_count": 10,
+      "sha256": "2ff037d4e573d5195f82bfa56b707365a2db21412e5fc8a67bed87b70c5fe717"
+    },
+    "1271": {
+      "path": "textures/battle_fx/bdragon/Part 26/1271.png",
+      "frame_count": 12,
+      "sha256": "5fa2705d863349ea7c05c4e97a46a9fcbf0bc5839b52625f5513707a53341429"
+    },
+    "1272": {
+      "path": "textures/battle_fx/bdragon/Part 26/1272.png",
+      "frame_count": 10,
+      "sha256": "b984c72822dbc7411bf4f61730cee21b24fe535334f7d8f6c9f4aeae9aadc4af"
+    },
+    "1273": {
+      "path": "textures/battle_fx/bdragon/Part 26/1273.png",
+      "frame_count": 10,
+      "sha256": "cd8203ba910d53691495234d55179a6c66966d014727c069579f7d9e83640d2f"
+    },
+    "1326": {
+      "path": "textures/battle_fx/bdragon/Part 27/1326.png",
+      "frame_count": 11,
+      "sha256": "7c51d2e8be63d11b64db04126b810e641ff0ca0a1d4ff0b47879396366c6984b"
+    },
+    "1327": {
+      "path": "textures/battle_fx/bdragon/Part 27/1327.png",
+      "frame_count": 11,
+      "sha256": "ad4127da0ddbf428e8cee5355386109f965d6e45f5fa0d0d141a30b4f44822d0"
+    },
+    "1328": {
+      "path": "textures/battle_fx/bdragon/Part 27/1328.png",
+      "frame_count": 11,
+      "sha256": "ba59cfb3c066722e0e45423f60eeefe80751df36d652b7ff5efcd05da4023a5b"
+    },
+    "1329": {
+      "path": "textures/battle_fx/bdragon/Part 27/1329.png",
+      "frame_count": 11,
+      "sha256": "2d66f99b955eba752899b9845672c831f1f488d5ecee3f32ad40392352657243"
+    },
+    "1336": {
+      "path": "textures/battle_fx/bdragon/Part 27/1336.png",
+      "frame_count": 11,
+      "sha256": "85f93587b5485a77ad6cbb76f38c261bc25d2bc0a79b87ff43707f0a6998e437"
+    },
+    "1337": {
+      "path": "textures/battle_fx/bdragon/Part 27/1337.png",
+      "frame_count": 11,
+      "sha256": "7f9c8f60256770b5e8b0460ee2a29a3a3315b7a3ae8138c18d1bccc804a91d31"
+    },
+    "1338": {
+      "path": "textures/battle_fx/bdragon/Part 27/1338.png",
+      "frame_count": 11,
+      "sha256": "26d2a2994df1515750d2ff90c38f7aa102bfd0a0aee69f9f0dd56538c938bf5a"
+    },
+    "1339": {
+      "path": "textures/battle_fx/bdragon/Part 27/1339.png",
+      "frame_count": 11,
+      "sha256": "a40748a84bcb11ccdb67ca017469a8a4455775790cca3984f04d20ce904b6cdf"
+    },
+    "1346": {
+      "path": "textures/battle_fx/bdragon/Part 27/1346.png",
+      "frame_count": 11,
+      "sha256": "e79685ce184263dccc06e8d18c69a39a40d65626adcb735fcaaca5775dfff827"
+    },
+    "1347": {
+      "path": "textures/battle_fx/bdragon/Part 27/1347.png",
+      "frame_count": 11,
+      "sha256": "93c425198e0cb68ea9af08163e5268b9dea2a6d65213b081a37eb734f68e1d73"
+    },
+    "1348": {
+      "path": "textures/battle_fx/bdragon/Part 27/1348.png",
+      "frame_count": 11,
+      "sha256": "3c239c8833c16bc57321137573d385f06a92e29fb0239ac5d013d209cbdeb5cf"
+    },
+    "1349": {
+      "path": "textures/battle_fx/bdragon/Part 27/1349.png",
+      "frame_count": 11,
+      "sha256": "8df2c51b6fb9b009e10c17021223efc29b9b8ddc41e6a10185b68026f1f6b787"
+    },
+    "1350": {
+      "path": "textures/battle_fx/bdragon/Part 28/1350.png",
+      "frame_count": 12,
+      "sha256": "ddee820a97c4fd61ae32ab62504ead692328f5539f2b3dd7033a76743bd9a556"
+    },
+    "1351": {
+      "path": "textures/battle_fx/bdragon/Part 28/1351.png",
+      "frame_count": 12,
+      "sha256": "85e83380e757402a5b08820d09d108ece599c917a8a6b79e3eaa94c42d53883c"
+    },
+    "1352": {
+      "path": "textures/battle_fx/bdragon/Part 28/1352.png",
+      "frame_count": 12,
+      "sha256": "d2b81db6a83197f14dd63bf7c010ce52aae8f81a62d88dbe7d41db228f5ba588"
+    },
+    "1353": {
+      "path": "textures/battle_fx/bdragon/Part 28/1353.png",
+      "frame_count": 12,
+      "sha256": "51a49772f6549297613aa761a51f0b4e03e4a49c11c864324cfa9faab676c1f4"
+    },
+    "1360": {
+      "path": "textures/battle_fx/bdragon/Part 28/1360.png",
+      "frame_count": 12,
+      "sha256": "232ff37f60703f76a3d5f1067edc12ad426887dee84083b947286a34cf38ee08"
+    },
+    "1361": {
+      "path": "textures/battle_fx/bdragon/Part 28/1361.png",
+      "frame_count": 12,
+      "sha256": "d5bc80053c751e7d14077bd19b3a5c0d3ae26f40770a6cd3b2f51e6ab6564edc"
+    },
+    "1362": {
+      "path": "textures/battle_fx/bdragon/Part 28/1362.png",
+      "frame_count": 12,
+      "sha256": "75dc45f63f1dc298ee82c2a473dd02d989ddea54ba3dbbdf1ce2106fe82def5d"
+    },
+    "1363": {
+      "path": "textures/battle_fx/bdragon/Part 28/1363.png",
+      "frame_count": 12,
+      "sha256": "16153e200f15229290cbb258aedcfd93ca690a01b3226da6adbade500a9e641e"
+    },
+    "1370": {
+      "path": "textures/battle_fx/bdragon/Part 28/1370.png",
+      "frame_count": 12,
+      "sha256": "514dc595ff3984c14df2b8c28c35a57b99a1ebd9b87fb051d0f9ed91bcc2af42"
+    },
+    "1371": {
+      "path": "textures/battle_fx/bdragon/Part 28/1371.png",
+      "frame_count": 12,
+      "sha256": "c121a7ab025e3f672fdb8b456dd97e7fcc4d1609d5fa75b38ff298745d28ccad"
+    },
+    "1372": {
+      "path": "textures/battle_fx/bdragon/Part 28/1372.png",
+      "frame_count": 12,
+      "sha256": "93eaca2a027875b81810e9bd88759827f4f1dd643454ba48085a881774363ac8"
+    },
+    "1373": {
+      "path": "textures/battle_fx/bdragon/Part 28/1373.png",
+      "frame_count": 12,
+      "sha256": "8bbc6464c1cca46ede1ed8bcebd518611a731c10753ac5a9d8881f784f2c9ea3"
+    },
+    "1405": {
+      "path": "textures/battle_fx/bdragon/Part 29/1405.png",
+      "frame_count": 12,
+      "sha256": "32a0fadc929a92f0f78c0a22d46c529e75d2f384e49d7994689aa9e897738e11"
+    },
+    "1406": {
+      "path": "textures/battle_fx/bdragon/Part 29/1406.png",
+      "frame_count": 12,
+      "sha256": "eaa900aca67305dbd97f9cf6a96108386dba77c563c79b8e26a40c124cc856e7"
+    },
+    "1407": {
+      "path": "textures/battle_fx/bdragon/Part 29/1407.png",
+      "frame_count": 12,
+      "sha256": "190ef4a1be9ffd624a0001698ac34ef233977e1b571dab369951f80ddc203b98"
+    },
+    "1408": {
+      "path": "textures/battle_fx/bdragon/Part 29/1408.png",
+      "frame_count": 13,
+      "sha256": "688296bd565175d4ab4091284cd87b6b978294204b86a26d42394e67d52eb444"
+    },
+    "1415": {
+      "path": "textures/battle_fx/bdragon/Part 29/1415.png",
+      "frame_count": 13,
+      "sha256": "2794cdbdd760f2d465ff58926e58fe0d2f0fff89eb1b65af9407018779f14244"
+    },
+    "1416": {
+      "path": "textures/battle_fx/bdragon/Part 29/1416.png",
+      "frame_count": 13,
+      "sha256": "5d83203675be33457bb9d8b29f807bb0319370e57fad5a339f4992bde18ff455"
+    },
+    "1417": {
+      "path": "textures/battle_fx/bdragon/Part 29/1417.png",
+      "frame_count": 13,
+      "sha256": "136aa6e52e404b9165a8727c4db1a310ebe2294d4a019bc5fc9f496350a81ae1"
+    },
+    "1418": {
+      "path": "textures/battle_fx/bdragon/Part 29/1418.png",
+      "frame_count": 13,
+      "sha256": "907a3257043055cd51244d8b86d0445f2f25a929321d2503edbbd5d06055b7f6"
+    },
+    "1425": {
+      "path": "textures/battle_fx/bdragon/Part 29/1425.png",
+      "frame_count": 13,
+      "sha256": "ef4bb3e29d9a2a5fb03f9c919171b5cd5b6895239e83b8c7c928f361ba35edda"
+    },
+    "1426": {
+      "path": "textures/battle_fx/bdragon/Part 29/1426.png",
+      "frame_count": 13,
+      "sha256": "47ac8d7ad98256ce895be380eb3e04f04ef594a8da686f67820f3e09e25a1d62"
+    },
+    "1427": {
+      "path": "textures/battle_fx/bdragon/Part 29/1427.png",
+      "frame_count": 13,
+      "sha256": "44f0655e2a89394f3e35646c053eb6324600fb56dad8f2b27095656cc628e4b0"
+    },
+    "1428": {
+      "path": "textures/battle_fx/bdragon/Part 29/1428.png",
+      "frame_count": 13,
+      "sha256": "69a3aa881e2ee5371d0871128771a4d331545e3e290df6448d0f577cb8f0028a"
+    },
+    "1471": {
+      "path": "textures/battle_fx/bdragon/Part 30/1471.png",
+      "frame_count": 13,
+      "sha256": "171a3f7bb2165e1c1cf66da19ff6a611de3c8bc72bd205d02d29896853dedb7d"
+    },
+    "1472": {
+      "path": "textures/battle_fx/bdragon/Part 30/1472.png",
+      "frame_count": 13,
+      "sha256": "ef51f49314d1e3169d192c47d3e81e9536f89680220e16878a5539279ea7a2e2"
+    },
+    "1473": {
+      "path": "textures/battle_fx/bdragon/Part 30/1473.png",
+      "frame_count": 13,
+      "sha256": "6806b3c529059580166a69314cfdfb4c67606e4b0fe8ec0f9b8f9109410e3003"
+    },
+    "1474": {
+      "path": "textures/battle_fx/bdragon/Part 30/1474.png",
+      "frame_count": 13,
+      "sha256": "36af8ca9c6b4624eeca7e331725f8bb60c282ed09871e6647f34815d60d85f2e"
+    },
+    "1481": {
+      "path": "textures/battle_fx/bdragon/Part 30/1481.png",
+      "frame_count": 13,
+      "sha256": "a87e60174aaad83da0e8badec37e7ab2429143ecf1ec46cff90b6b76dca0aa54"
+    },
+    "1482": {
+      "path": "textures/battle_fx/bdragon/Part 30/1482.png",
+      "frame_count": 13,
+      "sha256": "81d1597175f09eba5e239dfb9267a84ca19a0f1c71837814694f4e1a79d64eb7"
+    },
+    "1483": {
+      "path": "textures/battle_fx/bdragon/Part 30/1483.png",
+      "frame_count": 13,
+      "sha256": "c8924c25fe254164f0365060742537f82e2bb6db79cbd5e58803b24f366094cf"
+    },
+    "1484": {
+      "path": "textures/battle_fx/bdragon/Part 30/1484.png",
+      "frame_count": 13,
+      "sha256": "02dad17ace685e8c23790c4959ddcd3cb950af3a150153fda91dde3af0a03ab6"
+    },
+    "1491": {
+      "path": "textures/battle_fx/bdragon/Part 30/1491.png",
+      "frame_count": 13,
+      "sha256": "942afc513681c977360dfd865fd75ef40ef93dc0e9576d05dbc2b8878cd81e3f"
+    },
+    "1492": {
+      "path": "textures/battle_fx/bdragon/Part 30/1492.png",
+      "frame_count": 13,
+      "sha256": "838c55afafffd46255dc55d610dcbeeaae954ed4b04f1dab5f3f34bd6cc7bd18"
+    },
+    "1493": {
+      "path": "textures/battle_fx/bdragon/Part 30/1493.png",
+      "frame_count": 13,
+      "sha256": "e65bcf439a2289968546910624828e543c5c2cfb55dadf7ad24016eef34863c4"
+    },
+    "1494": {
+      "path": "textures/battle_fx/bdragon/Part 30/1494.png",
+      "frame_count": 13,
+      "sha256": "867052d90b274b2518d745b84492f32024198897a4ff696105363992c06936f7"
+    },
+    "1506": {
+      "path": "textures/battle_fx/bdragon/Part 31/1506.png",
+      "frame_count": 13,
+      "sha256": "ebe107c748fc7d3dc4678eae437734a9e1a2f762c4ed4eda8a46b7551d5dbd20"
+    },
+    "1507": {
+      "path": "textures/battle_fx/bdragon/Part 31/1507.png",
+      "frame_count": 13,
+      "sha256": "73be7cb1294b8d3ca798bc02c5a9dda2f6e8c65fa50969a8427dd46535c8201b"
+    },
+    "1508": {
+      "path": "textures/battle_fx/bdragon/Part 31/1508.png",
+      "frame_count": 13,
+      "sha256": "9efbfa790ea19b5aa158a0ccb0825e9118fd9688bfb19da81cac54b17aaa3a90"
+    },
+    "1509": {
+      "path": "textures/battle_fx/bdragon/Part 31/1509.png",
+      "frame_count": 13,
+      "sha256": "5b9f6964559e5c1f82f4a8a72db70243299cf2c63aa4ee7d8cdc58d70ceed21d"
+    },
+    "1516": {
+      "path": "textures/battle_fx/bdragon/Part 31/1516.png",
+      "frame_count": 13,
+      "sha256": "511ae0d4dd3b9baf95f18df55440039ae64b305ad5539a3dbc7c67561b58e4af"
+    },
+    "1517": {
+      "path": "textures/battle_fx/bdragon/Part 31/1517.png",
+      "frame_count": 13,
+      "sha256": "a475731d257aeacbcc7c05eb36ba79dcb036c7afd79a0673e2dea093b99f45c5"
+    },
+    "1518": {
+      "path": "textures/battle_fx/bdragon/Part 31/1518.png",
+      "frame_count": 13,
+      "sha256": "ae211200b8c513f37a598e299a0336c817dca72d894bd929c25993b8360de8a0"
+    },
+    "1519": {
+      "path": "textures/battle_fx/bdragon/Part 31/1519.png",
+      "frame_count": 13,
+      "sha256": "ea939c151bd3c3333d5cdbcd54619a5383a2587e12f96b158d0fdc78c0f2398a"
+    },
+    "1526": {
+      "path": "textures/battle_fx/bdragon/Part 31/1526.png",
+      "frame_count": 14,
+      "sha256": "e446e9707285d363aa680c047b0de3c80c1331c13f0db04d57e32664e89468e5"
+    },
+    "1527": {
+      "path": "textures/battle_fx/bdragon/Part 31/1527.png",
+      "frame_count": 14,
+      "sha256": "ba095cec7ed284303ba9f42ae413a93abea01072ac4073c66256424ca43fe092"
+    },
+    "1528": {
+      "path": "textures/battle_fx/bdragon/Part 31/1528.png",
+      "frame_count": 14,
+      "sha256": "b35d4a5f4dca9bcc0668c02f7a5063b6bfea4cc5e4b50df79a4e8fe43e2bc4d5"
+    },
+    "1529": {
+      "path": "textures/battle_fx/bdragon/Part 31/1529.png",
+      "frame_count": 14,
+      "sha256": "81ca37f3e434f1bd1190322b4f233f9c34d7f3b4c09482cc9e3d3a959375a6a9"
+    },
+    "1572": {
+      "path": "textures/battle_fx/bdragon/Part 32/1572.png",
+      "frame_count": 14,
+      "sha256": "8f7ca4b96abbc89c97498ff12446f89da707d81706c9284f282e971a56e7b604"
+    },
+    "1573": {
+      "path": "textures/battle_fx/bdragon/Part 32/1573.png",
+      "frame_count": 14,
+      "sha256": "90d5d52cb8704824f13cd8ecd8cbe7ae7533fc253ed8de926b6b556ea4506bac"
+    },
+    "1574": {
+      "path": "textures/battle_fx/bdragon/Part 32/1574.png",
+      "frame_count": 14,
+      "sha256": "c1f1402b897fc4f567d4d47b361e936a2f72772675c1fa4cffb06b90faf12d07"
+    },
+    "1575": {
+      "path": "textures/battle_fx/bdragon/Part 32/1575.png",
+      "frame_count": 14,
+      "sha256": "2caa6067690770b95bcad91a39e7aca747b45b408d874c7764e01744e5135cdf"
+    },
+    "1582": {
+      "path": "textures/battle_fx/bdragon/Part 32/1582.png",
+      "frame_count": 14,
+      "sha256": "dbf537558274dc6a7947f4a6ccb3d6b092a8420380503dfd579e95a68f9278e6"
+    },
+    "1583": {
+      "path": "textures/battle_fx/bdragon/Part 32/1583.png",
+      "frame_count": 14,
+      "sha256": "0015dcd7474daa5f12182f2e71662159cf063c47e546e4f5876e922769012728"
+    },
+    "1584": {
+      "path": "textures/battle_fx/bdragon/Part 32/1584.png",
+      "frame_count": 14,
+      "sha256": "0b078b0d28ed1d844e20e669b00fcf02b30cf08f9120be38e99d7aa21c5e031d"
+    },
+    "1585": {
+      "path": "textures/battle_fx/bdragon/Part 32/1585.png",
+      "frame_count": 14,
+      "sha256": "d7fca5a967bad0a831c87496e927d4414f223d3c87dfb21727f3c47e0ba2c696"
+    },
+    "1592": {
+      "path": "textures/battle_fx/bdragon/Part 32/1592.png",
+      "frame_count": 14,
+      "sha256": "3315a77a20753beeba6c3523447182cb50a4b1921bc65a3bc83a217e95d62247"
+    },
+    "1593": {
+      "path": "textures/battle_fx/bdragon/Part 32/1593.png",
+      "frame_count": 14,
+      "sha256": "7e7faef4d07f4c17a1dd3d134c8e04e499cdb6a6ff888b5b53c2b8a945927c62"
+    },
+    "1594": {
+      "path": "textures/battle_fx/bdragon/Part 32/1594.png",
+      "frame_count": 15,
+      "sha256": "c60d8ba527da6a75bf5979d3bd1d0a8a08ea649ed88a86dfca76705222da2506"
+    },
+    "1595": {
+      "path": "textures/battle_fx/bdragon/Part 32/1595.png",
+      "frame_count": 14,
+      "sha256": "4bf13b533ab33aec2cabbcf39ba82993d28144ed473ffb5c8a2bb5262c107634"
+    },
+    "1615": {
+      "path": "textures/battle_fx/bdragon/Part 33/1615.png",
+      "frame_count": 14,
+      "sha256": "18ecae18e1703afe296dc1b72f94eab27be108949dde515abb22ce529fa52963"
+    },
+    "1616": {
+      "path": "textures/battle_fx/bdragon/Part 33/1616.png",
+      "frame_count": 14,
+      "sha256": "3b80b6eb9a14046bdd1eed3651c578e1ace001ae48c1e7522eab8184f9a26c77"
+    },
+    "1617": {
+      "path": "textures/battle_fx/bdragon/Part 33/1617.png",
+      "frame_count": 14,
+      "sha256": "fe3a1787d135a8c3da686f1318c27df04fcf8592f6680fe227e7037d43963c02"
+    },
+    "1618": {
+      "path": "textures/battle_fx/bdragon/Part 33/1618.png",
+      "frame_count": 14,
+      "sha256": "dc708049f153df56a698658ffaace0feb646382f61ce4903c85e3332f56eb337"
+    },
+    "1625": {
+      "path": "textures/battle_fx/bdragon/Part 33/1625.png",
+      "frame_count": 14,
+      "sha256": "8f54fa0d896effb2939428d206351fe5eb6c98ec02958e69821f1490b562bdfd"
+    },
+    "1626": {
+      "path": "textures/battle_fx/bdragon/Part 33/1626.png",
+      "frame_count": 14,
+      "sha256": "9b5ddba841e783bfbe48b2c7413d01419d34598bcf3bf53f7a9ad3ee3a635df5"
+    },
+    "1627": {
+      "path": "textures/battle_fx/bdragon/Part 33/1627.png",
+      "frame_count": 14,
+      "sha256": "5b39edc94ed7ad82d29e4cc66289ed5d86e2b5e2b3a25ba797f06c4a434b0154"
+    },
+    "1628": {
+      "path": "textures/battle_fx/bdragon/Part 33/1628.png",
+      "frame_count": 14,
+      "sha256": "a1c43b0e79acda88573e6132167c094c9da4b4f53a16780b0172f73079e4c0f8"
+    },
+    "1635": {
+      "path": "textures/battle_fx/bdragon/Part 33/1635.png",
+      "frame_count": 14,
+      "sha256": "3ea953655be7fb2630e351a1260e267e15c5752213aaec0a467264d493470804"
+    },
+    "1636": {
+      "path": "textures/battle_fx/bdragon/Part 33/1636.png",
+      "frame_count": 14,
+      "sha256": "b0d05fbdbac6a985659b069c9d700ce2c9dc9ecafd8da5475191ff92000f6b74"
+    },
+    "1637": {
+      "path": "textures/battle_fx/bdragon/Part 33/1637.png",
+      "frame_count": 14,
+      "sha256": "1cb5628a7d747b158a65eb6df30d0f60c330129c7f147fe207be9e5fc209ee3c"
+    },
+    "1638": {
+      "path": "textures/battle_fx/bdragon/Part 33/1638.png",
+      "frame_count": 14,
+      "sha256": "d62a108b58f7c99739bf22a320ecffbbe66cac0274d903ec131635c514d3b084"
+    },
+    "1655": {
+      "path": "textures/battle_fx/bdragon/Part 34/1655.png",
+      "frame_count": 14,
+      "sha256": "9e788b855f3d15422c7f62ae64e48507e3432bea8542480bf6fdb95f2e29f401"
+    },
+    "1656": {
+      "path": "textures/battle_fx/bdragon/Part 34/1656.png",
+      "frame_count": 14,
+      "sha256": "cc431dd9a4018a53ef1f36d9c6c835e8bd8ca91f83986d389586e6a2ad91a520"
+    },
+    "1657": {
+      "path": "textures/battle_fx/bdragon/Part 34/1657.png",
+      "frame_count": 14,
+      "sha256": "f548f0b67bacc40f0f789ba0c7f6d1e5bfbe7d7a4ce4ad74ed57b69ae6e54a39"
+    },
+    "1658": {
+      "path": "textures/battle_fx/bdragon/Part 34/1658.png",
+      "frame_count": 14,
+      "sha256": "ad6e41925e8c84c87417b8a2c3b0cb2e1db124cc14ee2855e72acd2c13d4c6ce"
+    },
+    "1665": {
+      "path": "textures/battle_fx/bdragon/Part 34/1665.png",
+      "frame_count": 14,
+      "sha256": "bac141f02c64da99379b4781da09b7d19af7a1520fff5ddbd7eebf04afe249fb"
+    },
+    "1666": {
+      "path": "textures/battle_fx/bdragon/Part 34/1666.png",
+      "frame_count": 14,
+      "sha256": "266de0d52810b5ae6c9d6a5c96ab9d18d42332eed1fb989b6807dee579faf78e"
+    },
+    "1667": {
+      "path": "textures/battle_fx/bdragon/Part 34/1667.png",
+      "frame_count": 14,
+      "sha256": "bf382c0e31ad58a25447a54c49fc08f3fad3eb01d2d08afdcf01a4df8ffbc9a8"
+    },
+    "1668": {
+      "path": "textures/battle_fx/bdragon/Part 34/1668.png",
+      "frame_count": 14,
+      "sha256": "48016e14726855526c6d769ee438c8d5c9841c8edad211c0d9a842765ab9844a"
+    },
+    "1675": {
+      "path": "textures/battle_fx/bdragon/Part 34/1675.png",
+      "frame_count": 14,
+      "sha256": "0e495bf0321e69a8d913f27685e0a67a38eac924e4b0380a7a7643a6cfa07469"
+    },
+    "1676": {
+      "path": "textures/battle_fx/bdragon/Part 34/1676.png",
+      "frame_count": 14,
+      "sha256": "1509addedcbe126f876322f6bdefadae86d82c5adc84c206888e668ad3692258"
+    },
+    "1677": {
+      "path": "textures/battle_fx/bdragon/Part 34/1677.png",
+      "frame_count": 14,
+      "sha256": "0b0cba3cce5686fe04c51638f339178fbe19e06d9f5295e172e6d5aba345bd03"
+    },
+    "1678": {
+      "path": "textures/battle_fx/bdragon/Part 34/1678.png",
+      "frame_count": 14,
+      "sha256": "67100a98043991f257884a89548910e14682f73546fb49d40dfc4e5a9dbdf7de"
+    },
+    "1712": {
+      "path": "textures/battle_fx/bdragon/Part 35/1712.png",
+      "frame_count": 15,
+      "sha256": "0323d499b70eab071da03429da995b222fc7469b9f04755cf8af9c45b37d9e38"
+    },
+    "1713": {
+      "path": "textures/battle_fx/bdragon/Part 35/1713.png",
+      "frame_count": 15,
+      "sha256": "1b8a7c7416f342a6abed1d436b341c0aa64d7a43049f505fb37a5f25b413aff5"
+    },
+    "1714": {
+      "path": "textures/battle_fx/bdragon/Part 35/1714.png",
+      "frame_count": 15,
+      "sha256": "4b4cad2fe419c10092b17d7098ae031cdcca4641c70aa15a8ecf04017d19f1bc"
+    },
+    "1715": {
+      "path": "textures/battle_fx/bdragon/Part 35/1715.png",
+      "frame_count": 15,
+      "sha256": "0ebbc540bf1d8b760b178a5524da5286f6c0078fa7686233cfa84fd4f4790f57"
+    },
+    "1722": {
+      "path": "textures/battle_fx/bdragon/Part 35/1722.png",
+      "frame_count": 15,
+      "sha256": "a37636476149e6e9af36703733e00b595877a67e137a0c917062c5c753513435"
+    },
+    "1723": {
+      "path": "textures/battle_fx/bdragon/Part 35/1723.png",
+      "frame_count": 15,
+      "sha256": "076627bb9b22a253f3391cd8331141182d832c7b332122faa5ea1259e0195d73"
+    },
+    "1724": {
+      "path": "textures/battle_fx/bdragon/Part 35/1724.png",
+      "frame_count": 15,
+      "sha256": "f98a26f5ae96e2287562d24b3a59338fc58a731b4302f1a26288e1b7f2d2224a"
+    },
+    "1725": {
+      "path": "textures/battle_fx/bdragon/Part 35/1725.png",
+      "frame_count": 15,
+      "sha256": "6f1c285d6d395e71a8c780ac9f5bc8aa704b405f75a5f04c68cb8879e7ef6190"
+    },
+    "1732": {
+      "path": "textures/battle_fx/bdragon/Part 35/1732.png",
+      "frame_count": 15,
+      "sha256": "766415abe0c4ef723bec2c68109392bec7bb1406cae8e8ec798364fa55aa2dc8"
+    },
+    "1733": {
+      "path": "textures/battle_fx/bdragon/Part 35/1733.png",
+      "frame_count": 15,
+      "sha256": "455b4c74d06d39d6dc53cedb98e872d16adf0e5d7432ad2733e672ccd6f827c8"
+    },
+    "1734": {
+      "path": "textures/battle_fx/bdragon/Part 35/1734.png",
+      "frame_count": 15,
+      "sha256": "ac4e308e2ea6a08eca09b7ce29be2db2441a7da3d0ed827d6adfb4a1fe53e3f1"
+    },
+    "1735": {
+      "path": "textures/battle_fx/bdragon/Part 35/1735.png",
+      "frame_count": 15,
+      "sha256": "bd1cb250afbc77b2cf9b0781dfae5f0e416fc66a65ce5f999cbcb2c2d8d6f119"
+    },
+    "1761": {
+      "path": "textures/battle_fx/bdragon/Part 36/1761.png",
+      "frame_count": 16,
+      "sha256": "a826b4fb2b2d1dda06daa05c18b7f5eafa8e8e3c7f0baa161595f7b63422aac2"
+    },
+    "1762": {
+      "path": "textures/battle_fx/bdragon/Part 36/1762.png",
+      "frame_count": 16,
+      "sha256": "584f115fb32eabd9d20cf9ded158a05cd7547522bd4d516d2b48ab5532e1231b"
+    },
+    "1763": {
+      "path": "textures/battle_fx/bdragon/Part 36/1763.png",
+      "frame_count": 16,
+      "sha256": "ed6a5f8c47b22e6a3f0850b825bb5b5fd9f8de1d3761caa24863556b1d9f4b59"
+    },
+    "1764": {
+      "path": "textures/battle_fx/bdragon/Part 36/1764.png",
+      "frame_count": 17,
+      "sha256": "e5ce82971c70e8e4ac78f8bd87fe70f7e53055adb7a7f60da9c60519bbc4342a"
+    },
+    "1771": {
+      "path": "textures/battle_fx/bdragon/Part 36/1771.png",
+      "frame_count": 17,
+      "sha256": "0f28ddc6549a74f9094d0b52298a6746c000987a7d3e80b379aed6d728d4d83c"
+    },
+    "1772": {
+      "path": "textures/battle_fx/bdragon/Part 36/1772.png",
+      "frame_count": 17,
+      "sha256": "4632d01b22f3aa5937eb36afcd6e988c6bd7a365304a153e8dfbe3e02f4f4273"
+    },
+    "1773": {
+      "path": "textures/battle_fx/bdragon/Part 36/1773.png",
+      "frame_count": 17,
+      "sha256": "224b8185b45c69e9eac06688bbf29d0958bbedaeb8209fb6fd3c7285bb490b25"
+    },
+    "1774": {
+      "path": "textures/battle_fx/bdragon/Part 36/1774.png",
+      "frame_count": 17,
+      "sha256": "0c03d58bb6238eaf915cd7e914ce99c6ef3e53d91ad279c1e5a979252c4a34de"
+    },
+    "1781": {
+      "path": "textures/battle_fx/bdragon/Part 36/1781.png",
+      "frame_count": 18,
+      "sha256": "06bc91f1e2ffcd0bf7408b06940a2f6adac8ac560284c63843696bcf670179d8"
+    },
+    "1782": {
+      "path": "textures/battle_fx/bdragon/Part 36/1782.png",
+      "frame_count": 18,
+      "sha256": "550b6972b92d7303be6279d54557358993e01ca14b8a7a29064430294a322f40"
+    },
+    "1783": {
+      "path": "textures/battle_fx/bdragon/Part 36/1783.png",
+      "frame_count": 15,
+      "sha256": "1cc73d2e51721d424663d7f224ea3a8300ba1634546cae74fd91849bf026f393"
+    },
+    "1784": {
+      "path": "textures/battle_fx/bdragon/Part 36/1784.png",
+      "frame_count": 18,
+      "sha256": "7e98f2bb87c7ce473a4c96aacd6a5e8a72636a0268c93702cd93c62358ca114d"
+    }
+  },
+  "presets": {
+    "slash": {
+      "sheet": "1021",
+      "row": 5,
+      "size": 1.0
+    },
+    "pierce": {
+      "sheet": "1224",
+      "row": 5,
+      "size": 1.0
+    },
+    "blunt": {
+      "sheet": "1584",
+      "row": 5,
+      "size": 1.1
+    },
+    "fire": {
+      "sheet": "766",
+      "row": 0,
+      "size": 1.25
+    },
+    "frost": {
+      "sheet": "861",
+      "row": 2,
+      "size": 1.1
+    },
+    "lightning": {
+      "sheet": "1053",
+      "row": 4,
+      "size": 1.0
+    },
+    "poison": {
+      "sheet": "975",
+      "row": 3,
+      "size": 1.0
+    },
+    "arcane": {
+      "sheet": "1261",
+      "row": 1,
+      "size": 1.1
+    },
+    "heal": {
+      "sheet": "1346",
+      "row": 3,
+      "size": 1.0
+    },
+    "buff": {
+      "sheet": "1372",
+      "row": 4,
+      "size": 0.9
+    },
+    "debuff": {
+      "sheet": "1774",
+      "row": 1,
+      "size": 1.1
+    },
+    "jolly_cheer": {
+      "sheet": "1166",
+      "row": 4,
+      "size": 1.1
+    },
+    "caring_friend": {
+      "sheet": "1347",
+      "row": 3,
+      "size": 1.3
+    },
+    "lock_on": {
+      "sheet": "1225",
+      "row": 4,
+      "size": 1.0
+    },
+    "ride_the_gale": {
+      "sheet": "1627",
+      "row": 5,
+      "size": 1.2
+    },
+    "graceful_assault": {
+      "sheet": "1224",
+      "row": 2,
+      "size": 1.3
+    },
+    "painful_stab": {
+      "sheet": "1245",
+      "row": 3,
+      "size": 1.0
+    },
+    "immobilizing_stab": {
+      "sheet": "1625",
+      "row": 1,
+      "size": 1.3
+    },
+    "i_am_scary": {
+      "sheet": "1618",
+      "row": 1,
+      "size": 1.5
+    },
+    "bonk": {
+      "sheet": "1348",
+      "row": 4,
+      "size": 1.5
+    },
+    "cover": {
+      "sheet": "1407",
+      "row": 2,
+      "size": 1.5
+    }
+  }
+}

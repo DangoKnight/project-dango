@@ -2,6 +2,7 @@ class_name ConversationOverlay
 extends CanvasLayer
 
 signal dismissed
+signal line_entered(index: int, line: ConversationLine)
 
 var event: ConversationEvent
 var line_index := 0
@@ -35,12 +36,15 @@ func configure(value: ConversationEvent) -> void:
 
 func _show_line() -> void:
 	var line := event.lines[line_index]
+	line_entered.emit(line_index, line)
+	if not line.notification_text.is_empty():
+		$Root/Notification.present(line.notification_text, line.notification_duration)
 	_present_portrait(left_portrait, line, ConversationLine.Speaker.LEFT)
 	_present_portrait(right_portrait, line, ConversationLine.Speaker.RIGHT)
 	left_portrait.modulate = Color.WHITE if line.speaker != ConversationLine.Speaker.RIGHT else Color(0.55, 0.55, 0.6)
 	right_portrait.modulate = Color.WHITE if line.speaker != ConversationLine.Speaker.LEFT else Color(0.55, 0.55, 0.6)
 	speaker_label.text = L10n.text(line.displayed_speaker())
-	body.text = L10n.text(line.text)
+	body.text = line.formatted_text()
 	_revealed = 0.0
 	_line_elapsed = 0.0
 	body.visible_characters = -1 if event.characters_per_second <= 0.0 else 0

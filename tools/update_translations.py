@@ -9,7 +9,7 @@ import re
 
 ROOT = Path(__file__).resolve().parents[1]
 STRING = r'"(?:[^"\\]|\\.)*"'
-FIELDS = r'display_name|description|title|text|speaker_name|left_name|right_name|tooltip_text'
+FIELDS = r'display_name|description|title|text|notification_text|speaker_name|left_name|right_name|tooltip_text'
 
 
 def decode(value):

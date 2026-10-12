@@ -7,6 +7,8 @@ enum Target { ENEMY, ALLY, SELF, ANY, PARTY, ENEMIES, ENEMY_ROW }
 @export var id: StringName
 @export var display_name: String
 @export_multiline var description: String
+## Explicit presets override Auto; Auto prioritizes healing/status effects over damage type.
+@export_enum("Auto", "slash", "pierce", "blunt", "fire", "frost", "lightning", "poison", "arcane", "heal", "buff", "debuff", "jolly_cheer", "caring_friend", "lock_on", "ride_the_gale", "graceful_assault", "painful_stab", "immobilizing_stab", "i_am_scary", "bonk", "cover") var battle_animation: String = "Auto"
 @export var effect: Effect = Effect.DAMAGE
 @export var targeting: Target = Target.ENEMY
 @export var guaranteed_hit: bool = false

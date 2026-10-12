@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("Ability")
 id = &"ride_the_gale"
+battle_animation = "ride_the_gale"
 display_name = "Ride the gale"
 description = "Temporarily grants a moderate boost to own speed."
 effect = 2

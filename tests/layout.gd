@@ -38,6 +38,9 @@ func run() -> void:
 	var game: Node = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
 	game.new_game(false)
+	# These checks exercise module UI after its introductory dialogue.
+	for introduction in game.ui.get_child(0).module_conversations.values():
+		game.state.completed_conversations[introduction.id] = true
 	var adjusted_portrait := game.state.party[0].definition.duplicate() as CharacterDefinition
 	adjusted_portrait.portrait_offset = Vector2(-0.1, 0.05)
 	adjusted_portrait.portrait_scale = 0.85

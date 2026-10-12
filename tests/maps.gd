@@ -15,7 +15,18 @@ func check(condition: bool, message: String) -> void:
 
 func run() -> void:
 	# Create a second town and map from the saved scenes to exercise generic routing.
-	var map_template := load("res://scenes/world/exploration_room.tscn").instantiate() as Map
+	var map_template := load("res://scenes/base/map.tscn").instantiate() as Map
+	# Supply only the collision needed by this routing fixture.
+	var floor_body := StaticBody3D.new()
+	floor_body.position.y = -0.5
+	map_template.add_child(floor_body)
+	floor_body.owner = map_template
+	var floor_collision := CollisionShape3D.new()
+	var floor_shape := BoxShape3D.new()
+	floor_shape.size = Vector3(40, 1, 40)
+	floor_collision.shape = floor_shape
+	floor_body.add_child(floor_collision)
+	floor_collision.owner = map_template
 	map_template.map_id = &"second_map"
 	map_template.get_node("SpawnPoint").position = Vector3(3, 0.1, 4)
 	map_template.get_node("SpawnPoint").rotation.y = 0.5
@@ -26,13 +37,19 @@ func run() -> void:
 	town_template.town_id = &"second_town"
 	town_template.display_name = "Second Town"
 	town_template.exploration_map = second_map
-	town_template.location_backgrounds["Barracks"] = load("res://textures/wall.png")
+	town_template.location_backgrounds["Barracks"] = load("res://textures/Environments/Labyrinth/wall.png")
 	var second_town := PackedScene.new()
 	check(second_town.pack(town_template) == OK, "Town scene should be reusable")
 	town_template.free()
 	var game: Node = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
 	game.new_game(false)
+	# Exercise navigation after the first-departure conversation.
+	game.state.completed_conversations[game.ui.get_child(0).departure_conversation.id] = true
+	# These checks exercise module UI after its introductory dialogue.
+	for introduction in game.ui.get_child(0).module_conversations.values():
+		game.state.completed_conversations[introduction.id] = true
+	game.state.set_flag(&"labyrinth_unlocked", true)
 	var party_member: CharacterState = game.state.party[0]
 	check(game.ui.get_child(0) is Town, "Starting town should be a Town instance")
 	game.show_town(second_town)
@@ -60,10 +77,13 @@ func run() -> void:
 	game._options_back()
 	check(game.ui.get_child(0).town_id == &"second_town", "Options should preserve the selected town")
 	game.show_location("Barracks")
-	check(game.ui.get_child(0).get_node("Background").texture == load("res://textures/wall.png"), "Locations should use the town's configured background")
+	check(game.ui.get_child(0).get_node("Background").texture == load("res://textures/Environments/Labyrinth/wall.png"), "Locations should use the town's configured background")
 	game.show_town()
 	check(game.state.party[0] == party_member, "Changing towns and maps should preserve party state")
 	game.new_game(false)
+	# These checks exercise module UI after its introductory dialogue.
+	for introduction in game.ui.get_child(0).module_conversations.values():
+		game.state.completed_conversations[introduction.id] = true
 	check(game.ui.get_child(0).town_id == &"starting_town", "New Game should reset the starting town")
 	# A town without an exploration destination cannot navigate to an invalid map.
 	var base_town: Town = load("res://scenes/base/town.tscn").instantiate()

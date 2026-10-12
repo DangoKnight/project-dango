@@ -3,69 +3,95 @@
   "date": "2026-10-10",
   "assets": [
     {
-      "path": "textures/safe_zone.png",
+      "path": "textures/Backgrounds/SafeZones/safe_zone.png",
       "prompt": "Use case: stylized-concept. Production game asset for Project Dango, a modern-day liminal labyrinth RPG with anime character sprites. Atmospheric hand-painted anime environment art, restrained cinematic detail, worn beige and desaturated teal with warm amber refuge lighting, eerie but legible, no medieval fantasy, no text, no labels, no UI, no border, no watermark. Wide 16:9 background. A makeshift inhabited refuge in an endless modern office complex: old sofas, supply crates, bulletin board with indistinct scraps, a bank of lockers, portable warm lamps, and sealed corridors beyond. No people. Eye-level wide room view. Most interesting environmental detail on the left two thirds; rightmost third quiet for a navigation menu.",
       "transparent_background": false
     },
     {
-      "path": "textures/barracks.png",
+      "path": "textures/Backgrounds/SafeZones/barracks.png",
       "prompt": "Use case: stylized-concept. Production game asset for Project Dango, a modern-day liminal labyrinth RPG with anime character sprites. Atmospheric hand-painted anime environment art, restrained cinematic detail, worn beige and desaturated teal with warm amber refuge lighting, eerie but legible, no medieval fantasy, no text, no labels, no UI, no border, no watermark. Wide 16:9 background. Safe dormitory built inside a repurposed office: orderly bunk beds, folded blankets, duffel bags, steel lockers, bedside lamp and muted fluorescent ceiling. Refuge feels practical and restful. No people. Main furnishings in center and right, left third visually quiet behind a menu.",
       "transparent_background": false
     },
     {
-      "path": "textures/tinkerer.png",
+      "path": "textures/Backgrounds/SafeZones/tinkerer.png",
       "prompt": "Use case: stylized-concept. Production game asset for Project Dango, a modern-day liminal labyrinth RPG with anime character sprites. Atmospheric hand-painted anime environment art, restrained cinematic detail, worn beige and desaturated teal with warm amber refuge lighting, eerie but legible, no medieval fantasy, no text, no labels, no UI, no border, no watermark. Wide 16:9 background. A makeshift repair workshop in a converted fluorescent maintenance room: neatly cluttered workbench, pegboard of tools, dismantled radios and equipment, parts bins, soldering station and desk lamp. No people. Main workshop center and right, left third quiet behind a menu.",
       "transparent_background": false
     },
     {
-      "path": "textures/chemist.png",
+      "path": "textures/Backgrounds/SafeZones/barterer.png",
       "prompt": "Use case: stylized-concept. Production game asset for Project Dango, a modern-day liminal labyrinth RPG with anime character sprites. Atmospheric hand-painted anime environment art, restrained cinematic detail, worn beige and desaturated teal with warm amber refuge lighting, eerie but legible, no medieval fantasy, no text, no labels, no UI, no border, no watermark. Wide 16:9 background. A converted office infirmary and chemical workroom: stainless counter, organized reagent bottles with blank labels, practical glassware, first-aid cabinets, ventilation duct, portable task lamp, no medieval potions. No people. Main counter center and right, left third quiet behind a menu.",
       "transparent_background": false
     },
     {
-      "path": "textures/start_screen.png",
+      "path": "textures/Backgrounds/Menus/start_screen.png",
       "prompt": "Use case: stylized-concept. Production game asset for Project Dango, a modern-day liminal labyrinth RPG with anime character sprites. Atmospheric hand-painted anime environment art, restrained cinematic detail, worn beige and desaturated teal with warm amber refuge lighting, eerie but legible, no medieval fantasy, no text, no labels, no UI, no border, no watermark. Wide 16:9 title-screen background. An endless abandoned modern office corridor with yellowed wallpaper, stained carpet, repeating fluorescent lights, subtly impossible branching doorways and a distant dim amber glow. No figures. Unsettling liminal atmosphere. Left side subdued and low detail for the existing game title and menu; striking corridor depth on the right.",
       "transparent_background": false
     },
     {
-      "path": "textures/options.png",
+      "path": "textures/Backgrounds/Menus/options.png",
       "prompt": "Use case: stylized-concept. Production game asset for Project Dango, a modern-day liminal labyrinth RPG with anime character sprites. Atmospheric hand-painted anime environment art, restrained cinematic detail, worn beige and desaturated teal with warm amber refuge lighting, eerie but legible, no medieval fantasy, no text, no labels, no UI, no border, no watermark. Wide 16:9 menu background. A quiet modern maintenance control room in a liminal office building: old electrical cabinets, unlit monitors, conduit, dusty desk and a single pool of warm task light. No people. Center left low contrast for an overlaid settings menu; no readable text on screens.",
       "transparent_background": false
     },
     {
-      "path": "textures/battle_background.png",
+      "path": "textures/Backgrounds/Battle/battle_background.png",
       "prompt": "Use case: stylized-concept. Production game asset for Project Dango, a modern-day liminal labyrinth RPG with anime character sprites. Atmospheric hand-painted anime environment art, restrained cinematic detail, worn beige and desaturated teal with warm amber refuge lighting, eerie but legible, no medieval fantasy, no text, no labels, no UI, no border, no watermark. Wide 16:9 battle backdrop for a 2D turn-based RPG. A broad empty rectangular modern office hall with fluorescent drop ceiling, yellowed wallpaper, worn carpet, several ominous unlit doorways in the back and sides. Camera at standing eye height facing a distant wall, wide lens, horizon about 40 percent down. Spacious open floor across the lower two thirds to place six enemy sprites anywhere, no central furniture, no people, no enemies. Atmospheric shadow at edges but playable floor clearly visible.",
       "transparent_background": false
     },
     {
-      "path": "textures/ground.png",
-      "prompt": "Use case: stylized-concept. Production texture for Project Dango, modern liminal office labyrinth. A square seamless repeatable albedo texture for a 3D game floor: worn muted warm grey-beige office carpet, small dense loop weave, subtle irregular stains and mottling, perfectly flat top-down orthographic view, evenly lit. Uniform scale, no perspective, no edges, no objects, no shadows, no text. Seamless on all four edges. Texture only, not a room.",
-      "transparent_background": false
+      "path": "textures/Environments/Labyrinth/ground.png",
+      "prompt": "Use case: stylized-concept. Asset type: production seamless repeating albedo texture for Project Dango's first-person 3D modern-day liminal labyrinth. Match a hand-painted anime game environment of an abandoned cyan-blue concrete office hall with broad panel joints, subtle cracked paint, and cool modern institutional surfaces. A single square 1024 x 1024 texture image filling the entire canvas, flat orthographic front view with uniform neutral diffuse lighting and uniform detail scale. The texture must tile seamlessly on all four edges. No perspective, no room, no lighting fixtures, no props, no objects, no readable text, no labels, no border, no vignette, no directional shadows, no baked fluorescent glow or specular highlight. Quiet broad shapes and restrained weathering, no noisy photographic weave. Subject: floor made of broad sealed concrete slabs, with a two by two grid of square slabs and narrow aligned expansion joints. Cool medium grey with a subtle desaturated blue-teal undertone, restrained soft mottling, sparse fine scratches and worn smooth patches. Slightly darker than the matching cyan walls; smooth institutional concrete rather than carpet or small ceramic tiles. All slab interiors have even value, no glossy reflections or lighting gradients. Low visual noise. Grid joins align across opposite edges.",
+      "transparent_background": false,
+      "date": "2026-10-11",
+      "generator": "Built-in image_gen",
+      "replaces": "textures.old/2026-10-11-labyrinth-surfaces/ground.png"
     },
     {
-      "path": "textures/wall.png",
-      "prompt": "Use case: stylized-concept. Production texture for Project Dango, modern liminal office labyrinth. A square seamless repeatable albedo texture for a 3D game wall: aged cream-yellow office wallpaper with very subtle small repeating vertical woven pattern and faint worn smudges. Flat front-on orthographic view, evenly lit. No baseboards, no doors, no wall corners, no perspective, no objects, no cast shadows, no text. Seamless on all four edges. Texture only, not a room.",
-      "transparent_background": false
+      "path": "textures/Environments/Labyrinth/wall.png",
+      "prompt": "Use case: stylized-concept. Asset type: production seamless repeating albedo texture for Project Dango's first-person 3D modern-day liminal labyrinth. Match a hand-painted anime game environment of an abandoned cyan-blue concrete office hall with broad panel joints, subtle cracked paint, and cool modern institutional surfaces. A single square 1024 x 1024 texture image filling the entire canvas, flat orthographic front view with uniform neutral diffuse lighting and uniform detail scale. The texture must tile seamlessly on all four edges. No perspective, no room, no lighting fixtures, no props, no objects, no readable text, no labels, no border, no vignette, no directional shadows, no baked fluorescent glow or specular highlight. Quiet broad shapes and restrained weathering, no noisy photographic weave. Subject: aged painted concrete wall panels. Muted dusty cyan-blue matte paint on smooth plaster/concrete, delicate cloudy paint variation, scattered tiny hairline cracks and occasional worn patches. Two columns and two rows of large square concrete panel surfaces separated by thin dark desaturated blue-grey joints; joints align precisely across opposite edges when tiled. Mostly flat clean panel interiors. Paint should be visibly blue-cyan, not beige wallpaper, but keep saturation and contrast restrained for use under dim game lighting.",
+      "transparent_background": false,
+      "date": "2026-10-11",
+      "generator": "Built-in image_gen",
+      "replaces": "textures.old/2026-10-11-labyrinth-surfaces/wall.png"
     },
     {
-      "path": "textures/ceiling.png",
-      "prompt": "Use case: stylized-concept. Production texture for Project Dango, modern liminal office labyrinth. A square seamless repeatable albedo texture for a 3D game ceiling: four pale grey acoustic ceiling tiles in a simple two-by-two metal grid, understated pinhole texture and faint discoloration. Flat orthographic view, evenly lit. No lights, vents, fixtures, perspective or shadows; no text. Grid aligns exactly at edges for seamless repeating. Texture only, not a room.",
-      "transparent_background": false
+      "path": "textures/Environments/Labyrinth/ceiling.png",
+      "prompt": "Use case: stylized-concept. Asset type: production seamless repeating albedo texture for Project Dango's first-person 3D modern-day liminal labyrinth. Match a hand-painted anime game environment of an abandoned cyan-blue concrete office hall with broad panel joints, subtle cracked paint, and cool modern institutional surfaces. A single square 1024 x 1024 texture image filling the entire canvas, flat orthographic front view with uniform neutral diffuse lighting and uniform detail scale. The texture must tile seamlessly on all four edges. No perspective, no room, no lighting fixtures, no props, no objects, no readable text, no labels, no border, no vignette, no directional shadows, no baked fluorescent glow or specular highlight. Quiet broad shapes and restrained weathering, no noisy photographic weave. Subject: plain flush concrete ceiling panels for the same institutional cyan hall. Pale cool blue-grey painted concrete, lighter and less saturated than the cyan wall paint. Two columns and two rows of broad square panels, with thin straight dark muted blue-grey construction joints aligned across opposite edges. Restrained faint water marks and tiny paint imperfections only. No speckled acoustic tiles, no lights, no grilles, no cables, no perspective or bevel shading. Flat even albedo values suitable for ceilings.",
+      "transparent_background": false,
+      "date": "2026-10-11",
+      "generator": "Built-in image_gen",
+      "replaces": "textures.old/2026-10-11-labyrinth-surfaces/ceiling.png"
     },
     {
-      "path": "textures/portrait.png",
+      "path": "textures/UI/portrait.png",
       "prompt": "Use case: stylized-concept. Generic portrait fallback for a modern liminal labyrinth anime RPG, an anonymous expedition member in a contemporary charcoal hooded field jacket, backpack straps, utility trousers and boots. Face completely in soft shadow, deliberately unidentifiable; no resemblance to a specific character, no weapons. Muted grey and teal painted anime illustration. Full body including both feet, front three-quarter view, centered with generous margin, isolated on genuine transparent background. No environment, no ground plane, no shadow, no text, no watermark. Tall portrait aspect ratio.",
       "transparent_background": true
     },
     {
-      "path": "textures/rat.png",
+      "path": "textures/NPCs/Enemies/rat.png",
       "prompt": "Use case: stylized-concept. Production enemy sprite for Project Dango, a modern liminal labyrinth anime RPG. ONE large grey-brown feral rat with dusty rough fur, small alert eyes, pink ears and paws, curved long tail fully in frame. Three-quarter front view crouched low, facing the viewer slightly to left, threatening but grounded natural anatomy, no gore. Detailed hand-painted anime game art with clear silhouette, muted warm grey and brown, softly lit edges. SQUARE 1:1 image canvas. The complete animal including tail and feet fills roughly 85% of the square, centered with balanced transparent margins; no cropped parts. Truly transparent background, no scenery, no ground plane, no shadow, no gradient halo, no text, no frame, no UI.",
       "transparent_background": true
     },
     {
-      "path": "textures/ethereal_orb.png",
+      "path": "textures/NPCs/Enemies/ethereal_orb.png",
       "prompt": "Use case: stylized-concept. Production enemy sprite for Project Dango, a modern liminal labyrinth anime RPG. ONE floating ethereal orb: a luminous pale cyan sphere of translucent mist with a bright irregular white-blue core, subtle swirling filaments and a few short wisps curling close to the sphere. Unsettling inexplicable anomaly, no human face, no eyes, no limbs, no objects, no runes. Detailed hand-painted anime game art, readable round silhouette, cool cyan and muted teal, modest soft glow tightly confined to the orb. SQUARE 1:1 image canvas. Orb fills roughly 85% of square, centered with balanced transparent margin, fully in frame. Truly transparent background, no scenery, no ground plane, no shadow, no rectangular haze, no text, no frame, no UI.",
       "transparent_background": true
+    }
+  ],
+  "archived_assets": [
+    {
+      "path": "textures.old/2026-10-11-labyrinth-surfaces/ground.png",
+      "prompt": "Use case: stylized-concept. Production texture for Project Dango, modern liminal office labyrinth. A square seamless repeatable albedo texture for a 3D game floor: worn muted warm grey-beige office carpet, small dense loop weave, subtle irregular stains and mottling, perfectly flat top-down orthographic view, evenly lit. Uniform scale, no perspective, no edges, no objects, no shadows, no text. Seamless on all four edges. Texture only, not a room.",
+      "transparent_background": false
+    },
+    {
+      "path": "textures.old/2026-10-11-labyrinth-surfaces/wall.png",
+      "prompt": "Use case: stylized-concept. Production texture for Project Dango, modern liminal office labyrinth. A square seamless repeatable albedo texture for a 3D game wall: aged cream-yellow office wallpaper with very subtle small repeating vertical woven pattern and faint worn smudges. Flat front-on orthographic view, evenly lit. No baseboards, no doors, no wall corners, no perspective, no objects, no cast shadows, no text. Seamless on all four edges. Texture only, not a room.",
+      "transparent_background": false
+    },
+    {
+      "path": "textures.old/2026-10-11-labyrinth-surfaces/ceiling.png",
+      "prompt": "Use case: stylized-concept. Production texture for Project Dango, modern liminal office labyrinth. A square seamless repeatable albedo texture for a 3D game ceiling: four pale grey acoustic ceiling tiles in a simple two-by-two metal grid, understated pinhole texture and faint discoloration. Flat orthographic view, evenly lit. No lights, vents, fixtures, perspective or shadows; no text. Grid aligns exactly at edges for seamless repeating. Texture only, not a room.",
+      "transparent_background": false
     }
   ]
 }

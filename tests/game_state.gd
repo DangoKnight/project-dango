@@ -22,6 +22,9 @@ func run() -> void:
 	root.add_child(game)
 	game.new_game(false)
 	check(game.state == state and state.has_started and state.party.size() == 3, "New Game initializes the shared state with three active characters")
+	check(state.gear_inventory.get_items().is_empty() and state.weapon_inventory.is_empty(), "New Game starts with empty shared inventories")
+	for member in state.roster:
+		check(member.equipped_weapon == null and member.get_equipped_gear().is_empty(), "Starting characters have no equipment")
 	check(state.roster.size() == 3, "The starting roster has no reserve recruits")
 	for candidate in state.roster:
 		check(candidate.definition.id != &"koumi", "Koumi is not recruited at New Game")

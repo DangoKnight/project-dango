@@ -19,6 +19,24 @@ func goods(value: int, kind: int = 0) -> GearDefinition:
 	return definition
 
 
+func click_item(list: ItemList, index: int, shift := false) -> void:
+	var position := list.get_global_transform_with_canvas() * list.get_item_rect(index).get_center()
+	var motion := InputEventMouseMotion.new()
+	motion.position = position
+	root.push_input(motion, true)
+	var click := InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.position = position
+	click.shift_pressed = shift
+	click.pressed = true
+	root.push_input(click, true)
+	await process_frame
+	click = click.duplicate()
+	click.pressed = false
+	root.push_input(click, true)
+	await process_frame
+
+
 func run() -> void:
 	var town: Town = load("res://scenes/ui/town.tscn").instantiate()
 	var services := SafeZoneServices.new()
@@ -139,13 +157,37 @@ func run() -> void:
 
 	var game: Node = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
+	game.starting_gear.assign([
+		load("res://resources/rpg/gear/iron_artifact.tres"),
+		load("res://resources/rpg/gear/wind_artifact.tres"),
+		load("res://resources/rpg/gear/vital_artifact.tres"),
+		load("res://resources/rpg/gear/rally_flask.tres"),
+		load("res://resources/rpg/gear/healing_draught.tres"),
+		load("res://resources/rpg/gear/frailty_bomb.tres"),
+	])
 	game.new_game(false)
+	# These checks exercise module UI after its introductory dialogue.
+	for introduction in game.ui.get_child(0).module_conversations.values():
+		game.state.completed_conversations[introduction.id] = true
 	game.show_location("Barterer")
 	town = game.ui.get_child(0)
 	var barter: Control = town.module_view
 	check(town.has_node("Panel/Buttons/Barterer") and not town.has_node("Panel/Buttons/Chemist"), "Safe Zone renames Chemist to Barterer")
 	check(barter.offered_list.item_count > 0 and barter.stock_list.item_count > 0, "Barterer displays owned and available goods")
 	check(barter.feedback.text == "Not acceptable", "Barterer feedback contains no values or hints")
+	await create_timer(barter.card_slide_duration + 0.05).timeout
+	await click_item(barter.offered_list, 0)
+	await click_item(barter.offered_list, 1)
+	check(barter.offered_list.is_selected(0) and barter.offered_list.is_selected(1), "Plain clicks add items without clearing the offer")
+	await click_item(barter.offered_list, 1)
+	check(barter.offered_list.is_selected(0) and not barter.offered_list.is_selected(1), "Clicking an offered item again deselects it")
+	await click_item(barter.offered_list, 3, true)
+	check(barter.offered_list.is_selected(1) and barter.offered_list.is_selected(2) and barter.offered_list.is_selected(3), "Shift click selects a range from the last clicked item")
+	await click_item(barter.stock_list, 0)
+	await click_item(barter.stock_list, 1)
+	check(barter.stock_list.is_selected(0) and barter.stock_list.is_selected(1), "Requested goods also toggle without Ctrl")
+	barter.stock_list.deselect_all()
+	barter.offered_list.deselect_all()
 	for index in range(barter.offered_list.item_count):
 		barter.offered_list.select(index, false)
 	barter.stock_list.select(0)
@@ -165,9 +207,7 @@ func run() -> void:
 			game._record_service_kill(enemy_id)
 	workshop._claim()
 	check(game.state.weapon_inventory.size() == 1 and not initial_service.commissions.has(recipe.product_key()), "Completed commission awards a weapon to shared stash")
-	var original_weapon: WeaponDefinition = game.state.party[0].equipped_weapon
-	workshop._equip_weapon()
-	check(game.state.party[0].equipped_weapon == recipe.weapon and original_weapon in game.state.weapon_inventory, "Crafted weapons can be equipped and the previous weapon returns to stash")
+	check(workshop.get("owned_weapons") == null and workshop.get("equip_button") == null, "Tinkerer does not expose weapon stash or equipment controls")
 	var medallion_index := initial_service.recipes.find(medallion_recipe)
 	check(medallion_index >= 0, "Tinkerer offers the sample medallion design")
 	workshop.ideas.select(medallion_index)
@@ -224,6 +264,9 @@ func run() -> void:
 		battle.session._reward_defeated_enemies()
 		check(initial_service.commissions[recipe.product_key()].kills.get(species, 0) == 1, "Poison defeat counts once through live battle integration")
 	game.new_game(false)
+	# These checks exercise module UI after its introductory dialogue.
+	for introduction in game.ui.get_child(0).module_conversations.values():
+		game.state.completed_conversations[introduction.id] = true
 	check(game.state.safe_zone_services.is_empty() and game.state.weapon_inventory.is_empty(), "New Game resets service stock, quest history, and crafted weapon stash")
 	game.queue_free()
 	await process_frame

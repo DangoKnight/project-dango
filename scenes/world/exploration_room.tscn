@@ -1,90 +1,126 @@
-[gd_scene load_steps=19 format=3]
-[ext_resource type="PackedScene" path="res://scenes/base/map.tscn" id="Map"]
-[ext_resource type="Material" path="res://resources/materials/ground.tres" id="ground"]
-[ext_resource type="Material" path="res://resources/materials/wall.tres" id="wall"]
+[gd_scene format=3 uid="uid://d2exqjpmtiux5"]
+
 [ext_resource type="Material" path="res://resources/materials/ceiling.tres" id="ceiling"]
 [ext_resource type="Resource" path="res://resources/rpg/encounters/training.tres" id="Encounter"]
+[ext_resource type="Material" path="res://resources/materials/ground.tres" id="ground"]
+[ext_resource type="PackedScene" path="res://scenes/base/map.tscn" id="Map"]
+[ext_resource type="Material" path="res://resources/materials/wall.tres" id="wall"]
+
 [sub_resource type="Environment" id="Environment"]
 background_mode = 1
 background_color = Color(0.2, 0.2, 0.2, 1)
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
-ambient_light_energy = 0.75
 ambient_light_sky_contribution = 0.0
+ambient_light_energy = 0.75
+
 [sub_resource type="BoxMesh" id="GroundMesh"]
-size = Vector3(40, 1, 40)
 material = ExtResource("ground")
+size = Vector3(40, 1, 40)
+
 [sub_resource type="BoxShape3D" id="GroundShape"]
 size = Vector3(40, 1, 40)
+
 [sub_resource type="BoxMesh" id="CeilingMesh"]
-size = Vector3(40, 1, 40)
 material = ExtResource("ceiling")
+size = Vector3(40, 1, 40)
+
 [sub_resource type="BoxShape3D" id="CeilingShape"]
 size = Vector3(40, 1, 40)
+
 [sub_resource type="BoxMesh" id="NorthWallMesh"]
-size = Vector3(40, 8, 1)
 material = ExtResource("wall")
+size = Vector3(40, 8, 1)
+
 [sub_resource type="BoxShape3D" id="NorthWallShape"]
 size = Vector3(40, 8, 1)
+
 [sub_resource type="BoxMesh" id="SouthWallMesh"]
-size = Vector3(40, 8, 1)
 material = ExtResource("wall")
+size = Vector3(40, 8, 1)
+
 [sub_resource type="BoxShape3D" id="SouthWallShape"]
 size = Vector3(40, 8, 1)
+
 [sub_resource type="BoxMesh" id="WestWallMesh"]
-size = Vector3(1, 8, 40)
 material = ExtResource("wall")
+size = Vector3(1, 8, 40)
+
 [sub_resource type="BoxShape3D" id="WestWallShape"]
 size = Vector3(1, 8, 40)
+
 [sub_resource type="BoxMesh" id="EastWallMesh"]
-size = Vector3(1, 8, 40)
 material = ExtResource("wall")
+size = Vector3(1, 8, 40)
+
 [sub_resource type="BoxShape3D" id="EastWallShape"]
 size = Vector3(1, 8, 40)
-[node name="ExplorationRoom" instance=ExtResource("Map")]
+
+[node name="ExplorationRoom" unique_id=1617398071 instance=ExtResource("Map")]
 map_id = &"exploration_room"
 display_name = "Exploration Room"
 encounter = ExtResource("Encounter")
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment")
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-rotation_degrees = Vector3(-60, -25, 0)
-light_energy = 0.7
-[node name="Ground" type="StaticBody3D" parent="."]
-position = Vector3(0, -0.5, 0)
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
-mesh = SubResource("GroundMesh")
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
-shape = SubResource("GroundShape")
-[node name="Ceiling" type="StaticBody3D" parent="."]
-position = Vector3(0, 8.5, 0)
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Ceiling"]
-mesh = SubResource("CeilingMesh")
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling"]
-shape = SubResource("CeilingShape")
-[node name="NorthWall" type="StaticBody3D" parent="."]
-position = Vector3(0, 4, -20)
-[node name="MeshInstance3D" type="MeshInstance3D" parent="NorthWall"]
-mesh = SubResource("NorthWallMesh")
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NorthWall"]
-shape = SubResource("NorthWallShape")
-[node name="SouthWall" type="StaticBody3D" parent="."]
-position = Vector3(0, 4, 20)
-[node name="MeshInstance3D" type="MeshInstance3D" parent="SouthWall"]
-mesh = SubResource("SouthWallMesh")
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SouthWall"]
-shape = SubResource("SouthWallShape")
-[node name="WestWall" type="StaticBody3D" parent="."]
-position = Vector3(-20, 4, 0)
-[node name="MeshInstance3D" type="MeshInstance3D" parent="WestWall"]
-mesh = SubResource("WestWallMesh")
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WestWall"]
-shape = SubResource("WestWallShape")
-[node name="EastWall" type="StaticBody3D" parent="."]
-position = Vector3(20, 4, 0)
-[node name="MeshInstance3D" type="MeshInstance3D" parent="EastWall"]
-mesh = SubResource("EastWallMesh")
-[node name="CollisionShape3D" type="CollisionShape3D" parent="EastWall"]
-shape = SubResource("EastWallShape")
+
 [node name="SpawnPoint" parent="." index="0"]
-position = Vector3(0, 0.1, 12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 12)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="2" unique_id=1248832910]
+environment = SubResource("Environment")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="3" unique_id=1227426115]
+transform = Transform3D(0.90630776, 0.36599818, -0.21130912, 0, 0.49999997, 0.86602545, 0.42261827, -0.7848856, 0.45315385, 0, 0, 0)
+light_energy = 0.7
+
+[node name="Ground" type="StaticBody3D" parent="." index="4" unique_id=474861005]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" index="0" unique_id=2112281030]
+mesh = SubResource("GroundMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" index="1" unique_id=1342269047]
+shape = SubResource("GroundShape")
+
+[node name="Ceiling" type="StaticBody3D" parent="." index="5" unique_id=2085498910]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ceiling" index="0" unique_id=64479759]
+mesh = SubResource("CeilingMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling" index="1" unique_id=1518844680]
+shape = SubResource("CeilingShape")
+
+[node name="NorthWall" type="StaticBody3D" parent="." index="6" unique_id=1982764314]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -20)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NorthWall" index="0" unique_id=1273570475]
+mesh = SubResource("NorthWallMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NorthWall" index="1" unique_id=1304050785]
+shape = SubResource("NorthWallShape")
+
+[node name="SouthWall" type="StaticBody3D" parent="." index="7" unique_id=1019091619]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 20)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SouthWall" index="0" unique_id=1497131015]
+mesh = SubResource("SouthWallMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SouthWall" index="1" unique_id=876065674]
+shape = SubResource("SouthWallShape")
+
+[node name="WestWall" type="StaticBody3D" parent="." index="8" unique_id=1792560522]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 4, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WestWall" index="0" unique_id=174136207]
+mesh = SubResource("WestWallMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WestWall" index="1" unique_id=1319754465]
+shape = SubResource("WestWallShape")
+
+[node name="EastWall" type="StaticBody3D" parent="." index="9" unique_id=169983554]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 4, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="EastWall" index="0" unique_id=222914025]
+mesh = SubResource("EastWallMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EastWall" index="1" unique_id=440094534]
+shape = SubResource("EastWallShape")

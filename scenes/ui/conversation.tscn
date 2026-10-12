@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cfapb1fl0p0au" path="res://scripts/conversation/conversation_overlay.gd" id="Script"]
 
+[ext_resource type="PackedScene" path="res://scenes/ui/conversation_notification.tscn" id="Notification"]
+
 [sub_resource type="StyleBoxFlat" id="DialogueStyle"]
 bg_color = Color(0.035, 0.045, 0.055, 0.96)
 border_width_left = 2
@@ -83,6 +85,7 @@ theme_override_font_sizes/font_size = 24
 
 [node name="Text" type="RichTextLabel" parent="Root/Dialogue/Margin/Content" unique_id=40360448]
 layout_mode = 2
+bbcode_enabled = true
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 22
 
@@ -90,3 +93,5 @@ theme_override_font_sizes/normal_font_size = 22
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Continue"
+
+[node name="Notification" parent="Root" instance=ExtResource("Notification")]

@@ -51,28 +51,54 @@ func run() -> void:
 	game.starting_party_size = 4 # Exercise a full formation and occupied-slot swaps.
 	game.starting_characters.append(load("res://resources/rpg/characters/koumi.tres")) # Recruited only for this fixture.
 	game.new_game(false)
+	# These checks exercise module UI after its introductory dialogue.
+	for introduction in game.ui.get_child(0).module_conversations.values():
+		game.state.completed_conversations[introduction.id] = true
 	var town = game.ui.get_child(0)
+	check(town.get_node("Panel/Buttons/Explore").disabled, "New games start with labyrinth navigation disabled")
+	town._on_button_pressed("Explore")
+	check(game.screen == "town" and game.world == null, "Disabled exploration cannot be triggered programmatically")
+	game.state.set_flag(&"labyrinth_unlocked", true)
+	check(not town.get_node("Panel/Buttons/Explore").disabled, "Progression flag enables exploration")
 	check(town.get_node("Panel").anchor_left >= 1.0, "Safe Zone card begins beyond the right edge")
 	await create_timer(town.card_slide_duration * 0.4).timeout
 	check(town.get_node("Panel").anchor_left > 0.69, "Safe Zone card moves in from the right")
 	root.size = Vector2i(1600, 900)
 	await create_timer(town.card_slide_duration + 0.05).timeout
-	check(is_equal_approx(town.get_node("Panel").anchor_left, 0.69), "Safe Zone finishes at its anchors after resize")
+	check(is_equal_approx(town.get_node("Panel").anchor_left, 0.59), "Safe Zone finishes at its anchors after resize")
 	for location in ["Tinkerer", "Barterer", "Barracks"]:
 		town.get_node("Panel/Buttons/" + location).pressed.emit()
 		var view = game.ui.get_child(0).module_view
 		check(view.get_node("Panel").anchor_right <= 0.0, "Module begins beyond the left edge: " + location)
 		await create_timer(view.card_slide_duration + 0.05).timeout
 		check(is_equal_approx(view.get_node("Panel").anchor_left, 0.03), "Module slides into the left side: " + location)
+		check(view.get_node("Panel").get_global_rect().end.x <= view.size.x * 0.5 + 1.0, "Module stays within the left half of the scene: " + location)
+		var overlap: float = view.get_node("Panel").get_global_rect().end.x - town.get_node("ModuleNPC").get_global_rect().position.x
+		check(absf(overlap) <= 1.0, "Module meets the NPC area at the center: " + location)
+		for window_size in [Vector2i(800, 450), Vector2i(900, 1200), Vector2i(1600, 900)]:
+			root.size = window_size
+			for frame in range(4):
+				await process_frame
+			check(view.get_node("Panel").get_global_rect().end.x <= view.size.x * 0.5 + 1.0, "Resized module stays within the left half: %s at %s" % [location, window_size])
+		check(not town.get_node("Panel").visible, "Hub actions hide while a module is open")
+		check(town.get_node("ModuleNPC").visible and town.get_node("ModuleNPC/Image").texture == town.location_npcs[location], "Each module shows its corresponding NPC")
+		check(is_equal_approx(town.get_node("ModuleNPC").anchor_left, 0.5), "NPC occupies the right half")
+		check(is_equal_approx(town.get_node("ModuleNPC/Image").get_global_rect().end.y, town.get_global_rect().end.y), "NPC portrait is anchored to the bottom")
+		check(town.get_node("Panel/Buttons/Explore").disabled, "Hidden hub actions cannot receive input")
+		if location != "Barracks":
+			view.get_node("Panel/Buttons/ReturnToHub").pressed.emit()
+			await create_timer(town.card_slide_duration + 0.05).timeout
+			check(town.module_view == null and town.get_node("Panel").visible and not town.get_node("ModuleNPC").visible, "Return to Hub restores hub actions and dismisses the NPC")
+			check(not town.get_node("Panel/Buttons/Barracks").disabled, "Returning enables hub actions")
 	var barracks = game.ui.get_child(0).module_view
 	check(game.ui.get_child(0) == town, "Opening and switching modules retains the Safe Zone navigation instance")
-	check(town.get_node("Panel").visible and is_equal_approx(town.get_node("Panel").anchor_left, 0.69), "Module selection leaves the navigation card in place")
+	check(not town.get_node("Panel").visible, "Hub actions stay hidden during module use")
 	check(not barracks.get_node("PartyPanel").visible, "Barracks starts with the party card closed")
 	check(barracks.get_node("Panel/Buttons/Save").disabled, "Save is visible but disabled")
 	check(barracks.get_node("Panel/Buttons/ManageParty") is Button, "Barracks exposes a Manage Party button")
 	barracks.get_node("Panel/Buttons/ManageParty").pressed.emit()
 	await create_timer(barracks.card_slide_duration * 2 + 0.05).timeout
-	check(barracks.get_node("PartyPanel").visible and not barracks.get_node("Panel").visible and town.get_node("Panel").visible, "Manage Party replaces Barracks while Safe Zone navigation stays visible")
+	check(barracks.get_node("PartyPanel").visible and not barracks.get_node("Panel").visible and not town.get_node("Panel").visible, "Manage Party replaces Barracks while hub actions stay hidden")
 	var escape := InputEventAction.new()
 	escape.action = "ui_cancel"
 	escape.pressed = true
@@ -131,8 +157,9 @@ func run() -> void:
 		for frame in range(4):
 			await process_frame
 		check(barracks.get_global_rect().grow(1).encloses(barracks.get_node("PartyPanel").get_global_rect()), "Party card fits resized viewport")
+		check(barracks.get_node("PartyPanel").get_global_rect().end.x <= barracks.size.x * 0.5 + 1.0, "Party management stays within the left half after resizing")
 		check(not barracks.get_node("Panel").visible, "Barracks remains hidden during party management")
-		check(not town.get_node("Panel").get_global_rect().intersects(barracks.get_node("PartyPanel").get_global_rect()), "Party card leaves module navigation accessible")
+		check(not town.get_node("Panel").get_global_rect().intersects(barracks.get_node("PartyPanel").get_global_rect()), "Party card leaves space for the NPC")
 		for path in ["Content", "Feedback", "CloseParty"]:
 			check(barracks.get_node("PartyPanel").get_global_rect().grow(1).encloses(barracks.get_node("PartyPanel/Buttons/" + path).get_global_rect()), "Barracks content fits: " + path)
 		var character_panel: Control = barracks.get_node("PartyPanel/Buttons/Content/Character")
@@ -142,10 +169,12 @@ func run() -> void:
 	# Navigation preserves identity, selected membership, and planning order.
 	var saved_party: Array[CharacterState] = game.state.party.duplicate()
 	check(not barracks.has_node("Panel/Buttons/Town"), "Barracks has no Back to Safe Zone button")
-	town.get_node("Panel/Buttons/Barracks").pressed.emit()
-	check(town.module_view == null and barracks.is_inside_tree(), "Clicking Barracks again closes its current card with a slide")
+	barracks.close_party()
+	await create_timer(barracks.card_slide_duration * 2 + 0.05).timeout
+	barracks.get_node("Panel/Buttons/ReturnToHub").pressed.emit()
+	check(town.module_view == null and barracks.is_inside_tree(), "Return to Hub closes Barracks with a slide")
 	await create_timer(barracks.card_slide_duration + 0.05).timeout
-	check(not is_instance_valid(barracks) and game.screen == "town", "Barracks toggle leaves Safe Zone navigation open")
+	check(not is_instance_valid(barracks) and game.screen == "town", "Returning leaves Safe Zone navigation open")
 	game.show_location("Barracks")
 	check(game.ui.get_child(0).module_view.party == saved_party, "Reentering Barracks preserves party membership")
 	game.show_town()
@@ -154,12 +183,18 @@ func run() -> void:
 	var battle := game.ui.get_child(0) as CombatScreen
 	check(battle.session.party == saved_party and battle.session.active_character() == saved_party[0], "Battle uses the selected active party and order")
 	game.new_game(false)
+	# These checks exercise module UI after its introductory dialogue.
+	for introduction in game.ui.get_child(0).module_conversations.values():
+		game.state.completed_conversations[introduction.id] = true
 	check(game.state.party.size() == 4 and game.state.roster.size() == 4 and game.state.roster[0] != original, "New Game resets roster and formation")
 	# Future recruits stay available even when the initial party reaches capacity.
 	var extra := game.starting_characters[0].duplicate(true) as CharacterDefinition
 	extra.id = &"reserve_fixture"
 	game.starting_characters.append(extra)
 	game.new_game(false)
+	# These checks exercise module UI after its introductory dialogue.
+	for introduction in game.ui.get_child(0).module_conversations.values():
+		game.state.completed_conversations[introduction.id] = true
 	game.show_location("Barracks")
 	barracks = game.ui.get_child(0).module_view
 	barracks.open_party()

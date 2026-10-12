@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("Ability")
 id = &"graceful_assault"
+battle_animation = "graceful_assault"
 display_name = "Graceful assault"
 description = "A normal-power pierce attack that cannot miss."
 guaranteed_hit = true

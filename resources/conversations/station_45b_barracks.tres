@@ -1,0 +1,199 @@
+[gd_resource type="Resource" script_class="ConversationEvent" load_steps=21 format=3]
+
+[ext_resource type="Script" path="res://scripts/conversation/conversation_event.gd" id="Event"]
+[ext_resource type="Script" path="res://scripts/conversation/conversation_line.gd" id="Line"]
+[ext_resource type="Resource" path="res://resources/rpg/characters/usami.tres" id="Usami"]
+[ext_resource type="Resource" path="res://resources/rpg/characters/takane.tres" id="Takane"]
+[ext_resource type="Resource" path="res://resources/rpg/characters/kurako.tres" id="Kurako"]
+[ext_resource type="Resource" path="res://resources/rpg/characters/koumi.tres" id="Koumi"]
+[ext_resource type="Texture2D" path="res://textures/NPCs/Station_45B/Barracks/York.png" id="NPC"]
+
+[ext_resource type="Resource" path="res://resources/rpg/gear/simple_rations.tres" id="Rations"]
+
+[sub_resource type="Resource" id="1"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+speaker = 1
+text = "Miss York! We're going exploring now!"
+left_entrance = 1
+
+[sub_resource type="Resource" id="2"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 2
+text = "Ah, it's you girls. Are you all ready for your first expedition?"
+right_entrance = 2
+
+[sub_resource type="Resource" id="3"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 1
+text = "Yes! We've been preparing all month! Mister Cairo has taught us everything about exploring the labrynth!"
+
+[sub_resource type="Resource" id="4"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 2
+text = "Cairo is a really nice person, isn't he? By the way... Takane. There's something I wanted to give you."
+
+[sub_resource type="Resource" id="5"]
+script = ExtResource("Line")
+left_character = ExtResource("Takane")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 1
+text = "What is it?"
+left_exit = 1
+left_entrance = 1
+
+[sub_resource type="Resource" id="6"]
+script = ExtResource("Line")
+left_character = ExtResource("Takane")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 2
+text = "It's a few field rations. I'm sure Cairo has explained to you how food can become an issue if you stay out on the labrynth for too long."
+
+[sub_resource type="Resource" id="Receipt"]
+script = ExtResource("Line")
+left_character = ExtResource("Takane")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+auto_advance = true
+minimum_duration = 2.0
+notification_text = "Takane received 4 Simple Rations from York."
+notification_duration = 2.0
+reward_gear = ExtResource("Rations")
+reward_quantity = 4
+
+[sub_resource type="Resource" id="7"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 1
+text = "Eh?! Why Takane?!"
+left_exit = 1
+left_entrance = 1
+
+[sub_resource type="Resource" id="8"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 2
+text = "Because she's Usami's older sister. Also, I don't trust you with food. You would probably eat it all before you even leave Station 45B."
+
+[sub_resource type="Resource" id="8_1"]
+script = ExtResource("Line")
+left_character = ExtResource("Takane")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 1
+text = "Or sprinkle chilli on them."
+left_exit = 1
+left_entrance = 1
+
+[sub_resource type="Resource" id="8_2"]
+script = ExtResource("Line")
+left_character = ExtResource("Takane")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 2
+text = "Or use them as bait to attract mice into the common area."
+
+[sub_resource type="Resource" id="8_3"]
+script = ExtResource("Line")
+left_character = ExtResource("Takane")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 1
+text = "Or trade them for Sydney's prank replicas."
+
+[sub_resource type="Resource" id="9"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 1
+text = "Ugh..."
+left_exit = 1
+left_entrance = 1
+
+[sub_resource type="Resource" id="10"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 1
+text = "Thank you, Miss York! You're always so nice to us!"
+left_exit = 1
+left_entrance = 1
+
+[sub_resource type="Resource" id="11"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 2
+text = "You're such a sweetie, little Usami. Don't forget to come back to take a break often. [color=red]Resting will help you grow stronger[/color]."
+
+[sub_resource type="Resource" id="12"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 2
+text = "Takane, please make sure to keep Usami safe, alright?"
+
+[sub_resource type="Resource" id="13"]
+script = ExtResource("Line")
+left_character = ExtResource("Takane")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 1
+text = "Of course. I won't let anything happen to her."
+left_exit = 1
+left_entrance = 1
+
+[sub_resource type="Resource" id="14"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_portrait = ExtResource("NPC")
+right_name = "York"
+speaker = 1
+text = "... What about me?"
+left_exit = 1
+left_entrance = 1
+
+[sub_resource type="Resource" id="15"]
+script = ExtResource("Line")
+auto_advance = true
+minimum_duration = 1.0
+left_exit = 1
+right_exit = 2
+
+[sub_resource type="Resource" id="16"]
+script = ExtResource("Line")
+right_character = ExtResource("Koumi")
+speaker = 2
+text = "..."
+right_entrance = 2
+
+[sub_resource type="Resource" id="17"]
+script = ExtResource("Line")
+auto_advance = true
+minimum_duration = 0.5
+right_exit = 2
+
+[resource]
+script = ExtResource("Event")
+id = &"station_45b_barracks_intro"
+once_per_game = true
+lines = Array[ExtResource("Line")]([SubResource("1"), SubResource("2"), SubResource("3"), SubResource("4"), SubResource("5"), SubResource("6"), SubResource("Receipt"), SubResource("7"), SubResource("8"), SubResource("8_1"), SubResource("8_2"), SubResource("8_3"), SubResource("9"), SubResource("10"), SubResource("11"), SubResource("12"), SubResource("13"), SubResource("14"), SubResource("15"), SubResource("16"), SubResource("17")])

@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://byfuq2tv8p7vj"]
 
-[ext_resource type="Texture2D" uid="uid://c1fkw072gycpc" path="res://textures/battle_background.png" id="Background"]
+[ext_resource type="Texture2D" path="res://textures/Backgrounds/Battle/battle_background.png" id="Background"]
 [ext_resource type="Resource" path="res://resources/rpg/encounters/training.tres" id="Encounter"]
 [ext_resource type="PackedScene" path="res://scenes/battle/party_card.tscn" id="PartyCard"]
-[ext_resource type="Texture2D" uid="uid://dpkvh4fn5346f" path="res://textures/portrait.png" id="Portrait"]
+[ext_resource type="Texture2D" path="res://textures/UI/portrait.png" id="Portrait"]
 [ext_resource type="Script" uid="uid://b6ktqqkgblfaj" path="res://scripts/battle/combat_screen.gd" id="Script"]
 [ext_resource type="PackedScene" path="res://scenes/battle/enemy_slot.tscn" id="Slot"]
 [ext_resource type="Theme" uid="uid://cbxiw1n5nqs11" path="res://resources/themes/default.tres" id="Theme"]

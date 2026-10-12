@@ -1,0 +1,139 @@
+[gd_resource type="Resource" script_class="ConversationEvent" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/conversation/conversation_event.gd" id="Event"]
+[ext_resource type="Script" path="res://scripts/conversation/conversation_line.gd" id="Line"]
+[ext_resource type="Resource" path="res://resources/rpg/characters/usami.tres" id="Usami"]
+[ext_resource type="Resource" path="res://resources/rpg/characters/takane.tres" id="Takane"]
+[ext_resource type="Resource" path="res://resources/rpg/characters/kurako.tres" id="Kurako"]
+[ext_resource type="Resource" path="res://resources/rpg/characters/koumi.tres" id="Koumi"]
+[ext_resource type="Texture2D" path="res://textures/NPCs/Station_45B/Barterer/Cairo.png" id="NPC"]
+
+[sub_resource type="Resource" id="1"]
+script = ExtResource("Line")
+left_character = ExtResource("Takane")
+speaker = 1
+text = "Cairo, we're off to the labrynth now. Any final advice?"
+left_entrance = 1
+
+[sub_resource type="Resource" id="2"]
+script = ExtResource("Line")
+left_character = ExtResource("Takane")
+right_portrait = ExtResource("NPC")
+right_name = "Cairo"
+speaker = 2
+text = "Ah, it's you girls. I think you already know everything you need to know to handle the labrynth outside Station 45B."
+right_entrance = 2
+
+[sub_resource type="Resource" id="3"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+right_portrait = ExtResource("NPC")
+right_name = "Cairo"
+speaker = 1
+text = "Thank you so much for always helping us out, mister Cairo!"
+left_entrance = 1
+left_exit = 1
+
+[sub_resource type="Resource" id="4"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+right_portrait = ExtResource("NPC")
+right_name = "Cairo"
+speaker = 2
+text = "Don't worry about it. I wouldn't be able to live with myself if I let anything happen to you."
+
+[sub_resource type="Resource" id="5"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+right_portrait = ExtResource("NPC")
+right_name = "Cairo"
+speaker = 2
+text = "I considered trying to stop you... But I've known Kurako long enough to know there's no changing her mind when she gets an idea on her head."
+
+[sub_resource type="Resource" id="6"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_portrait = ExtResource("NPC")
+right_name = "Cairo"
+speaker = 1
+text = "I always believed in you, Cairo!"
+left_entrance = 1
+left_exit = 1
+
+[sub_resource type="Resource" id="7"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_portrait = ExtResource("NPC")
+right_name = "Cairo"
+speaker = 2
+text = "You girls will be fine. Just remember the basics. Stay alert, take frequent rests and [color=red]make sure to stay well supplied before entering combat[/color]."
+
+[sub_resource type="Resource" id="8"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_portrait = ExtResource("NPC")
+right_name = "Cairo"
+speaker = 2
+text = "And if you find anything valuable out there, be sure to bring it back here to [color=red]trade for proper supplies[/color]."
+
+[sub_resource type="Resource" id="9"]
+script = ExtResource("Line")
+left_character = ExtResource("Takane")
+right_portrait = ExtResource("NPC")
+right_name = "Cairo"
+speaker = 1
+text = "Understood."
+left_entrance = 1
+left_exit = 1
+
+[sub_resource type="Resource" id="10"]
+script = ExtResource("Line")
+left_character = ExtResource("Takane")
+right_portrait = ExtResource("NPC")
+right_name = "Cairo"
+speaker = 2
+text = "Oh, and Takane. Make sure to keep Usami safe, alright?"
+
+[sub_resource type="Resource" id="11"]
+script = ExtResource("Line")
+left_character = ExtResource("Takane")
+right_portrait = ExtResource("NPC")
+right_name = "Cairo"
+speaker = 1
+text = "If anybody dares harm her, the'll be met with a quick death."
+
+[sub_resource type="Resource" id="12"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_portrait = ExtResource("NPC")
+right_name = "Cairo"
+speaker = 1
+text = "... What about me?"
+left_entrance = 1
+left_exit = 1
+
+[sub_resource type="Resource" id="13"]
+script = ExtResource("Line")
+auto_advance = true
+minimum_duration = 1.0
+left_exit = 1
+right_exit = 2
+
+[sub_resource type="Resource" id="14"]
+script = ExtResource("Line")
+right_character = ExtResource("Koumi")
+speaker = 2
+text = "..."
+right_entrance = 2
+
+[sub_resource type="Resource" id="15"]
+script = ExtResource("Line")
+auto_advance = true
+minimum_duration = 0.5
+right_exit = 2
+
+[resource]
+script = ExtResource("Event")
+id = &"station_45b_barterer_intro"
+once_per_game = true
+lines = Array[ExtResource("Line")]([SubResource("1"), SubResource("2"), SubResource("3"), SubResource("4"), SubResource("5"), SubResource("6"), SubResource("7"), SubResource("8"), SubResource("9"), SubResource("10"), SubResource("11"), SubResource("12"), SubResource("13"), SubResource("14"), SubResource("15")])

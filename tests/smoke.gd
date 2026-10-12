@@ -61,7 +61,7 @@ func run() -> void:
 		var definition: CharacterDefinition = game.state.roster[index].definition
 		check(definition.starting_class.id == &"explorer", "All starting characters should be Explorers")
 		check(definition.display_name == expected_names[index], "Starting party should contain " + expected_names[index])
-		check(definition.portrait != null and definition.portrait.resource_path == "res://textures/Characters/Alpha/" + expected_images[index] + "_Portrait.png", "Each character should use their matching portrait")
+		check(definition.portrait != null and definition.portrait.resource_path == "res://textures/Characters/" + expected_names[index] + "/" + expected_images[index] + "_Portrait.png", "Each character should use their matching portrait")
 		check(definition.combat_texture == definition.portrait, "Character combat texture should match its new portrait")
 	var original_character: CharacterState = game.state.party[0]
 	var tab := InputEventAction.new()
@@ -72,7 +72,7 @@ func run() -> void:
 	var roster: Control = game.ui.get_child(0)
 	check(roster.get_node("Panel/Buttons/Content/Members").item_count == 3, "Characters lists only recruited characters")
 	check("Usami" in roster.get_node("Panel/Buttons/Content/Details").text, "Party screen should show selected character")
-	check("Training Sword" in roster.get_node("Panel/Buttons/Content/Details").text, "Party screen should show equipped weapons")
+	check("Unarmed" in roster.get_node("Panel/Buttons/Content/Details").text, "Starting party has no equipped weapons")
 	check("Allowed types: Sword, Axe, Spear" in roster.get_node("Panel/Buttons/Content/Details").text, "Party screen should show combined weapon restrictions")
 	roster.get_node("Panel/Buttons/Content/Members").item_selected.emit(1)
 	check("Takane" in roster.get_node("Panel/Buttons/Content/Details").text, "Selecting a character should update details")
@@ -80,12 +80,18 @@ func run() -> void:
 	check(game.state.party[0] == original_character, "Returning to town should preserve character state")
 	for location in ["Barracks", "Tinkerer", "Barterer"]:
 		await click(location)
+		check(conversations.is_active() and game.ui.get_child(0).module_view == null, location + " opens dialogue before UI")
+		while conversations.is_active():
+			conversations.overlay.body.visible_characters = -1
+			conversations.overlay.advance()
+			await process_frame
+			await process_frame
 		check(game.screen == "location", location + " should open")
 		var module = game.ui.get_child(0).module_view
-		check(not module.has_node("Panel/Buttons/Town"), location + " has no redundant return button")
-		await click(location)
+		check(not module.has_node("Panel/Buttons/Town"), location + " uses the Return to Hub action")
+		await click("Return to Hub")
 		await create_timer(module.card_slide_duration + 0.05).timeout
-		check(game.screen == "town", location + " toggles closed from town navigation")
+		check(game.screen == "town", location + " returns to hub from its own menu")
 	var escape := InputEventAction.new()
 	escape.action = "ui_cancel"
 	escape.pressed = true
@@ -96,7 +102,15 @@ func run() -> void:
 	check(game.screen == "pause" and game.ui.get_child(0).current_page == "index" and game.pause_return == "town", "Town options return to the book contents")
 	await click("Return")
 	check(game.screen == "town", "Town menu returns to town")
+	game.state.set_flag(&"labyrinth_unlocked", true)
 	await click("Enter the Labyrinth")
+	if conversations.is_active():
+		check(game.world == null and not game._battle_transition, "First departure speaks before the entry fade")
+		while conversations.is_active():
+			conversations.overlay.body.visible_characters = -1
+			conversations.overlay.advance()
+			await process_frame
+			await process_frame
 	for frame in range(100):
 		if not game._battle_transition:
 			break

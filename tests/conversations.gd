@@ -77,7 +77,7 @@ func run() -> void:
 	check(opening_town.get_node("Panel").visible, "Action card appears only after the conversation finishes")
 	for button in opening_town.get_node("Panel/Buttons").get_children():
 		if button is Button:
-			check(not button.disabled, "Safe Zone action becomes available after opening: %s" % button.name)
+			check(button.disabled == (button.name == &"Explore"), "Services unlock after opening while labyrinth navigation stays disabled: %s" % button.name)
 	game.show_town(game.starting_town)
 	check(not director.is_active() and not game.ui.get_child(0).navigation_locked, "Returning to town does not replay the opening")
 	game.new_game()
@@ -92,6 +92,30 @@ func run() -> void:
 	check(not paused and not game.ui.get_child(0).navigation_locked, "Invalid opening does not leave navigation locked")
 	game.opening_conversation = sample
 	game.new_game(false)
+	for module_name in ["Barracks", "Tinkerer", "Barterer"]:
+		var hub: Town = game.ui.get_child(0)
+		var intro: ConversationEvent = hub.module_conversations[module_name]
+		check(intro.is_valid() and intro.once_per_game, "Module has a valid once-per-game introduction: " + module_name)
+		game.show_location(module_name)
+		check(director.active_event == intro and paused and hub.module_view == null, "Module dialogue precedes UI: " + module_name)
+		check(hub.get_node("Background").texture == hub.location_backgrounds[module_name], "Module background appears during its introduction: " + module_name)
+		game._on_action_requested("Options")
+		check(game.ui.get_child(0) == hub and hub.navigation_locked, "Module introduction locks underlying navigation")
+		while director.is_active():
+			director.overlay.body.visible_characters = -1
+			await close_conversation()
+		check(not paused and hub.module_view != null and game.screen == "location", "Module opens after its introduction: " + module_name)
+		game.show_town()
+		await create_timer(0.3).timeout
+		game.show_location(module_name)
+		check(not director.is_active() and hub.module_view != null, "Revisiting skips the completed introduction: " + module_name)
+		game.show_town()
+		await create_timer(0.3).timeout
+	game.new_game(false)
+	game.show_location("Barracks")
+	check(director.is_active() and game.ui.get_child(0).module_view == null, "New Game resets module introduction completion")
+	game.new_game(false)
+	check(not director.is_active() and not paused and not game._module_busy(), "New Game cancels a pending module introduction")
 	var town = game.ui.get_child(0)
 	var trigger := ConversationTrigger.new()
 	trigger.event = sample
@@ -291,6 +315,7 @@ func run() -> void:
 	game.start_combat(false)
 	var combat = game.ui.get_child(0)
 	combat.action_delay = 0.1
+	combat.attack_animation_duration = 0.0 # Isolate the action-delay pause check.
 	for member in game.state.party:
 		combat.session.choose_defend()
 	combat._execute_round()

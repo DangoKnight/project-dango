@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("Ability")
 id = &"bonk"
+battle_animation = "bonk"
 display_name = "Bonk"
 description = "A moderate single-target bash attack using blunt damage."
 damage_type = ExtResource("Damage")

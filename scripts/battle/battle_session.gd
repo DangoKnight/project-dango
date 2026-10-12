@@ -3,6 +3,7 @@ extends RefCounted
 
 signal changed
 signal action_resolved(message: String)
+signal action_performed(action: BattleAction, targets: Array[CharacterState], result: Dictionary)
 signal enemy_defeated(species: StringName)
 
 enum Phase { ACTION_SELECTION, TARGET_SELECTION, READY, RESOLVING, FINISHED }
@@ -274,6 +275,8 @@ func resolve_next_action() -> void:
 	var action := _queue[_queue_index]
 	_queue_index += 1
 	var message := L10n.text("%s cannot act.") % L10n.text(action.actor.definition.display_name)
+	var visual_targets: Array[CharacterState] = []
+	var visual_result: Dictionary = {}
 	if action.actor.can_act():
 		if action.running:
 			if rng.randf() < escape_chance(action.actor):
@@ -289,6 +292,8 @@ func resolve_next_action() -> void:
 			message = L10n.text("%s fails to escape.") % L10n.text(action.actor.definition.display_name)
 		elif action.defending:
 			message = L10n.text("%s defends.") % L10n.text(action.actor.definition.display_name)
+			visual_targets = [action.actor]
+			visual_result = {"success": true}
 		elif action.consumable != null:
 			var item := action.consumable
 			var recipients: Array[CharacterState] = []
@@ -298,6 +303,8 @@ func resolve_next_action() -> void:
 			elif action.target in allowed:
 				recipients = [action.target]
 			var result := RPGConsumables.use_item(action.actor, item, recipients)
+			visual_targets = recipients
+			visual_result = result
 			if result.success:
 				if action.actor in party:
 					for effect in item.definition.effects:
@@ -334,6 +341,8 @@ func resolve_next_action() -> void:
 			else:
 				result = RPGCombat.use_ability(action.actor, action.target, ability, rng)
 			_record_knowledge(action.actor, recipients, ability, result)
+			visual_targets = recipients
+			visual_result = result
 			if not result.success:
 				message = L10n.text("%s: %s failed (%s).") % [L10n.text(action.actor.definition.display_name), L10n.text(ability.display_name), L10n.text(result.reason)]
 			elif result.missed:
@@ -349,6 +358,7 @@ func resolve_next_action() -> void:
 		if tick.damage > 0:
 			message += L10n.text(" %s takes %d status damage.") % [L10n.text(action.actor.definition.display_name), tick.damage]
 	_reward_defeated_enemies()
+	action_performed.emit(action, visual_targets, visual_result)
 	action_resolved.emit(message)
 	if _check_finished():
 		return

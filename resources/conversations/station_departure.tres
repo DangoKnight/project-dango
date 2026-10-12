@@ -1,0 +1,260 @@
+[gd_resource type="Resource" script_class="ConversationEvent" load_steps=40 format=3]
+
+[ext_resource type="Script" path="res://scripts/conversation/conversation_event.gd" id="Event"]
+[ext_resource type="Script" path="res://scripts/conversation/conversation_line.gd" id="Line"]
+[ext_resource type="Resource" path="res://resources/rpg/characters/usami.tres" id="Usami"]
+[ext_resource type="Resource" path="res://resources/rpg/characters/takane.tres" id="Takane"]
+[ext_resource type="Resource" path="res://resources/rpg/characters/kurako.tres" id="Kurako"]
+[ext_resource type="Resource" path="res://resources/rpg/characters/koumi.tres" id="Koumi"]
+
+[sub_resource type="Resource" id="1"]
+script = ExtResource("Line")
+right_character = ExtResource("Kurako")
+speaker = 2
+text = "I feel like this station has a very clear favourite..."
+right_entrance = 2
+
+[sub_resource type="Resource" id="2"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+right_character = ExtResource("Kurako")
+speaker = 1
+text = "Hm? Is something wrong, Kurako-chan?"
+left_entrance = 1
+
+[sub_resource type="Resource" id="3"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+right_character = ExtResource("Kurako")
+speaker = 2
+text = "Don't worry, it's nothing. Let's go explore!"
+
+[sub_resource type="Resource" id="4"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+right_character = ExtResource("Kurako")
+speaker = 1
+text = "Yay! The adventure begins now!"
+
+[sub_resource type="Resource" id="5"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+right_character = ExtResource("Takane")
+speaker = 2
+text = "..."
+right_exit = 2
+right_entrance = 2
+
+[sub_resource type="Resource" id="6"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+right_character = ExtResource("Takane")
+speaker = 1
+text = "What's wrong, Takane-chan?"
+
+[sub_resource type="Resource" id="7"]
+script = ExtResource("Line")
+left_character = ExtResource("Usami")
+right_character = ExtResource("Takane")
+speaker = 2
+text = "Hey you. How long are you planning to follow us?"
+
+[sub_resource type="Resource" id="8"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Takane")
+speaker = 1
+text = "That's so mean! Adventuring was my idea!"
+left_exit = 1
+left_entrance = 1
+
+[sub_resource type="Resource" id="9"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Takane")
+speaker = 2
+text = "I'm not talking to you, Kurako."
+
+[sub_resource type="Resource" id="10"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Takane")
+speaker = 2
+text = "You, back there. You've been following us since this morning."
+
+[sub_resource type="Resource" id="11"]
+script = ExtResource("Line")
+left_character = ExtResource("Koumi")
+right_character = ExtResource("Takane")
+speaker = 1
+text = "..."
+left_exit = 1
+left_entrance = 1
+
+[sub_resource type="Resource" id="12"]
+script = ExtResource("Line")
+left_character = ExtResource("Koumi")
+right_character = ExtResource("Usami")
+speaker = 2
+text = "Ah! Koumi-chan! Did you come to see us off?"
+right_exit = 2
+right_entrance = 2
+
+[sub_resource type="Resource" id="13"]
+script = ExtResource("Line")
+left_character = ExtResource("Koumi")
+right_character = ExtResource("Usami")
+speaker = 1
+text = "..."
+
+[sub_resource type="Resource" id="14"]
+script = ExtResource("Line")
+left_character = ExtResource("Koumi")
+right_character = ExtResource("Usami")
+speaker = 2
+text = "..."
+
+[sub_resource type="Resource" id="15"]
+script = ExtResource("Line")
+left_character = ExtResource("Koumi")
+right_character = ExtResource("Usami")
+speaker = 1
+text = "..."
+
+[sub_resource type="Resource" id="16"]
+script = ExtResource("Line")
+left_character = ExtResource("Koumi")
+right_character = ExtResource("Usami")
+speaker = 2
+text = "Ugh... Takane-chan..."
+
+[sub_resource type="Resource" id="17"]
+script = ExtResource("Line")
+left_character = ExtResource("Koumi")
+right_character = ExtResource("Takane")
+speaker = 2
+text = "... It'll be dangerous, are you sure?"
+right_exit = 2
+right_entrance = 2
+
+[sub_resource type="Resource" id="18"]
+script = ExtResource("Line")
+left_character = ExtResource("Koumi")
+right_character = ExtResource("Takane")
+speaker = 1
+text = "..."
+
+[sub_resource type="Resource" id="19"]
+script = ExtResource("Line")
+left_character = ExtResource("Koumi")
+right_character = ExtResource("Takane")
+speaker = 2
+text = "I see. I'll try to keep an eye out for you, but Usami is my first priority. Understood?"
+
+[sub_resource type="Resource" id="20"]
+script = ExtResource("Line")
+left_character = ExtResource("Koumi")
+right_character = ExtResource("Takane")
+speaker = 1
+text = "[b][i]*Nods*[/i][/b]"
+
+[sub_resource type="Resource" id="21"]
+script = ExtResource("Line")
+left_character = ExtResource("Koumi")
+right_character = ExtResource("Takane")
+speaker = 2
+text = "Very well."
+
+[sub_resource type="Resource" id="22"]
+script = ExtResource("Line")
+left_character = ExtResource("Koumi")
+right_character = ExtResource("Usami")
+speaker = 2
+text = "... What just happened?"
+right_exit = 2
+right_entrance = 2
+
+[sub_resource type="Resource" id="23"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Usami")
+speaker = 1
+text = "I see... So that's what it is..."
+left_exit = 1
+left_entrance = 1
+
+[sub_resource type="Resource" id="24"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Usami")
+speaker = 2
+text = "Kurako-chan! Please explain it to me!"
+
+[sub_resource type="Resource" id="25"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Usami")
+speaker = 1
+text = "I am sorry, Usami-chan. But that won't be possible."
+
+[sub_resource type="Resource" id="26"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Usami")
+speaker = 2
+text = "Why?!"
+
+[sub_resource type="Resource" id="27"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Usami")
+speaker = 1
+text = "Because I don't know either!"
+
+[sub_resource type="Resource" id="28"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Usami")
+speaker = 2
+text = "..."
+
+[sub_resource type="Resource" id="29"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Usami")
+speaker = 1
+text = "..."
+
+[sub_resource type="Resource" id="30"]
+script = ExtResource("Line")
+left_character = ExtResource("Kurako")
+right_character = ExtResource("Takane")
+speaker = 2
+text = "..."
+right_exit = 2
+right_entrance = 2
+
+[sub_resource type="Resource" id="31"]
+script = ExtResource("Line")
+left_character = ExtResource("Koumi")
+right_character = ExtResource("Takane")
+speaker = 1
+text = "..."
+left_exit = 1
+left_entrance = 1
+
+[sub_resource type="Resource" id="32"]
+script = ExtResource("Line")
+auto_advance = true
+minimum_duration = 2.0
+notification_text = "Koumi joined the party."
+notification_duration = 2.0
+recruit_character = ExtResource("Koumi")
+left_exit = 1
+right_exit = 2
+
+[resource]
+script = ExtResource("Event")
+id = &"station_departure"
+once_per_game = true
+lines = Array[ExtResource("Line")]([SubResource("1"), SubResource("2"), SubResource("3"), SubResource("4"), SubResource("5"), SubResource("6"), SubResource("7"), SubResource("8"), SubResource("9"), SubResource("10"), SubResource("11"), SubResource("12"), SubResource("13"), SubResource("14"), SubResource("15"), SubResource("16"), SubResource("17"), SubResource("18"), SubResource("19"), SubResource("20"), SubResource("21"), SubResource("22"), SubResource("23"), SubResource("24"), SubResource("25"), SubResource("26"), SubResource("27"), SubResource("28"), SubResource("29"), SubResource("30"), SubResource("31"), SubResource("32")])

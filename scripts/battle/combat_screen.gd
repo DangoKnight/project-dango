@@ -3,10 +3,12 @@ extends Control
 
 signal finished(victory: bool)
 
-const FALLBACK_PORTRAIT := preload("res://textures/portrait.png")
-const FALLBACK_ENEMY := preload("res://textures/rat.png")
+const FALLBACK_PORTRAIT := preload("res://textures/UI/portrait.png")
+const FALLBACK_ENEMY := preload("res://textures/NPCs/Enemies/rat.png")
 @export var default_encounter: BattleEncounter
 @export_range(0.0, 3.0, 0.05) var action_delay: float = 0.65
+@export_range(0.0, 3.0, 0.05) var attack_animation_duration: float = 0.7
+var effects: BattleEffects
 @export_range(0.0, 1.0, 0.05) var menu_slide_duration := 0.25
 var _panel_homes: Dictionary = {}
 var _panel_progress: Dictionary = {}
@@ -27,6 +29,7 @@ var _waiting_for_drawer := false
 var _menu_actor: CharacterState
 var _ending := false
 var _exiting := false
+var _performing_round := false
 @onready var enemy_stage: Control = $EnemySpots
 @onready var battle_log: PanelContainer = $BattleLog
 var _messages := PackedStringArray()
@@ -47,6 +50,10 @@ var _information_focus: Control
 
 
 func _ready() -> void:
+	effects = BattleEffects.new()
+	effects.name = "BattleEffects"
+	add_child(effects)
+	move_child(effects, party_cards.get_index() + 1)
 	_portrait_base_anchors = Vector4(portrait_image.anchor_left, portrait_image.anchor_top, portrait_image.anchor_right, portrait_image.anchor_bottom)
 	_portrait_default_stretch = portrait_image.stretch_mode
 	portrait_image.resized.connect(_update_portrait_pivot)
@@ -72,6 +79,7 @@ func _ready() -> void:
 	information.dismissed.connect(_restore_information_focus)
 	information.visibility_changed.connect(func():
 		$InformationBlocker.visible = information.visible
+		effects.suspended = information.visible
 		_refresh_target_highlights())
 	# F6 preview uses separate runtime instances; gameplay supplies the current party.
 	if get_tree().current_scene == self:
@@ -102,6 +110,7 @@ func configure(party: Array[CharacterState], encounter: BattleEncounter, compend
 	session = BattleSession.new(party, enemies, compendium)
 	session.changed.connect(_refresh)
 	session.action_resolved.connect(_log)
+	session.action_performed.connect(_animate_action)
 	for index in range(enemy_slots.size()):
 		var slot := enemy_slots[index]
 		slot.visible = index < enemies.size()
@@ -122,6 +131,7 @@ func configure(party: Array[CharacterState], encounter: BattleEncounter, compend
 func _refresh() -> void:
 	if session == null:
 		return
+	var presenting_actions := _performing_round
 	if session.phase != BattleSession.Phase.TARGET_SELECTION:
 		_waiting_for_drawer = false
 	_refresh_target_highlights()
@@ -215,12 +225,12 @@ func _refresh() -> void:
 				_ending = true
 				call_deferred("_finish_battle")
 
-	_slide_panel(special_panel, not intro_playing and _special_open)
-	_slide_panel(action_panel, not intro_playing and (session.phase == BattleSession.Phase.ACTION_SELECTION or _waiting_for_drawer))
-	_slide_panel(confirmation, not intro_playing and session.phase == BattleSession.Phase.READY)
-	_slide_panel(portrait, not intro_playing and not _portrait_swapping and session.phase == BattleSession.Phase.ACTION_SELECTION)
-	_slide_panel(battle_log, not intro_playing and not _exiting and session.phase in [BattleSession.Phase.RESOLVING, BattleSession.Phase.FINISHED])
-	_slide_panel(round_counter, not intro_playing and session.phase not in [BattleSession.Phase.RESOLVING, BattleSession.Phase.FINISHED])
+	_slide_panel(special_panel, not intro_playing and not presenting_actions and _special_open)
+	_slide_panel(action_panel, not intro_playing and not presenting_actions and (session.phase == BattleSession.Phase.ACTION_SELECTION or _waiting_for_drawer))
+	_slide_panel(confirmation, not intro_playing and not presenting_actions and session.phase == BattleSession.Phase.READY)
+	_slide_panel(portrait, not intro_playing and not presenting_actions and not _portrait_swapping and session.phase == BattleSession.Phase.ACTION_SELECTION)
+	_slide_panel(battle_log, not intro_playing and not _exiting and (presenting_actions or session.phase in [BattleSession.Phase.RESOLVING, BattleSession.Phase.FINISHED]))
+	_slide_panel(round_counter, not intro_playing and not presenting_actions and session.phase not in [BattleSession.Phase.RESOLVING, BattleSession.Phase.FINISHED])
 	_slide_panel(party_cards, not intro_playing and not _exiting)
 	_slide_panel(enemy_stage, not _exiting)
 
@@ -435,8 +445,45 @@ func _back() -> void:
 		session.undo_choice()
 
 
+func _effect_target(character: CharacterState) -> Control:
+	var index := session.enemies.find(character)
+	if index >= 0:
+		return enemy_slots[index].get_node("Image") as Control
+	index = session.party.find(character)
+	return party_buttons[index] if index >= 0 else null
+
+
+func _animate_action(action: BattleAction, targets: Array[CharacterState], result: Dictionary) -> void:
+	if not result.get("success", false):
+		return
+	if action.defending:
+		effects.play_effect("cover", _effect_target(action.actor), attack_animation_duration * 0.65)
+		return
+	var hits: Array = result.get("targets", [result])
+	for index in range(targets.size()):
+		if index < hits.size() and hits[index].get("missed", false):
+			continue
+		var target := _effect_target(targets[index])
+		if action.consumable != null:
+			for effect in action.consumable.definition.effects:
+				var preset := "heal"
+				if effect.kind == ConsumableEffect.Kind.DAMAGE:
+					preset = String(effect.damage_type.id)
+				elif effect.kind == ConsumableEffect.Kind.APPLY_STATUS:
+					preset = "debuff" if effect.status.is_harmful() else "buff"
+				effects.play_effect(preset, target, attack_animation_duration)
+		else:
+			var ability := RPGCombat.BASIC_ATTACK if action.basic_attack else action.ability
+			if ability != null:
+				effects.play_effect(BattleEffects.preset_for(ability), target, attack_animation_duration)
+
+
 func _execute_round() -> void:
+	if _performing_round:
+		return
+	_performing_round = true
 	if not session.begin_resolution():
+		_performing_round = false
 		return
 	_messages.clear()
 	$BattleLog/Log.text = ""
@@ -446,13 +493,21 @@ func _execute_round() -> void:
 			if not is_inside_tree():
 				return
 		session.resolve_next_action()
+		await effects.wait_until_finished()
+		if not is_inside_tree():
+			return
 		if session.phase == BattleSession.Phase.RESOLVING:
 			await get_tree().create_timer(action_delay, false).timeout
 			if not is_inside_tree():
 				return
+	_performing_round = false
+	_refresh()
 
 
 func _finish_battle() -> void:
+	await effects.wait_until_finished()
+	if not is_inside_tree():
+		return
 	information.close_immediately()
 	_log(L10n.text("Escaped!") if session.escaped else L10n.text("Victory!") if session.victory else L10n.text("Defeat."))
 	await get_tree().create_timer(1.0, false).timeout

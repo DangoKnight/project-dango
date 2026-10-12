@@ -17,6 +17,7 @@ var _previous_pause := false
 var _previous_mouse_mode: Input.MouseMode
 var _previous_focus: WeakRef
 var _finishing := false
+var _rewarded_lines: Dictionary[int, bool] = {}
 
 
 func _ready() -> void:
@@ -62,11 +63,25 @@ func _try_start() -> void:
 
 func _start_next() -> void:
 	active_event = _pending.pop_front()
+	_rewarded_lines.clear()
 	overlay = OVERLAY.instantiate() as ConversationOverlay
 	add_child(overlay)
+	overlay.line_entered.connect(_on_line_entered)
 	overlay.configure(active_event)
 	overlay.dismissed.connect(_finish, CONNECT_DEFERRED | CONNECT_ONE_SHOT)
 	started.emit(active_event)
+
+
+func _on_line_entered(index: int, line: ConversationLine) -> void:
+	if _rewarded_lines.has(index):
+		return
+	_rewarded_lines[index] = true
+	var state := get_node("/root/GameState") as RunState
+	if line.reward_gear != null:
+		for item in range(line.reward_quantity):
+			state.gear_inventory.add(line.reward_gear)
+	if line.recruit_character != null:
+		state.recruit_character(line.recruit_character)
 
 
 func _finish() -> void:

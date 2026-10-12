@@ -17,6 +17,11 @@ func run() -> void:
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
 	game.new_game(false)
+	# Exercise navigation after the first-departure conversation.
+	game.state.completed_conversations[game.ui.get_child(0).departure_conversation.id] = true
+	# These checks exercise module UI after its introductory dialogue.
+	for introduction in game.ui.get_child(0).module_conversations.values():
+		game.state.completed_conversations[introduction.id] = true
 	game.show_location("Barracks")
 	var town = game.ui.get_child(0)
 	var barracks = town.module_view
@@ -70,16 +75,18 @@ func run() -> void:
 	await create_timer(0.22).timeout
 	check(not game.battle_fade.visible and not game._battle_transition and town.module_view == barracks, "Fade returns to the same Barracks and releases input")
 	check(barracks.get_node("Panel").visible and not barracks.get_node("PartyPanel").visible, "Sleep finishes at the Barracks menu")
-	town.get_node("Panel/Buttons/Barterer").pressed.emit()
-	check(barracks.is_inside_tree() and barracks.get_node("Panel").visible, "Replacing a module retains the outgoing card during its slide")
+	barracks.get_node("Panel/Buttons/ReturnToHub").pressed.emit()
+	check(barracks.is_inside_tree() and barracks.get_node("Panel").visible, "Returning to hub retains the outgoing card during its slide")
 	await create_timer(barracks.card_slide_duration + 0.05).timeout
 	check(not is_instance_valid(barracks), "Outgoing module is removed only after the slide")
 	game.show_location("Barracks")
 	barracks = town.module_view
 	await create_timer(barracks.card_slide_duration + 0.05).timeout
-	town.get_node("Panel/Buttons/Explore").pressed.emit()
-	check(game.screen == "location", "Entering the labyrinth waits for the module card to slide out")
+	barracks.get_node("Panel/Buttons/ReturnToHub").pressed.emit()
+	check(game.screen == "town", "Returning restores the hub before exploration")
 	await create_timer(barracks.card_slide_duration + 0.05).timeout
+	game.state.set_flag(&"labyrinth_unlocked", true)
+	town.get_node("Panel/Buttons/Explore").pressed.emit()
 	check(game.battle_fade.visible and game._battle_transition, "Navigation fades after the card exits")
 	for frame in range(100):
 		if not game._battle_transition:

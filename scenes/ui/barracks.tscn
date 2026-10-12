@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/ui/barracks.gd" id="Script"]
 [ext_resource type="Theme" path="res://resources/themes/default.tres" id="Theme"]
-[ext_resource type="Texture2D" path="res://textures/barracks.png" id="Background"]
+[ext_resource type="Texture2D" path="res://textures/Backgrounds/SafeZones/barracks.png" id="Background"]
 
 [node name="Barracks" type="Control"]
 layout_mode = 3
@@ -26,7 +26,7 @@ stretch_mode = 6
 layout_mode = 1
 anchor_left = 0.03
 anchor_top = 0.25
-anchor_right = 0.31
+anchor_right = 0.5
 anchor_bottom = 0.75
 
 [node name="Buttons" type="VBoxContainer" parent="Panel"]
@@ -61,12 +61,17 @@ autowrap_mode = 2
 theme_override_font_sizes/font_size = 16
 size_flags_vertical = 3
 
+[node name="ReturnToHub" type="Button" parent="Panel/Buttons"]
+layout_mode = 2
+text = "Return to Hub"
+custom_minimum_size = Vector2(0, 40)
+
 [node name="PartyPanel" type="PanelContainer" parent="."]
 visible = false
 layout_mode = 1
 anchor_left = 0.03
 anchor_top = 0.06
-anchor_right = 0.66
+anchor_right = 0.5
 anchor_bottom = 0.94
 
 [node name="Buttons" type="VBoxContainer" parent="PartyPanel"]

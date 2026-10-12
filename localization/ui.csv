@@ -195,6 +195,7 @@ Return,Return
 Return (Esc),Return (Esc)
 Return to %s,Return to %s
 Return to Barracks,Return to Barracks
+Return to Hub,Return to Hub
 Return to battle (Tab / Esc),Return to battle (Tab / Esc)
 Return to contents (Esc),Return to contents (Esc)
 Round %d,Round %d

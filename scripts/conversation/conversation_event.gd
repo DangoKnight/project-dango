@@ -14,4 +14,6 @@ func is_valid() -> bool:
 	for line in lines:
 		if line == null:
 			return false
+		if line.reward_gear != null and (not line.reward_gear.is_valid() or line.reward_quantity < 1 or line.reward_quantity > 999):
+			return false
 	return true

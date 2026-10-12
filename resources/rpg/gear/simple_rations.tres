@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="GearDefinition" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/rpg/gear.gd" id="Gear"]
+[ext_resource type="Script" path="res://scripts/rpg/consumable_effect.gd" id="Effect"]
+
+[sub_resource type="Resource" id="Heal"]
+script = ExtResource("Effect")
+amount = 10
+
+[resource]
+script = ExtResource("Gear")
+id = &"simple_rations"
+display_name = "Simple Rations"
+description = "Restores 10 HP to one ally. Two uses."
+hidden_value = 5
+kind = 2
+max_uses = 2
+consumable_target = 0
+effects = Array[ExtResource("Effect")]([SubResource("Heal")])

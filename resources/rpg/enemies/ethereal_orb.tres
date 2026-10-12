@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="6_03y7d"]
 [ext_resource type="Resource" path="res://resources/rpg/abilities/ethereal_pulse.tres" id="Ability"]
 [ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="AbilityScript"]
-[ext_resource type="Texture2D" uid="uid://b6otbvbyj61i4" path="res://textures/ethereal_orb.png" id="Image"]
+[ext_resource type="Texture2D" uid="uid://c1hjoab2jsf8f" path="res://textures/NPCs/Enemies/ethereal_orb.png" id="Image"]
 [ext_resource type="Script" uid="uid://cftevjhnkln3e" path="res://scripts/rpg/character_definition.gd" id="Script"]
 [ext_resource type="Script" uid="uid://ddt764fvrnnt0" path="res://scripts/rpg/stats.gd" id="Stats"]
 

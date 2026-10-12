@@ -2,6 +2,7 @@ class_name ConversationLine
 extends Resource
 
 enum Speaker { NARRATOR, LEFT, RIGHT }
+enum TextStyle { NORMAL, BOLD, ITALIC, BOLD_ITALIC }
 enum Entrance { INSTANT, FROM_LEFT, FROM_RIGHT, FROM_TOP, FROM_BOTTOM, FADE }
 enum Exit { INSTANT, TO_LEFT, TO_RIGHT, TO_TOP, TO_BOTTOM, FADE }
 
@@ -16,11 +17,25 @@ enum Exit { INSTANT, TO_LEFT, TO_RIGHT, TO_TOP, TO_BOTTOM, FADE }
 @export var speaker: Speaker = Speaker.NARRATOR
 ## Overrides the displayed speaker name, including narration.
 @export var speaker_name: String
+## Supports BBCode formatting, such as [color=red]important text[/color].
 @export_multiline var text: String
+## Styles the dialogue body; speaker names keep their usual presentation.
+@export var text_style: TextStyle = TextStyle.NORMAL
 ## Advance after typing and portrait transitions finish. Empty text hides the dialogue card.
 @export var auto_advance := false
 ## Seconds from line entry before advancing is allowed, including portrait animations.
 @export_range(0.0, 30.0, 0.1) var minimum_duration := 0.0
+
+@export_group("Notification")
+## Optional toast at the top of the conversation, independent of the dialogue card.
+@export_multiline var notification_text: String
+@export_range(0.5, 30.0, 0.1) var notification_duration := 3.0
+@export_group("Reward")
+## Added to the shared inventory once when this line starts; never auto-equipped.
+@export var reward_gear: GearDefinition
+@export_range(1, 999) var reward_quantity := 1
+## Recruits this character, filling an active party slot if one is available.
+@export var recruit_character: CharacterDefinition
 
 @export_group("Slot 1 (Left) Entrance")
 @export var left_entrance: Entrance = Entrance.INSTANT
@@ -40,6 +55,18 @@ enum Exit { INSTANT, TO_LEFT, TO_RIGHT, TO_TOP, TO_BOTTOM, FADE }
 @export_group("Slot 2 (Right) Exit")
 @export var right_exit: Exit = Exit.INSTANT
 @export_range(0.0, 3.0, 0.05) var right_exit_duration := 0.3
+
+
+func formatted_text() -> String:
+	var translated := L10n.text(text)
+	match text_style:
+		TextStyle.BOLD:
+			return "[b]%s[/b]" % translated
+		TextStyle.ITALIC:
+			return "[i]%s[/i]" % translated
+		TextStyle.BOLD_ITALIC:
+			return "[b][i]%s[/i][/b]" % translated
+	return translated
 
 
 func portrait_for(side: Speaker) -> Texture2D:

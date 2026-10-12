@@ -23,6 +23,9 @@ func run() -> void:
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
 	game.new_game(false)
+	# These checks exercise module UI after its introductory dialogue.
+	for introduction in game.ui.get_child(0).module_conversations.values():
+		game.state.completed_conversations[introduction.id] = true
 	game.show_characters()
 	var characters = game.ui.get_child(0)
 	var damage_types: Array[DamageType] = characters.damage_types

@@ -19,6 +19,9 @@ func run() -> void:
 	game.starting_party_size = 4 # Keep the fourth member active for knockout coverage.
 	game.starting_characters.append(load("res://resources/rpg/characters/koumi.tres"))
 	game.new_game(false)
+	# These checks exercise module UI after its introductory dialogue.
+	for introduction in game.ui.get_child(0).module_conversations.values():
+		game.state.completed_conversations[introduction.id] = true
 	check(game.state.highest_labyrinth_completion == 0.0, "New Game starts without an exploration multiplier")
 	game.explore()
 	var map := game.world as LabyrinthMap
@@ -81,6 +84,9 @@ func run() -> void:
 	game.explore()
 	check(game.state.highest_labyrinth_completion > 0.0, "Exploring again starts a new global peak")
 	game.new_game(false)
+	# These checks exercise module UI after its introductory dialogue.
+	for introduction in game.ui.get_child(0).module_conversations.values():
+		game.state.completed_conversations[introduction.id] = true
 	check(game.state.highest_labyrinth_completion == 0.0 and game.state.roster[0].stored_experience() == 0.0, "New Game resets exploration and stored XP together")
 	# Fractional scaling also feeds the normal permanent-growth/level-up path.
 	var actor := CharacterState.new(game.starting_characters[0])

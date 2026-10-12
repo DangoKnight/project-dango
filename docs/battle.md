@@ -92,3 +92,50 @@ Battle Information slides down from above when opened and slides back up when cl
 Undiscovered resistances are listed by damage type with `???` (for example, **Pierce: ???**) in both the compendium and Hostiles panel. Discovering an affinity replaces only that row with its qualitative label. Unobserved abilities show `???`; enemy numerical stats and HP/SP maxima remain hidden.
 
 Living enemy sprites slide out through the top of the screen on battle exit, including retreat. Party bars continue to leave through the bottom.
+
+## Battle animations
+
+Attacks now play pre-made frame animations on each affected target. Slash, pierce,
+blunt, fire, frost, lightning, poison, and arcane have separate presets. Healing,
+positive statuses, negative statuses, defending, and consumable effects also have
+presentation. Missed or failed effects do not show a successful impact. Group
+abilities animate all actual recipients, including the selected enemy row.
+
+The unique skills Jolly cheer, Caring friend, Lock-on, Ride the gale, Graceful
+assault, Painful stab, Immobilizing stab, I am scary!, Bonk, and Cover have their
+own presets, using different clips, tints, sizes, or combinations of imported
+clips. No animation artwork is generated at runtime.
+
+To configure a skill, open its ability `.tres` in Godot and choose **Battle
+Animation**. Explicit presets override the damage type. **Auto** prioritizes healing and status effects, then falls back to the damage type. Custom
+presets are defined in `scripts/battle/battle_effects.gd`; the imported, non-looping
+`SpriteFrames` clips can be inspected in `resources/battle/effects.tres`. The
+Combat root's **Attack Animation Duration** controls playback time (default 0.7
+seconds; zero disables effects). **Action Delay** remains the pause after each
+completed animation.
+
+Enemies receive effects over their sprite. Friendly effects are centered directly over
+their compact party card, scaled to the card and drawn above its name and bars. Positions follow the target when the window resizes.
+Effects pause with conversation events and battle information. The next action
+waits for the current effects, and planning controls stay hidden through the last
+animation in the round. Victory waits for the final animation, then shows its log
+and follows the existing disappearance/return transition.
+
+Artwork comes from **BDragon1727's 1050 RPG Effects 64x64 — free bundle**.
+The complete free bundle contains 252 original sheets with nine color rows each,
+plus animated catalog previews, preserved under `textures/battle_fx/bdragon`.
+Current battle presets load only the sheets they need. The other sheets are
+available for future abilities; each sheet uses 64 × 64 frames from left to right,
+with one color variant per row. Original PNGs are unchanged. Effects use nearest
+filtering to preserve their pixel art and play once over **Attack Animation Duration**.
+
+`textures/battle_fx/sources.json` records sheet IDs, checksums, color rows and
+preset mappings. Regenerate `resources/battle/effects.tres` after changing a
+mapping with `python tools/import_bdragon_effects.py`, and keep the preset's
+size in `BattleEffects.PROFILES` consistent with the mapping. Special ability
+presets retain priority over damage-type effects.
+
+This pack uses BDragon's custom license, not CC0. Noncommercial use is free;
+commercial use requires a contribution. Standalone asset redistribution is
+prohibited. See `textures/battle_fx/CREDITS.txt` and the publisher's page:
+https://bdragon1727.itch.io/1050-rpg-effects-64x64.

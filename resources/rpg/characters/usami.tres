@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CharacterDefinition" format=3 uid="uid://dvyjvvqp4xbwp"]
 
-[ext_resource type="Texture2D" uid="uid://urdig3456yob" path="res://textures/Characters/Alpha/Usami-chan_Portrait.png" id="6_yqqym"]
+[ext_resource type="Texture2D" uid="uid://050q54qhh4xl" path="res://textures/Characters/Usami/Usami-chan_Portrait.png" id="6_yqqym"]
 [ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="12_yqqym"]
 [ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="AbilityScript"]
 [ext_resource type="Resource" path="res://resources/rpg/weapon_types/axe.tres" id="axe"]
@@ -12,7 +12,6 @@
 [ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="ResistanceScript"]
 [ext_resource type="Script" uid="uid://cftevjhnkln3e" path="res://scripts/rpg/character_definition.gd" id="Script"]
 [ext_resource type="Resource" path="res://resources/rpg/weapon_types/spear.tres" id="spear"]
-[ext_resource type="Resource" path="res://resources/rpg/weapons/training_sword.tres" id="StartingWeapon"]
 [ext_resource type="Script" uid="uid://ddt764fvrnnt0" path="res://scripts/rpg/stats.gd" id="Stats"]
 [ext_resource type="Resource" path="res://resources/rpg/weapon_types/sword.tres" id="sword"]
 [ext_resource type="Resource" uid="uid://b742sut8hgeom" path="res://resources/rpg/abilities/jolly_cheer.tres" id="Unique0"]
@@ -62,7 +61,6 @@ resistances = Array[ExtResource("ResistanceScript")]([SubResource("fireResistanc
 unique_abilities = Array[ExtResource("AbilityScript")]([ExtResource("Unique0"), ExtResource("Unique1")])
 hidden_abilities = Array[ExtResource("PassiveScript")]([ExtResource("HiddenPassive")])
 allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("sword"), ExtResource("axe"), ExtResource("spear")])
-starting_weapon = ExtResource("StartingWeapon")
 critical_rate = 0.05
 accuracy = 0.95
 portrait = ExtResource("6_yqqym")

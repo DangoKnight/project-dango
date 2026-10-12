@@ -2,7 +2,7 @@
 class_name PortraitPresentation
 extends RefCounted
 
-const FALLBACK := preload("res://textures/portrait.png")
+const FALLBACK := preload("res://textures/UI/portrait.png")
 
 
 ## Shared by combat and the editor preview so their placement rules stay identical.

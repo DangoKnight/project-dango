@@ -60,3 +60,59 @@ Set **Minimum Duration** to hold a step for a specified number of seconds from i
 During the opening, the Safe Zone action card stays hidden through the scene fade and the entire conversation. It slides in from the right after the conversation and final departures finish.
 
 The overlay scene is `scenes/ui/conversation.tscn`. Edit its portrait anchors, dialogue panel, font sizes, or colors to change presentation for every event. These resources do not modify party membership or character stats.
+
+## Module introductions
+
+Each Town can assign **Module Conversations**, keyed by `Barracks`, `Tinkerer`, and
+`Barterer`. Station 45-B uses `station_45b_barracks.tres`, `station_45b_tinkerer.tres`,
+and `station_45b_barterer.tres` in `resources/conversations/`. Edit their dialogue,
+portraits, and entrance/exit settings like other conversation events. Each introduction
+plays before the module UI is instantiated, then opens that module on completion.
+Completion uses GameState conversation history, so revisits skip it and New Game resets it.
+Use distinct event IDs for different NPC introductions at other Safe Zones.
+
+## Dialogue formatting
+
+Dialogue **Text** supports BBCode. Wrap just the words to highlight:
+`[color=red]Resting will help you grow stronger[/color]`. Hex colors work too,
+such as `[color=#ff6666]text[/color]`. Close each color tag with `[/color]`
+to restore the normal color. Keep these tags in translated text; the typing
+effect counts the displayed characters rather than the formatting tags.
+
+For a whole line, choose **Text Style → Bold Italic** in the ConversationLine
+Inspector. Normal, Bold, and Italic are also available. For example, set Koumi as
+the speaker, enter `*nods*` as Text, and choose Bold Italic. Her name stays in the
+speaker heading while the action appears in bold italic below it.
+
+For only part of a line, use `[b][i]*nods*[/i][/b]` in Text. This can be combined
+with color tags. Translation happens before the whole-line style is applied.
+
+## Notifications and item rewards
+
+Each ConversationLine has **Notification Text** and **Notification Duration**. Text
+appears in a subtly shaded translucent card at the top, fades in and out, and does not replace
+the dialogue card. For a notification-only step, leave Text empty, enable Auto
+Advance, and set Minimum Duration to at least the notification duration.
+
+Assign **Reward Gear** and **Reward Quantity** to grant independent item instances
+when that line begins. Items go to GameState's shared inventory without being
+equipped. Refreshing a line does not grant it again. Use Once Per Game on the event
+to prevent repeat rewards on revisits.
+
+**Recruit Character** adds a character to the roster when that line starts. They
+join the active party if there is a free slot, or reserve if all four slots are
+occupied. Repeated recruitment keeps the existing character. The second-to-last
+step in `station_departure.tres` recruits Koumi and displays her joining notice.
+
+`station_45b_barracks.tres` demonstrates a three-second receipt notification:
+York gives four Simple Rations. Each ration heals one ally for 10 HP and has two
+uses. Edit the receipt line to change its message, duration, item, or quantity.
+
+## First departure
+
+The labyrinth entrance unlocks once Barracks, Tinkerer, and Barterer have all opened
+after their introductions. Town **Departure Conversation** plays before the entry
+fade; Station 45-B assigns `resources/conversations/station_departure.tres`. Its
+**Once Per Game** setting skips repeat departures. New Game resets module visits,
+the entrance lock, and conversation completion. Edit the event to change dialogue
+or portraits, or assign a different event to another Town.

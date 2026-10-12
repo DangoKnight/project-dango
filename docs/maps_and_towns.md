@@ -4,7 +4,7 @@ Walkable areas are `Map` instances (`Node3D`), and towns are `Town` instances (`
 
 | Base scene | Script type | Current inherited scene |
 | --- | --- | --- |
-| `scenes/base/map.tscn` | `Map` | `scenes/world/office_labyrinth.tscn` (generated) or `exploration_room.tscn` (hand-authored) |
+| `scenes/base/map.tscn` | `Map` | `scenes/world/office_labyrinth.tscn` (generated) |
 | `scenes/base/town.tscn` | `Town` | `scenes/ui/town.tscn` |
 
 ## Make a map
@@ -26,7 +26,10 @@ Assign the Map root's **Encounter** resource to configure its battle. Procedural
 2. Set **Town Id**, **Display Name**, and **Background Texture** on the root node.
 3. Assign a `Map` scene to **Exploration Map**. Explore is disabled if no destination is assigned.
 4. Assign textures in **Location Backgrounds** using the keys `Barracks`, `Tinkerer`, and `Barterer` for the current services.
-5. Edit the inherited UI layout and button labels as needed. Existing button node names identify their actions.
+5. Assign **Location NPCs** with the same service keys. This mapping belongs to each safe zone; Station 45-B uses York for Barracks, Sydney for Tinkerer, and Cairo for Barterer. Shared backgrounds remain in `textures/Backgrounds/SafeZones/`, while NPC artwork lives under `textures/NPCs/<SafeZone>/<Service>/`.
+6. Edit the inherited UI layout and button labels as needed. Existing button node names identify their actions.
+
+Opening a service slides the hub actions out to the right and shows its NPC on the right while the module card enters from the left. **Return to Hub** in each module restores the hub actions and dismisses the NPC. Escape also returns to the hub, except that Manage Party first returns to Barracks. The base scene's `ModuleNPC` anchors define portrait placement; **Location NPCs** is configured on the inherited town root. An unassigned NPC hides the portrait.
 
 The current base provides the prototype's standard service buttons. New service actions require a corresponding route in the controller. Towns emit `exploration_requested(map_scene)` for Explore and the shared `action_requested(action)` signal for menu/service actions.
 
@@ -85,7 +88,7 @@ Supply caches show **Collect [E]** when their room is dim or fully lit. Item and
 
 `LabyrinthLayout.generate(definition)` returns the logical map independently of rendering: `passages` maps cell coordinates to connected neighbors, `rewards` maps endpoint coordinates to chosen gear resources, `landmark(id)` retrieves fixed landmark metadata, and `world_position(cell)` converts coordinates. A randomized growing-tree algorithm connects the non-Safe-Zone cells, then attaches each Safe Zone through one passage, producing a spanning tree: the whole grid is connected, and there is exactly one route between any pair of cells. Rewards are sampled without replacing endpoints and never overlap landmarks. The generator samples an item count between the configured bounds once per entry, then retries at most 64 times to meet that endpoint count; impossible requests (including fixed Safe Zones that would disconnect the remaining grid) return an error instead of reducing the count or looping indefinitely. Reduce the reward bounds, enlarge the grid, or move landmarks if generation fails.
 
-The 3D renderer builds walls from passage boundaries and is separate from generation. It can later add varied room shapes, props, doors, and visual offsets while preserving grid connectivity and fixed landmark coordinates. The initial renderer uses square rooms and the existing carpet, wallpaper, and ceiling textures.
+The 3D renderer builds walls from passage boundaries and is separate from generation. It can later add varied room shapes, props, doors, and visual offsets while preserving grid connectivity and fixed landmark coordinates. The initial renderer uses square rooms and matching cyan concrete wall panels, grey-blue floor slabs, and pale concrete ceiling panels.
 
 Automatic encounters choose an integer walking distance uniformly from `encounter_steps_min` through `encounter_steps_max`, inclusive, on entry and after each battle. One step equals `cell_size` units of actual horizontal movement outside Safe Zone cells; partial steps accumulate. The Office configuration uses **4–8 steps**, guaranteeing a minimum gap and an encounter by the chosen count. Standing still, blocked movement, teleporting, and paused navigation do not advance the countdown. Safe Zone cells suspend it; pause/resume preserves it. Each battle selects one complete preset from `encounters`, preserving its enemy count, order, repeated enemies, and level. Set `encounters_enabled` to false to disable automatic battles. Random generator states and countdowns are never saved. Weighted reward tables and bespoke services at separate refuges remain future features.
 
@@ -154,6 +157,16 @@ Opening Barterer starts that Safe Zone’s artifact refresh timer if it is not a
 
 Accept a commission before gathering kills. The requirements are fixed at acceptance. First-time commissions from that Tinkerer require twice every base count; collecting the first completed weapon or medallion teaches that Tinkerer the design, and later commissions require base counts. Kills before acceptance and unrelated species do not count. Every matching defeat advances all accepted commissions that need that species, including commissions at other visited Safe Zones. Direct damage, consumables, and poison share the same once-per-enemy defeat event. Retreat or party wipes do not erase completed kill progress. A commission delivers exactly one item when **Collect weapon** or **Collect medallion** is selected; it cannot be claimed again without accepting and finishing another commission.
 
-Crafted weapons enter the shared **Weapon stash** in Tinkerer. Select a weapon and character, then **Equip weapon**; character/class weapon restrictions still apply, and the previous weapon returns to the stash. Weapons retain their existing definition behavior: type and eligibility are implemented, while weapon-specific damage/stat bonuses remain future work.
+Crafted weapons enter the shared weapon inventory. Tinkerer only exposes designs and commissions; it does not display the stash or provide equipment controls. Weapons retain their existing definition behavior: type and eligibility are implemented, while weapon-specific damage/stat bonuses remain future work.
 
 Fabricated medallions enter the shared gear stash as independent instances. Equip them through **Characters → Equipment**; the existing one-medallion and four-total-gear limits apply, and granted spells still require their usual SP. The sample Spell Medallion commission requires a base of two rats and three ethereal orbs, doubled for the first fabrication. Weapon and medallion designs keep separate histories even if their item IDs match.
+
+New games keep **Go to Labyrinth** disabled, including after the opening conversation.
+Opening Barracks, Tinkerer, and Barterer after their introductions unlocks it automatically.
+Module visits are recorded per Safe Zone in GameState flags. The first departure
+plays `station_departure.tres` before the labyrinth entry fade.
+The flag survives screen changes and resets on New Game. Service panels extend to
+the left half of the viewport; bottom-aligned NPCs occupy the right half.
+
+Barterer lists toggle individual goods with a click; Shift-click still selects ranges.
+The Safe Zone heading sits above its action buttons, with the action group lower in the scene.

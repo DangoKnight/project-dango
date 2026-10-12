@@ -14,14 +14,11 @@ var ideas: ItemList
 var requirements_label: Label
 var accept_button: Button
 var claim_button: Button
-var owned_weapons: OptionButton
-var members: OptionButton
-var equip_button: Button
 
 
 func _ready() -> void:
 	$Panel.anchor_top = 0.08
-	$Panel.anchor_right = 0.66
+	$Panel.anchor_right = 0.5
 	$Panel.anchor_bottom = 0.92
 	$Panel/Buttons/Subtitle.hide()
 	super._ready()
@@ -39,6 +36,7 @@ func configure(service_state: SafeZoneServices, shared_inventory: GearInventory,
 		_build_barter()
 	else:
 		_build_tinkerer()
+	$Panel/Buttons.move_child($Panel/Buttons/ReturnToHub, -1)
 
 
 func _label(parent: Node, text: String) -> Label:
@@ -69,6 +67,7 @@ func _build_barter() -> void:
 		_label(column, title)
 		var list := ItemList.new()
 		list.select_mode = ItemList.SELECT_MULTI
+		list.gui_input.connect(_barter_input.bind(list))
 		list.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		list.multi_selected.connect(func(_index: int, _selected: bool): _quote())
@@ -142,16 +141,6 @@ func _build_tinkerer() -> void:
 	accept_button = _button(content, L10n.text("Accept commission"), _accept)
 	claim_button = _button(content, L10n.text("Collect equipment"), _claim)
 	feedback = _label(content, "")
-	_label(content, L10n.text("Weapon stash"))
-	owned_weapons = OptionButton.new()
-	owned_weapons.item_selected.connect(func(_index: int): _refresh_equipping())
-	content.add_child(owned_weapons)
-	members = OptionButton.new()
-	for member in roster:
-		members.add_item(L10n.text(member.definition.display_name))
-	members.item_selected.connect(func(_index: int): _refresh_equipping())
-	content.add_child(members)
-	equip_button = _button(content, L10n.text("Equip weapon"), _equip_weapon)
 	_refresh_tinkerer()
 
 
@@ -162,11 +151,7 @@ func _refresh_tinkerer() -> void:
 		ideas.add_item(L10n.text(recipe.product_name()) + (L10n.text(" · Known design") if services.made_designs.has(recipe.product_key()) else L10n.text(" · Idea")))
 	if ideas.item_count > 0:
 		ideas.select(mini(selected, ideas.item_count - 1))
-	owned_weapons.clear()
-	for weapon in weapons:
-		owned_weapons.add_item(L10n.text(weapon.display_name))
 	_refresh_commission()
-	_refresh_equipping()
 
 
 func _recipe() -> FabricationRecipe:
@@ -213,21 +198,21 @@ func _claim() -> void:
 	_refresh_tinkerer()
 
 
-func _refresh_equipping() -> void:
-	equip_button.disabled = owned_weapons.selected < 0 or members.selected < 0 or weapons.is_empty() or roster.is_empty()
-	if not equip_button.disabled:
-		equip_button.disabled = not roster[members.selected].can_equip_weapon(weapons[owned_weapons.selected])
-
-
-func _equip_weapon() -> void:
-	if equip_button.disabled:
+func _barter_input(event: InputEvent, list: ItemList) -> void:
+	# Let Godot handle Shift ranges, keyboard selection, and scrolling normally.
+	if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT or not event.pressed or event.shift_pressed:
 		return
-	var member := roster[members.selected]
-	var weapon := weapons[owned_weapons.selected]
-	var previous := member.equipped_weapon
-	if member.equip_weapon(weapon):
-		weapons.remove_at(owned_weapons.selected)
-		if previous != null:
-			weapons.append(previous)
-		feedback.text = "Equipped."
-	_refresh_tinkerer()
+	var index := list.get_item_at_position(event.position, true)
+	if index < 0 or list.is_item_disabled(index) or not list.is_item_selectable(index):
+		return
+	var selected := not list.is_selected(index)
+	var previous := list.get_selected_items()
+	# A single select updates Godot's range anchor; restore the other selections.
+	list.select(index)
+	for old_index in previous:
+		list.select(old_index, false)
+	if not selected:
+		list.deselect(index)
+	list.multi_selected.emit(index, selected)
+	list.item_clicked.emit(index, event.position, MOUSE_BUTTON_LEFT)
+	list.accept_event()

@@ -8,6 +8,12 @@ signal exploration_requested(map_scene: PackedScene)
 @export var background_texture: Texture2D
 @export var exploration_map: PackedScene
 @export var location_backgrounds: Dictionary[String, Texture2D] = {}
+## Per-safe-zone portraits keyed by module name (Barracks, Tinkerer, Barterer).
+@export var location_npcs: Dictionary[String, Texture2D] = {}
+## Optional introductions, shown before the module UI on its first visit each run.
+@export var module_conversations: Dictionary[String, ConversationEvent] = {}
+## Played before the labyrinth entry fade. Once Per Game controls repeat visits.
+@export var departure_conversation: ConversationEvent
 @export_group("Barterer")
 @export var barter_artifacts: Array[GearDefinition] = [preload("res://resources/rpg/gear/iron_artifact.tres"), preload("res://resources/rpg/gear/wind_artifact.tres"), preload("res://resources/rpg/gear/vital_artifact.tres")]
 @export_range(1, 20) var barter_artifact_min := 2
@@ -21,6 +27,11 @@ signal exploration_requested(map_scene: PackedScene)
 var module_view: Control
 var _navigation_pending := false
 var navigation_locked := false
+var exploration_enabled := true:
+	set(value):
+		exploration_enabled = value
+		if is_node_ready():
+			set_navigation_locked(navigation_locked)
 
 
 func _ready() -> void:
@@ -46,43 +57,43 @@ func set_navigation_locked(locked: bool) -> void:
 		$Panel.hide()
 	for button in $Panel/Buttons.get_children():
 		if button is Button:
-			button.disabled = locked or (button.name == &"Explore" and exploration_map == null)
-	if not locked and is_node_ready():
+			button.disabled = locked or module_view != null or (button.name == &"Explore" and (exploration_map == null or not exploration_enabled))
+	if not locked and module_view == null and is_node_ready():
 		if was_locked:
 			slide_card_in($Panel, card_slide_from)
 		$Panel/Buttons/Barracks.grab_focus()
 
 
 func _on_button_pressed(action: String) -> void:
-	if navigation_locked or _navigation_pending:
+	if navigation_locked or _navigation_pending or module_view != null:
 		return
 	if module_view != null and module_view.has_method("is_busy") and module_view.is_busy():
 		return
 	if action == "Explore":
-		if exploration_map != null:
-			if module_view != null:
-				_navigation_pending = true
-				await dismiss_module()
-				_navigation_pending = false
+		if exploration_map != null and exploration_enabled:
 			exploration_requested.emit(exploration_map)
 	else:
 		super._on_button_pressed(action)
 
 
 func open_module(view: Control) -> void:
-	close_module()
+	close_module(false)
 	module_view = view
-	# The module uses the same full-screen anchor space as the navigation card.
-	# Ignore its empty area so the Safe Zone buttons remain clickable.
+	# Both the left module card and right portrait use normalized screen anchors.
 	view.name = "Module"
 	view.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(view)
-	$Panel.move_to_front()
 	$Background.texture = view.get_node("Background").texture
 	view.get_node("Background").hide()
+	set_navigation_locked(navigation_locked)
+	slide_card_out($Panel, 2)
+	$ModuleNPC/Image.texture = location_npcs.get(String(view.get_meta("location", "")))
+	if $ModuleNPC/Image.texture != null:
+		slide_card_in($ModuleNPC, 2)
 
 
-func close_module() -> void:
+func close_module(restore_navigation: bool = true) -> void:
+	var had_module := is_instance_valid(module_view)
 	if is_instance_valid(module_view):
 		var outgoing := module_view
 		outgoing.name = "RetiringModule"
@@ -92,9 +103,13 @@ func close_module() -> void:
 				control.disabled = true
 		_retire_module(outgoing)
 	module_view = null
+	slide_card_out($ModuleNPC, 2)
 	if background_texture != null:
 		$Background.texture = background_texture
-	$Panel/Buttons/Barracks.grab_focus()
+	if restore_navigation and not navigation_locked:
+		set_navigation_locked(false)
+		if had_module:
+			slide_card_in($Panel, card_slide_from)
 
 
 func _retire_module(view: Control) -> void:

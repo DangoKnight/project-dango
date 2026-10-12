@@ -21,21 +21,19 @@ var _opening_event: ConversationEvent
 ## Remaining starting characters are available in the reserve roster.
 @export_range(1, 4) var starting_party_size := 3
 
-@export var starting_gear: Array[GearDefinition] = [
-	preload("res://resources/rpg/gear/iron_artifact.tres"),
-	preload("res://resources/rpg/gear/wind_artifact.tres"),
-	preload("res://resources/rpg/gear/vital_artifact.tres"),
-	preload("res://resources/rpg/gear/spell_medallion.tres"),
-	preload("res://resources/rpg/gear/rally_flask.tres"),
-	preload("res://resources/rpg/gear/healing_draught.tres"),
-	preload("res://resources/rpg/gear/frailty_bomb.tres"),
-]
+@export var starting_gear: Array[GearDefinition] = []
 @export_range(0.0, 2.0, 0.05) var battle_fade_in_duration := 0.35
 @export_range(0.0, 5.0, 0.1) var battle_reveal_duration := 2.0
 @export_range(0.0, 2.0, 0.05) var battle_return_fade_duration := 0.35
 @export_range(0.0, 2.0, 0.05) var navigation_fade_duration := 0.45
 @export_range(0.0, 3.0, 0.05) var new_game_reveal_duration := 0.75
 @export_range(0.0, 2.0, 0.05) var sleep_fade_duration := 0.5
+var _module_intro_event: ConversationEvent
+var _module_intro_town: Town
+var _module_intro_location := ""
+var _departure_event: ConversationEvent
+var _departure_town: Town
+var _departure_map: PackedScene
 var _battle_transition := false
 var level_up_notice: Control
 @onready var battle_fade: ColorRect = $UI/BattleFade
@@ -58,6 +56,7 @@ var current_town_name := "Safe Zone"
 func _ready() -> void:
 	Conversations.can_start = _can_start_conversation
 	Conversations.finished.connect(_on_conversation_finished)
+	state.flag_changed.connect(_on_run_flag_changed)
 	# The initial menu is also visible when editing the main scene.
 	ui.get_child(0).action_requested.connect(_on_action_requested)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -65,6 +64,11 @@ func _ready() -> void:
 
 func _can_start_conversation() -> bool:
 	return not _battle_transition and not is_instance_valid(level_up_notice)
+
+
+func _on_run_flag_changed(key: StringName, value: Variant) -> void:
+	if key == &"labyrinth_unlocked" and ui.get_child_count() > 0 and ui.get_child(0) is Town:
+		ui.get_child(0).exploration_enabled = bool(value)
 
 
 func _show_scene(scene: PackedScene, next_screen: String) -> Control:
@@ -93,13 +97,12 @@ func _on_action_requested(action: String) -> void:
 	match action:
 		"NewGame": new_game()
 		"Town": show_town()
+		"ReturnToHub": show_town()
 		"Characters": show_characters()
 		"Equipment": show_equipment()
 		"Battle": start_combat()
 		"Map": show_labyrinth_map()
-		"MapBack": show_pause(pause_return)
-		"Monsters", "Compendium": show_compendium()
-		"CompendiumBack": show_pause(pause_return)
+		"Monsters": show_compendium()
 		"MainMenu": show_main()
 		"Barracks", "Tinkerer", "Barterer": show_location(action)
 		"Options": show_options(screen)
@@ -139,6 +142,7 @@ func show_town(town_scene: PackedScene = null) -> void:
 		return
 	var town := instance as Town
 	town.navigation_locked = _opening_event != null
+	town.exploration_enabled = bool(state.get_flag(&"labyrinth_unlocked", false))
 	state.current_town_scene = destination
 	current_town_name = town.display_name
 	location_backgrounds = town.location_backgrounds.duplicate()
@@ -148,6 +152,12 @@ func show_town(town_scene: PackedScene = null) -> void:
 
 
 func new_game(with_opening_conversation: bool = true) -> void:
+	_departure_event = null
+	_departure_town = null
+	_departure_map = null
+	_module_intro_event = null
+	_module_intro_town = null
+	_module_intro_location = ""
 	Conversations.reset()
 	_opening_event = opening_conversation if with_opening_conversation and opening_conversation != null and opening_conversation.is_valid() else null
 	state.start_new_game(starting_town, starting_characters, starting_gear, starting_party_size)
@@ -169,6 +179,28 @@ func _reveal_new_game() -> void:
 
 
 func _on_conversation_finished(event: ConversationEvent) -> void:
+	if event == _departure_event:
+		var town := _departure_town
+		var destination := _departure_map
+		_departure_event = null
+		_departure_town = null
+		_departure_map = null
+		if is_instance_valid(town) and town.is_inside_tree() and ui.get_child_count() > 0 and ui.get_child(0) == town:
+			town.set_navigation_locked(false)
+			town._navigation_pending = true
+			# Allow the conversation director to restore the scene before the fade.
+			_enter_after_departure.call_deferred(destination, town)
+		return
+	if event == _module_intro_event:
+		var town := _module_intro_town
+		var location := _module_intro_location
+		_module_intro_event = null
+		_module_intro_town = null
+		_module_intro_location = ""
+		if is_instance_valid(town) and town.is_inside_tree() and ui.get_child(0) == town:
+			town.set_navigation_locked(false)
+			show_location(location)
+		return
 	if event != _opening_event:
 		return
 	_opening_event = null
@@ -187,6 +219,8 @@ func show_characters() -> void:
 
 
 func show_location(location: String) -> void:
+	if _module_intro_event != null:
+		return
 	if ui.get_child_count() == 0 or not ui.get_child(0) is Town:
 		show_town()
 	var town := ui.get_child(0) as Town
@@ -196,6 +230,20 @@ func show_location(location: String) -> void:
 		town._navigation_pending = false
 		screen = "town"
 		return
+	var introduction: ConversationEvent = town.module_conversations.get(location)
+	if introduction != null and introduction.is_valid() and not state.completed_conversations.has(introduction.id):
+		_module_intro_event = introduction
+		_module_intro_town = town
+		_module_intro_location = location
+		town.close_module(false)
+		town.set_navigation_locked(true)
+		town.get_node("Background").texture = town.location_backgrounds.get(location, town.background_texture)
+		if Conversations.play(introduction):
+			return
+		_module_intro_event = null
+		_module_intro_town = null
+		_module_intro_location = ""
+		town.set_navigation_locked(false)
 	var view := (BARRACKS if location == "Barracks" else LOCATION).instantiate() as Control
 	view.set_meta("location", location)
 	view.get_node("Background").texture = location_backgrounds.get(location)
@@ -206,11 +254,23 @@ func show_location(location: String) -> void:
 		view.sleep_requested.connect(_sleep_at_barracks.bind(view))
 	else:
 		view.configure(state.services_for(town), state.gear_inventory, state.roster, state.weapon_inventory, location)
+	_record_module_visit(location)
 	screen = "location"
 
 
+func _record_module_visit(location: String) -> void:
+	var key := StringName("safe_zone_modules:" + state.active_safe_zone_key)
+	var visits: Dictionary = state.get_flag(key, {}).duplicate()
+	visits[location] = true
+	state.set_flag(key, visits)
+	for required_module in ["Barracks", "Tinkerer", "Barterer"]:
+		if not visits.has(required_module):
+			return
+	state.set_flag(&"labyrinth_unlocked", true)
+
+
 func _module_busy() -> bool:
-	if _opening_event != null:
+	if _opening_event != null or _module_intro_event != null or _departure_event != null:
 		return true
 	if ui.get_child_count() > 0 and ui.get_child(0) is Town:
 		if ui.get_child(0)._navigation_pending:
@@ -260,8 +320,35 @@ func _options_back() -> void:
 
 
 func enter_labyrinth(map_scene: PackedScene = null) -> void:
-	if _battle_transition or (map_scene == null and state.current_map_scene == null):
+	if _battle_transition or _module_busy() or Conversations.is_active() or (map_scene == null and state.current_map_scene == null):
 		return
+	if ui.get_child_count() > 0 and ui.get_child(0) is Town:
+		var town := ui.get_child(0) as Town
+		if not town.exploration_enabled or town.module_view != null:
+			return
+		var departure := town.departure_conversation
+		if departure != null and departure.is_valid() and (not departure.once_per_game or not state.completed_conversations.has(departure.id)):
+			_departure_event = departure
+			_departure_town = town
+			_departure_map = map_scene if map_scene != null else state.current_map_scene
+			town.set_navigation_locked(true)
+			if Conversations.play(departure):
+				return
+			_departure_event = null
+			_departure_town = null
+			_departure_map = null
+			town.set_navigation_locked(false)
+	_begin_labyrinth_entry(map_scene)
+
+
+func _enter_after_departure(map_scene: PackedScene, town: Town) -> void:
+	if not is_instance_valid(town) or not town.is_inside_tree() or ui.get_child_count() == 0 or ui.get_child(0) != town:
+		return
+	town._navigation_pending = false
+	_begin_labyrinth_entry(map_scene)
+
+
+func _begin_labyrinth_entry(map_scene: PackedScene) -> void:
 	_battle_transition = true
 	battle_fade.color.a = 0.0
 	battle_fade.show()

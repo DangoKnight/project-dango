@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("Ability")
 id = &"jolly_cheer"
+battle_animation = "jolly_cheer"
 display_name = "Jolly cheer"
 description = "Temporarily grants a moderate boost to all living allies' strength and defense."
 effect = 2

@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("Ability")
 id = &"painful_stab"
+battle_animation = "painful_stab"
 display_name = "Painful stab"
 description = "Inflicts a lingering, weak poison on a single enemy."
 effect = 2

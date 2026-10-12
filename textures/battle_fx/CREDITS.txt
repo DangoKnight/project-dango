@@ -1,0 +1,24 @@
+Project Dango battle animation asset credits
+
+1050 RPG Effects 64x64 — free bundle
+Author: BDragon1727
+Source: https://bdragon1727.itch.io/1050-rpg-effects-64x64
+Download: RPG Effect All Free.zip
+Imported: 2026-10-11
+
+Publisher's LICENSE: FREE (recorded from the source page):
+- Free to use on non-commercial games.
+- If you will be using on a commercial game, please contribute (any value).
+- Modify as desired.
+- You cannot resell / redistribute this asset.
+
+This is not CC0. A contribution is required for commercial use. Do not publish
+these standalone sheets or this asset directory as a reusable asset pack.
+
+The complete free download contains 252 original sheets, nine color rows per
+sheet, plus the publisher's animated catalog previews. PNGs are unchanged.
+Each frame is 64 x 64 pixels; rows are color variants, not sequential frames.
+The runtime SpriteFrames resource loads only the sheets used by current presets.
+Other effects are available in bdragon/ for future abilities. sources.json
+records the full sheet catalog, checksums, and each preset's sheet/color row.
+Regenerate the runtime resource with: python tools/import_bdragon_effects.py

@@ -62,6 +62,22 @@ func start_new_game(town: PackedScene, characters: Array[CharacterDefinition], g
 	run_started.emit()
 
 
+## Recruitment is idempotent; a full party sends the recruit to reserve.
+func recruit_character(definition: CharacterDefinition) -> CharacterState:
+	if definition == null:
+		return null
+	for member in roster:
+		if member.definition.id == definition.id:
+			return member
+	var member := CharacterState.new(definition)
+	roster.append(member)
+	if party.size() < 4:
+		party.append(member)
+	for item in member.get_equipped_gear():
+		gear_inventory.register(item)
+	return member
+
+
 func set_flag(key: StringName, value: Variant) -> void:
 	flags[key] = value
 	flag_changed.emit(key, value)

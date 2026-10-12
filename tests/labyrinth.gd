@@ -106,6 +106,9 @@ func run() -> void:
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
 	game.new_game(false)
+	# Exercise navigation after the first-departure conversation.
+	game.state.completed_conversations[game.ui.get_child(0).departure_conversation.id] = true
+	game.state.set_flag(&"labyrinth_unlocked", true)
 	game.enter_labyrinth()
 	check(game.battle_fade.visible and game._battle_transition and game.world == null, "Entry fades before creating the labyrinth")
 	await create_timer(0.2).timeout

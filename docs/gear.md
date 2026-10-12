@@ -32,7 +32,7 @@ Effects can heal HP, restore MP, apply a status, or deal damage. Each effect has
 
 Examples: Rally Flask heals the party and raises strength; Healing Draught heals one ally; Frailty Bomb damages and reduces one enemy's Mental Resilience.
 
-The Main node's `starting_gear` array seeds the shared stash on New Game. `CharacterDefinition.starting_gear` optionally equips gear directly, subject to the same limits. Gear stays in memory for the current game; save/load and loot/shop systems are not implemented yet.
+The Main node's `starting_gear` array is empty by default; the party starts without gear, consumables, or weapons. The first Barracks conversation grants four Simple Rations to the shared stash. A ration heals one ally for 10 HP and has two uses. Authors can optionally seed the shared stash through `starting_gear`. `CharacterDefinition.starting_gear` optionally equips gear directly, subject to the same limits. Gear stays in memory for the current game; save/load and loot/shop systems are not implemented yet.
 
 ```gdscript
 var inventory := GearInventory.new()

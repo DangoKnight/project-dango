@@ -173,6 +173,7 @@ func run() -> void:
 	view.party_buttons[0].pressed.emit()
 	check(view.session.phase == BattleSession.Phase.READY and not view._panel_targets[view.portrait.name], "Portrait should stay hidden during review")
 	view.action_delay = 0.0
+	view.attack_animation_duration = 0.0 # This fixture tests menus and combat rules.
 	press_command(view, "Execute round")
 	check(not view._panel_targets[view.portrait.name], "Portrait should stay hidden during resolution")
 	while view.session.phase == BattleSession.Phase.RESOLVING:

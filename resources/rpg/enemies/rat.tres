@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="6_ame6v"]
 [ext_resource type="Resource" path="res://resources/rpg/abilities/bite.tres" id="Ability"]
 [ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="AbilityScript"]
-[ext_resource type="Texture2D" uid="uid://cjr17g7f8f8h0" path="res://textures/rat.png" id="Image"]
+[ext_resource type="Texture2D" uid="uid://bxrkobhp4nhuj" path="res://textures/NPCs/Enemies/rat.png" id="Image"]
 [ext_resource type="Script" uid="uid://cftevjhnkln3e" path="res://scripts/rpg/character_definition.gd" id="Script"]
 [ext_resource type="Script" uid="uid://ddt764fvrnnt0" path="res://scripts/rpg/stats.gd" id="Stats"]
 

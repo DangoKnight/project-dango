@@ -27,7 +27,7 @@ func run() -> void:
 	check(is_equal_approx(preview.image.anchor_left, -0.15) and is_equal_approx(preview.image.anchor_top, 0.1), "Editing offset should immediately update preview")
 	check(preview.image.scale.is_equal_approx(Vector2(0.75, 0.75)), "Editing scale should immediately update preview")
 	check(preview.image.stretch_mode == TextureRect.STRETCH_KEEP_ASPECT_CENTERED, "Editing fit should immediately update preview")
-	var replacement := load("res://textures/portrait.png") as Texture2D
+	var replacement := load("res://textures/UI/portrait.png") as Texture2D
 	first.portrait = replacement
 	check(preview.image.texture == replacement, "Editing texture should immediately update preview")
 	preview.size = Vector2(1000, 900)

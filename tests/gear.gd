@@ -179,10 +179,11 @@ func run() -> void:
 	# Exercise actual navigation and UI handlers.
 	var main = load("res://scenes/main.tscn").instantiate()
 	root.add_child(main)
+	main.starting_gear.assign([IRON, WIND, VITAL, MEDALLION, RALLY, HEAL, BOMB])
 	main.new_game(false)
 	main.show_equipment()
 	var view = main.ui.get_child(0)
-	check(view.stash.item_count == 7, "Starter stash is available through equipment UI")
+	check(view.stash.item_count == 7, "Explicit fixture stash is available through equipment UI")
 	view._select(view.stash.get_item_metadata(0))
 	view._on_button_pressed("Equip")
 	check(view.equipped.item_count == 1 and view.stash.item_count == 6, "Equipment UI equips actual instances")
