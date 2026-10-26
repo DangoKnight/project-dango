@@ -181,15 +181,15 @@ func run() -> void:
 	root.add_child(main)
 	main.starting_gear.assign([IRON, WIND, VITAL, MEDALLION, RALLY, HEAL, BOMB])
 	main.new_game(false)
-	main.show_equipment()
-	var view = main.ui.get_child(0)
-	check(view.stash.item_count == 7, "Explicit fixture stash is available through equipment UI")
-	view._select(view.stash.get_item_metadata(0))
-	view._on_button_pressed("Equip")
-	check(view.equipped.item_count == 1 and view.stash.item_count == 6, "Equipment UI equips actual instances")
-	view._select(view.equipped.get_item_metadata(0))
-	view._on_button_pressed("Unequip")
-	check(view.stash.item_count == 7, "Equipment UI returns gear to stash")
+	await main.show_equipment()
+	var view := main.ui.get_child(0) as PauseBook
+	view.widget("EquipmentSlots").item_selected.emit(1)
+	var choices := view.widget("EquipmentChoices")
+	check(choices.item_count == 3, "Artifact subtab shows only the three stash artifacts")
+	choices.item_selected.emit(0)
+	check(main.state.party[0].get_equipped_gear().size() == 1 and main.state.gear_inventory.get_available_items().size() == 6, "Book equips actual instances")
+	view.widget("EquipmentChoices").item_selected.emit(0)
+	check(main.state.gear_inventory.get_available_items().size() == 7, "Book returns gear to stash")
 	var ui_bomb: GearInstance = main.state.gear_inventory.get_available_items()[-1]
 	main.state.party[0].equip_gear(ui_bomb)
 	main.explore()
@@ -202,7 +202,7 @@ func run() -> void:
 	check(command != null, "Consumable command appears in battle UI")
 	command.pressed.emit()
 	await create_timer(battle.menu_slide_duration + 0.05).timeout
-	check(not battle.portrait.visible and battle.prompt.text.is_empty() and not battle.enemy_slots[0].disabled and battle.party_buttons[0].disabled, "Consumable targets hide portrait and enable enemies only")
+	check(not battle.portrait.visible and not battle.has_node("ActionPanel/Layout/Commands/Prompt") and not battle.enemy_slots[0].disabled and battle.party_buttons[0].disabled, "Consumable targets hide portrait and enable enemies only")
 	battle.enemy_slots[0].pressed.emit()
 	while battle.session.phase == BattleSession.Phase.ACTION_SELECTION:
 		battle.session.choose_wait()

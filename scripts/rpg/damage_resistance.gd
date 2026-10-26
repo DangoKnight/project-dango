@@ -9,13 +9,13 @@ extends Resource
 ## Player-facing affinity; neutral damage types have no label.
 static func display_label(resistance: float) -> String:
 	if resistance >= 1.0:
-		return "Immune"
+		return "ui.immune"
 	if resistance >= 0.5:
-		return "Very resistant"
+		return "ui.very_resistant"
 	if resistance > 0.0:
-		return "Resistant"
+		return "ui.resistant"
 	if resistance <= -0.5:
-		return "Very weak"
+		return "ui.very_weak"
 	if resistance < 0.0:
-		return "Weak"
+		return "ui.weak"
 	return ""

@@ -7,8 +7,8 @@
 [resource]
 script = ExtResource("Script")
 id = &"ember"
-display_name = "Ember"
-description = "A small fire spell."
+display_name = "content.abilities.ember.name"
+description = "content.abilities.ember.description"
 effect = 0
 power = 8
 mana_cost = 3

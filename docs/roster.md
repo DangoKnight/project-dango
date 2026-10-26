@@ -48,7 +48,7 @@ A mischievous jellyfish who treats danger as an opportunity for a prank. Kurako'
 
 A quiet, enigmatic hare whose intentions are hard to read. It is unclear whether Koumi feels emotions at all, but her actions are straightforward and deliberate.
 
-Only these four characters remain in the playable character resources. Automated stat/class tests use generic frontliner and caster fixtures under `tests/fixtures/`; these are not playable characters. Press **Tab** in the Safe Zone to read character descriptions. Battle Information displays combat details without the character description text.
+Only these four characters remain in the playable character resources. Automated stat/class tests use generic frontliner and caster fixtures under `tests/fixtures/`; these are not playable characters. Open **Escape → Characters** in the book to read character descriptions. Battle Information displays combat details without the character description text.
 
 ## Hidden combat passives
 
@@ -68,3 +68,5 @@ Stat multipliers apply after permanent stats, equipment, and percentage status m
 Each primary stat rolls independently at every level-up around character + current class + equipped gear growth. Usami, Takane, and Kurako use uniform ±0.5 variation; Koumi uses ±1.0. Fractions accumulate permanently. Bulk leveling rolls each intermediate level; class changes and repeated level requests never reroll past gains. Gear resources support optional `stat_growth_modifiers`, with no bonuses assigned to existing items.
 
 Growth values and natural variation are hidden from all player-facing screens, including Characters and both sides of Battle Information. Only current effective stats are displayed. These values remain editable in developer resources.
+
+Personal weapon proficiencies are Daggers and Amplifiers for Usami and Kurako; Guns, Daggers, and Crossbows for Takane; and Daggers, Hammers, Spears, and Swords for Koumi. Explorer grants Swords, Guns, and Crossbows in addition to each character’s own proficiencies.

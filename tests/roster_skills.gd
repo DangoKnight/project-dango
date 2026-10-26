@@ -39,7 +39,7 @@ func run() -> void:
 	for index in range(names.size()):
 		var unit := character(names[index])
 		check(unit.definition.portrait != null and unit.definition.portrait.resource_path.get_file() == names[index].capitalize() + "-chan_Portrait.png", "Character uses the renamed portrait: " + names[index])
-		check(unit.character_class == EXPLORER and unit.definition.title == titles[index], "Explorer class and requested title for " + names[index])
+		check(unit.character_class == EXPLORER and L10n.text(unit.definition.title) == titles[index], "Explorer class and requested title for " + names[index])
 		check(unit.get_abilities().size() == ids[index].size(), "No old unique/class abilities on " + names[index])
 		for ability_id in ids[index]:
 			check(skill(ability_id) in unit.get_abilities() and skill(ability_id).is_valid(), "Requested skill configured: " + ability_id)
@@ -261,7 +261,7 @@ func run() -> void:
 	usami = character("usami")
 	view.configure([usami, character("takane"), character("kurako"), character("koumi")], encounter)
 	view.session.choose_ability(skill("jolly_cheer"))
-	check(not view._panel_targets[view.portrait.name] and view.prompt.text.is_empty() and not view.party_buttons[3].disabled, "Group spell UI hides portrait and permits fourth friendly target")
+	check(not view._panel_targets[view.portrait.name] and not view.has_node("ActionPanel/Layout/Commands/Prompt") and not view.party_buttons[3].disabled, "Group spell UI hides portrait and permits fourth friendly target")
 	view.session.select_target(view.session.party[3])
 	check(view.session.active_character().definition.id == &"takane", "Group action advances to next character")
 	view.queue_free()

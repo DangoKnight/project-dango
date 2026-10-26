@@ -64,8 +64,12 @@ func run() -> void:
 	game.new_game(false)
 	var departure: ConversationEvent = load("res://resources/conversations/station_departure.tres")
 	check(departure != null and departure.is_valid(), "Departure conversation loads with all authored lines")
-	var join_line := departure.lines[departure.lines.size() - 2]
-	check(join_line.recruit_character != null and join_line.recruit_character.id == &"koumi" and not join_line.notification_text.is_empty(), "Second-to-last departure step recruits Koumi and announces it")
+	var join_line: ConversationLine
+	for candidate in departure.lines:
+		if candidate.recruit_character != null and candidate.recruit_character.id == &"koumi":
+			join_line = candidate
+			break
+	check(join_line != null and not join_line.notification_text.is_empty(), "Departure has a Koumi recruitment notification")
 	var join_event := ConversationEvent.new()
 	join_event.lines.append(join_line)
 	check(director.play(join_event), "Recruitment notification can play")

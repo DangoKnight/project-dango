@@ -11,18 +11,22 @@
 [ext_resource type="PackedScene" path="res://scenes/battle/battle_information.tscn" id="Information"]
 
 [sub_resource type="StyleBoxFlat" id="CompactPanel"]
-content_margin_left = 20.0
+content_margin_left = 16.0
 content_margin_top = 16.0
-content_margin_right = 20.0
+content_margin_right = 16.0
 content_margin_bottom = 16.0
-bg_color = Color(0.12, 0.12, 0.12, 0.94)
+bg_color = Color(0.12, 0.14, 0.18, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.42, 0.49, 0.58, 0.8)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_left = 12
+corner_radius_bottom_right = 12
 
-[sub_resource type="StyleBoxFlat" id="ActionPanelStyle"]
-content_margin_left = 12.0
-content_margin_top = 12.0
-content_margin_right = 12.0
-content_margin_bottom = 12.0
-bg_color = Color(0.12, 0.12, 0.12, 0.94)
+[sub_resource type="StyleBoxEmpty" id="ActionPanelStyle"]
 
 [sub_resource type="StyleBoxFlat" id="LogPanelStyle"]
 content_margin_left = 16.0
@@ -188,7 +192,7 @@ grow_vertical = 2
 horizontal_alignment = 2
 vertical_alignment = 1
 mouse_filter = 2
-text = "Round 1"
+text = "ui.round_1"
 
 [node name="Party" type="HBoxContainer" parent="." unique_id=1305050810]
 layout_mode = 1
@@ -211,9 +215,9 @@ theme_override_constants/separation = 16
 
 [node name="SpecialDrawer" type="Control" parent="."]
 layout_mode = 1
-anchor_left = 0.30
+anchor_left = 0.20
 anchor_top = 0.10
-anchor_right = 0.64
+anchor_right = 0.49
 anchor_bottom = 0.88
 clip_contents = true
 mouse_filter = 2
@@ -222,15 +226,12 @@ mouse_filter = 2
 layout_mode = 1
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("ActionPanelStyle")
 
 [node name="Layout" type="VBoxContainer" parent="SpecialDrawer/SpecialPanel"]
 layout_mode = 2
 theme_override_constants/separation = 6
-
-[node name="Title" type="Label" parent="SpecialDrawer/SpecialPanel/Layout"]
-layout_mode = 2
-text = "Special"
 
 [node name="Scroll" type="ScrollContainer" parent="SpecialDrawer/SpecialPanel/Layout"]
 layout_mode = 2
@@ -248,10 +249,11 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.02
 anchor_top = 0.10
-anchor_right = 0.30
+anchor_right = 0.19
 anchor_bottom = 0.88
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("ActionPanelStyle")
 
 [node name="Layout" type="VBoxContainer" parent="ActionPanel" unique_id=410856704]
@@ -263,16 +265,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 6
-
-[node name="Prompt" type="Label" parent="ActionPanel/Layout/Commands" unique_id=1168294638]
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Choose an action"
-autowrap_mode = 2
+alignment = 1
 
 [node name="ActionScroll" type="ScrollContainer" parent="ActionPanel/Layout/Commands" unique_id=912539288]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 0
 horizontal_scroll_mode = 0
 
 [node name="Actions" type="GridContainer" parent="ActionPanel/Layout/Commands/ActionScroll" unique_id=1060547367]
@@ -284,7 +281,7 @@ columns = 1
 
 [node name="Back" type="Button" parent="ActionPanel/Layout/Commands" unique_id=1776105465]
 layout_mode = 2
-text = "Back"
+text = "ui.back"
 
 [node name="BattleLog" type="PanelContainer" parent="."]
 visible = false
@@ -311,35 +308,32 @@ theme_override_constants/shadow_offset_y = 1
 [node name="Confirmation" type="PanelContainer" parent="."]
 visible = false
 layout_mode = 1
-anchor_left = 0.25
+anchor_left = 0.35
 anchor_top = 0.34
-anchor_right = 0.75
+anchor_right = 0.65
 anchor_bottom = 0.66
 theme_override_styles/panel = SubResource("CompactPanel")
 
 [node name="Layout" type="VBoxContainer" parent="Confirmation"]
 layout_mode = 2
+theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="Confirmation/Layout"]
-layout_mode = 2
-text = "Confirm actions"
-horizontal_alignment = 1
 
 [node name="Question" type="Label" parent="Confirmation/Layout"]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Proceed with this round?"
+text = "ui.proceed_with_this_round"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Execute" type="Button" parent="Confirmation/Layout"]
 layout_mode = 2
-text = "Execute round"
+text = "ui.execute_round"
 
 [node name="Return" type="Button" parent="Confirmation/Layout"]
 layout_mode = 2
-text = "Return"
+text = "ui.return"
 
 [node name="InformationBlocker" type="Control" parent="."]
 visible = false

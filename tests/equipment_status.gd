@@ -12,7 +12,7 @@ const HAMMER = preload("res://resources/rpg/weapon_types/hammer.tres")
 const SPEAR = preload("res://resources/rpg/weapon_types/spear.tres")
 const DAGGER = preload("res://resources/rpg/weapon_types/dagger.tres")
 const SWORD_WEAPON = preload("res://resources/rpg/weapons/training_sword.tres")
-const STAFF_WEAPON = preload("res://resources/rpg/weapons/apprentice_staff.tres")
+const AMPLIFIER_WEAPON = preload("res://resources/rpg/weapons/apprentice_amplifier.tres")
 var failures := 0
 
 
@@ -29,13 +29,13 @@ func check(condition: bool, message: String) -> void:
 func run() -> void:
 	var frontliner := CharacterState.new(FRONTLINER)
 	var caster := CharacterState.new(CASTER)
-	check(frontliner.equipped_weapon == SWORD_WEAPON and caster.equipped_weapon == STAFF_WEAPON, "Allowed starting weapons should equip")
+	check(frontliner.equipped_weapon == SWORD_WEAPON and caster.equipped_weapon == AMPLIFIER_WEAPON, "Allowed starting weapons should equip")
 	check(frontliner.can_equip_weapon_type(SWORD), "A type allowed by character and class should pass")
-	check(not frontliner.can_equip_weapon_type(HAMMER), "Character restrictions should reject a class-allowed type")
-	check(not frontliner.can_equip_weapon_type(SPEAR), "Class restrictions should reject a character-allowed type")
-	check(not caster.can_equip_weapon_type(DAGGER), "Arcanist should restrict Test Caster's dagger proficiency")
-	check(frontliner.get_allowed_weapon_types().size() == 2, "Effective allowed types should be the intersection")
-	check(not frontliner.equip_weapon(STAFF_WEAPON) and frontliner.equipped_weapon == SWORD_WEAPON, "Rejected equipment should preserve the current weapon")
+	check(frontliner.can_equip_weapon_type(HAMMER), "Class proficiency grants access")
+	check(frontliner.can_equip_weapon_type(SPEAR), "Character proficiency grants access")
+	check(caster.can_equip_weapon_type(DAGGER), "Arcanist preserves the character’s dagger proficiency")
+	check(frontliner.get_allowed_weapon_types().size() == 3, "Effective allowed types combine both lists without duplicates")
+	check(not frontliner.equip_weapon(AMPLIFIER_WEAPON) and frontliner.equipped_weapon == SWORD_WEAPON, "Rejected equipment should preserve the current weapon")
 	check(not frontliner.equip_weapon(WeaponDefinition.new()), "Malformed weapons should be rejected")
 	var same_type := WeaponType.new()
 	same_type.id = SWORD.id
@@ -44,7 +44,7 @@ func run() -> void:
 	check(frontliner.equip_weapon(null) and frontliner.equipped_weapon == null, "Null should unequip")
 	frontliner.equip_weapon(SWORD_WEAPON)
 	frontliner.set_class(ARCANIST)
-	check(frontliner.equipped_weapon == null and frontliner.get_allowed_weapon_types().is_empty() and frontliner.has_weapon_restrictions(), "Class changes should unequip invalid weapons and allow an empty intersection")
+	check(frontliner.equipped_weapon == SWORD_WEAPON and frontliner.can_equip_weapon(AMPLIFIER_WEAPON), "Class changes preserve character proficiencies and grant new class types")
 	var unrestricted := CharacterState.new(CharacterDefinition.new())
 	check(not unrestricted.has_weapon_restrictions() and unrestricted.can_equip_weapon_type(SWORD), "Empty character and class lists should be unrestricted")
 	var character_only := FRONTLINER.duplicate() as CharacterDefinition
@@ -52,7 +52,7 @@ func run() -> void:
 	var no_class := CharacterState.new(character_only)
 	check(no_class.can_equip_weapon_type(SPEAR) and not no_class.can_equip_weapon_type(HAMMER), "No class should leave only the character's restrictions")
 	var class_only := CharacterState.new(CharacterDefinition.new(), ARCANIST)
-	check(class_only.can_equip_weapon(STAFF_WEAPON) and not class_only.can_equip_weapon(SWORD_WEAPON), "An unrestricted character should obey class restrictions")
+	check(class_only.can_equip_weapon(AMPLIFIER_WEAPON) and not class_only.can_equip_weapon(SWORD_WEAPON), "An unrestricted character should obey class restrictions")
 	var invalid_start := CASTER.duplicate() as CharacterDefinition
 	invalid_start.starting_weapon = SWORD_WEAPON
 	check(CharacterState.new(invalid_start).equipped_weapon == null, "Invalid starting weapons should not equip")

@@ -74,7 +74,7 @@ func run() -> void:
 	await create_timer(battle.menu_slide_duration * 0.7).timeout
 	check(not battle.special_panel.visible and not battle._waiting_for_drawer and not battle._panel_targets[battle.action_panel.name], "Main menu starts closing once the drawer finishes")
 	check(not battle.party_buttons[0].disabled, "Ability targets activate after drawer collapse")
-	check(battle.prompt.text.is_empty() and not battle.has_node("TargetHint"), "Targeting shows no instructions")
+	check(not battle.has_node("ActionPanel/Layout/Commands/Prompt") and not battle.has_node("TargetHint"), "Targeting shows no instructions")
 	battle._input(right_click)
 	check(battle.session.phase == BattleSession.Phase.ACTION_SELECTION and not battle._special_open, "Right-click cancels ability targeting without reopening Special")
 	await create_timer(battle.menu_slide_duration + 0.05).timeout
@@ -91,7 +91,7 @@ func run() -> void:
 	await create_timer(battle.menu_slide_duration + 0.05).timeout
 	check(not battle.action_panel.visible and battle.action_panel.get_rect().end.x <= 0, "Targeting fully clears the action menu")
 	check(not battle.portrait.visible and battle.portrait.position.x > battle.size.x, "Portrait finishes outside the right edge")
-	check(not battle.has_node("TargetHint") and battle.prompt.text.is_empty(), "Target instructions are removed")
+	check(not battle.has_node("TargetHint") and not battle.has_node("ActionPanel/Layout/Commands/Prompt"), "Target instructions are removed")
 	check(battle.party_cards.visible and battle.round_counter.visible, "Health and round counter remain visible during targeting")
 	battle.session.select_target(battle.session.enemies[0])
 	await create_timer(battle.menu_slide_duration + 0.05).timeout
@@ -100,7 +100,7 @@ func run() -> void:
 	await create_timer(battle.menu_slide_duration + 0.05).timeout
 	check(not battle.action_panel.visible and battle.confirmation.visible, "Ready phase swaps the menu for confirmation")
 	check(battle.confirmation.get_rect().get_center().is_equal_approx(battle.size * 0.5), "Confirmation finishes in the center")
-	check(battle.get_node("Confirmation/Layout/Question").text == "Proceed with this round?" and not battle.confirmation.has_node("Layout/Scroll"), "Confirmation only asks whether to proceed")
+	check(L10n.text(battle.get_node("Confirmation/Layout/Question").text) == "Proceed with this round?" and not battle.confirmation.has_node("Layout/Scroll"), "Confirmation only asks whether to proceed")
 	check(battle.get_viewport().gui_get_focus_owner() == battle.get_node("Confirmation/Layout/Execute"), "Confirmation supports keyboard execution")
 	battle.get_node("Confirmation/Layout/Return").pressed.emit()
 	await create_timer(battle.menu_slide_duration + 0.05).timeout
@@ -119,7 +119,12 @@ func run() -> void:
 	await create_timer(battle.menu_slide_duration + 0.05).timeout
 	check(not battle.round_counter.visible and battle.round_counter.get_rect().end.y <= 0, "Round counter slides up during resolution")
 	check(battle.party_cards.visible and is_equal_approx(battle.party_cards.anchor_top, 0.9), "Health cards stay visible during resolution")
-	await create_timer(1.2).timeout
+	# Action animations can outlast the log delay; wait for resolution itself.
+	for frame in range(500):
+		if battle.session.phase == BattleSession.Phase.ACTION_SELECTION and not battle._performing_round:
+			break
+		await create_timer(0.01).timeout
+	await create_timer(battle.menu_slide_duration + 0.05).timeout
 	check(not battle.confirmation.visible and battle.session.round_number == 2 and battle.action_panel.visible, "Execute hides confirmation and next round restores the menu")
 	check(not battle.get_node("BattleLog").visible, "Log hides after resolution")
 	check(battle.round_counter.visible and battle.round_counter.text == "Round 2", "Updated round counter returns for the next round")

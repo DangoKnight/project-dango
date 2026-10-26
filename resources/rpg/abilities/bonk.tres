@@ -7,8 +7,8 @@
 script = ExtResource("Ability")
 id = &"bonk"
 battle_animation = "bonk"
-display_name = "Bonk"
-description = "A moderate single-target bash attack using blunt damage."
+display_name = "content.abilities.bonk.name"
+description = "content.abilities.bonk.description"
 damage_type = ExtResource("Damage")
 power = 12
 mana_cost = 3

@@ -30,12 +30,13 @@ var _menu_actor: CharacterState
 var _ending := false
 var _exiting := false
 var _performing_round := false
+var _ui_hidden := false
+var _ui_hidden_focus: Control
 @onready var enemy_stage: Control = $EnemySpots
 @onready var battle_log: PanelContainer = $BattleLog
 var _messages := PackedStringArray()
 
 @onready var actions: GridContainer = $ActionPanel/Layout/Commands/ActionScroll/Actions
-@onready var prompt: Label = $ActionPanel/Layout/Commands/Prompt
 @onready var back: Button = $ActionPanel/Layout/Commands/Back
 @onready var portrait: Control = $PortraitOverlay
 @onready var portrait_image: TextureRect = $PortraitOverlay/Layout/Portrait
@@ -58,12 +59,15 @@ func _ready() -> void:
 	_portrait_default_stretch = portrait_image.stretch_mode
 	portrait_image.resized.connect(_update_portrait_pivot)
 	_update_portrait_pivot()
+	resized.connect(_queue_drawer_alignment)
+	actions.resized.connect(_queue_drawer_alignment)
+	$ActionPanel/Layout/Commands/ActionScroll.item_rect_changed.connect(_queue_drawer_alignment)
 	for marker in $EnemySpots.get_children():
 		enemy_slots.append(marker.get_node("EnemySlot") as Button)
 	for card in $Party.get_children():
 		party_buttons.append(card as Button)
 		card.disabled = true
-		card.get_node("Name").text = "Empty"
+		card.get_node("Name").text = "ui.empty"
 		for stat in ["HP", "SP"]:
 			card.get_node(stat).max_value = 1
 			card.get_node(stat).value = 0
@@ -72,13 +76,19 @@ func _ready() -> void:
 		_panel_homes[panel.name] = Vector4(panel.anchor_left, panel.anchor_top, panel.anchor_right, panel.anchor_bottom)
 		_panel_targets[panel.name] = panel == enemy_stage
 		_set_panel_progress(1.0 if panel == enemy_stage else 0.0, panel)
+	for button in [$Confirmation/Layout/Execute, $Confirmation/Layout/Return]:
+		_style_command(button)
+		button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	resized.connect(func(): _layout_confirmation.call_deferred())
+	confirmation.minimum_size_changed.connect(func(): _layout_confirmation.call_deferred())
+	_layout_confirmation.call_deferred()
 	$Confirmation/Layout/Execute.pressed.connect(_execute_round)
 	$Confirmation/Layout/Return.pressed.connect(_back)
 	back.pressed.connect(_back)
 	information.closed.connect(_close_information)
 	information.dismissed.connect(_restore_information_focus)
 	information.visibility_changed.connect(func():
-		$InformationBlocker.visible = information.visible
+		$InformationBlocker.visible = information.visible and not _ui_hidden
 		effects.suspended = information.visible
 		_refresh_target_highlights())
 	# F6 preview uses separate runtime instances; gameplay supplies the current party.
@@ -135,7 +145,7 @@ func _refresh() -> void:
 	if session.phase != BattleSession.Phase.TARGET_SELECTION:
 		_waiting_for_drawer = false
 	_refresh_target_highlights()
-	round_counter.text = L10n.text("Round %d") % session.round_number
+	round_counter.text = L10n.text("ui.battle.round_counter") % session.round_number
 	if session.phase == BattleSession.Phase.ACTION_SELECTION:
 		var actor := session.active_character()
 		_present_portrait(actor.definition)
@@ -154,11 +164,11 @@ func _refresh() -> void:
 		card.get_node("Name").text = L10n.text(character.definition.display_name)
 		card.get_node("HP").max_value = character.get_stat(&"max_hp")
 		card.get_node("HP").value = character.current_hp
-		card.get_node("HP/Value").text = L10n.text("HP  %d / %d") % [character.current_hp, character.get_stat(&"max_hp")]
+		card.get_node("HP/Value").text = L10n.text("ui.hp_d_d") % [character.current_hp, character.get_stat(&"max_hp")]
 		# SP is the combat UI name for the existing MP pool.
 		card.get_node("SP").max_value = maxi(1, character.get_stat(&"max_mp"))
 		card.get_node("SP").value = character.current_mp
-		card.get_node("SP/Value").text = L10n.text("SP  %d / %d") % [character.current_mp, character.get_stat(&"max_mp")]
+		card.get_node("SP/Value").text = L10n.text("ui.sp_d_d") % [character.current_mp, character.get_stat(&"max_mp")]
 		card.disabled = character not in targets
 	if session.phase == BattleSession.Phase.TARGET_SELECTION:
 		for child in actions.get_children():
@@ -178,34 +188,32 @@ func _refresh() -> void:
 	match session.phase:
 		BattleSession.Phase.ACTION_SELECTION:
 			var actor := session.active_character()
-			prompt.text = L10n.text("%s — choose an action") % L10n.text(actor.definition.display_name)
-			var attack := _command("Attack", session.choose_attack)
+			var attack := _command("ui.attack", session.choose_attack)
 			attack.disabled = not actor.can_act()
-			attack.grab_focus()
-			_command("Defend", session.choose_defend).disabled = not actor.can_act()
-			_command("Special", _open_special).disabled = not actor.can_act()
+			if not _ui_hidden:
+				attack.grab_focus()
+			_command("ui.defend", session.choose_defend).disabled = not actor.can_act()
+			_command("ui.character.abilities", _open_special).disabled = not actor.can_act()
 			var has_consumable := false
 			for item in actor.get_equipped_gear():
 				if item.definition.kind == GearDefinition.Kind.CONSUMABLE and not item.is_destroyed():
 					has_consumable = true
 					var button := _command(L10n.text(item.definition.display_name), session.choose_consumable.bind(item))
-					button.tooltip_text = L10n.text("%s (%d uses)") % [L10n.text(item.definition.description), item.remaining_uses()]
+					button.tooltip_text = L10n.text("ui.consumable.name_and_uses") % [L10n.text(item.definition.description), item.remaining_uses()]
 					button.disabled = not actor.can_act()
 			if not has_consumable:
-				_command("Consumable", func(): pass).disabled = true
-			var observe := _command("Observe", _toggle_observe)
+				_command("ui.consumable", func(): pass).disabled = true
+			var observe := _command("ui.observe", _toggle_observe)
 			observe.toggle_mode = true
 			observe.set_pressed_no_signal(actor.observing)
-			observe.tooltip_text = L10n.text("Halves strength, defense, mental acuity, mental resilience, and speed while active. Increases experience earned by 50%.")
-			if not previous_name.is_empty():
-				_command(L10n.text("Return to %s") % previous_name, _back)
-			_command("Run", session.choose_run).disabled = not actor.can_act()
+			observe.tooltip_text = L10n.text("ui.battle.observe_description")
+			var previous := _command(L10n.text("ui.battle.return_to_character") % previous_name if not previous_name.is_empty() else L10n.text("ui.battle.return_previous"), _back)
+			previous.disabled = previous_name.is_empty()
+			_command("ui.run", session.choose_run).disabled = not actor.can_act()
 			if not actor.can_act():
-				prompt.text = L10n.text("%s — paralyzed (choose Wait)") % L10n.text(actor.definition.display_name)
-				_command("Wait", session.choose_wait)
+				_command("ui.wait", session.choose_wait)
 
 		BattleSession.Phase.TARGET_SELECTION:
-			prompt.text = ""
 			for index in range(session.enemies.size()):
 				if session.enemies[index] in targets:
 					enemy_slots[index].grab_focus()
@@ -215,11 +223,11 @@ func _refresh() -> void:
 					party_buttons[index].grab_focus()
 					break
 		BattleSession.Phase.READY:
-			prompt.text = L10n.text("All actions chosen")
-			$Confirmation/Layout/Return.text = L10n.text("Return to %s") % previous_name
-			$Confirmation/Layout/Execute.grab_focus()
+			$Confirmation/Layout/Return.text = L10n.text("ui.battle.return_to_character") % previous_name
+			if not _ui_hidden:
+				$Confirmation/Layout/Execute.grab_focus()
 		BattleSession.Phase.RESOLVING:
-			prompt.text = L10n.text("Actions are resolving…")
+			pass
 		BattleSession.Phase.FINISHED:
 			if not _ending:
 				_ending = true
@@ -233,6 +241,7 @@ func _refresh() -> void:
 	_slide_panel(round_counter, not intro_playing and not presenting_actions and session.phase not in [BattleSession.Phase.RESOLVING, BattleSession.Phase.FINISHED])
 	_slide_panel(party_cards, not intro_playing and not _exiting)
 	_slide_panel(enemy_stage, not _exiting)
+	_queue_drawer_alignment()
 
 
 func _slide_panel(panel: Control, shown: bool) -> void:
@@ -256,7 +265,7 @@ func _slide_panel(panel: Control, shown: bool) -> void:
 
 
 func _focus_panel(panel: Control, shown: bool) -> void:
-	if not shown or intro_playing or information.visible or panel not in [action_panel, special_panel, confirmation]:
+	if _ui_hidden or not shown or intro_playing or information.visible or panel not in [action_panel, special_panel, confirmation]:
 		return
 	if panel == confirmation:
 		$Confirmation/Layout/Execute.grab_focus()
@@ -288,7 +297,7 @@ func _set_panel_progress(progress: float, panel: Control) -> void:
 	panel.anchor_top = home.y + shift.y
 	panel.anchor_right = home.z + shift.x
 	panel.anchor_bottom = home.w + shift.y
-	panel.visible = progress > 0.0 and (not intro_playing or panel == enemy_stage)
+	panel.visible = progress > 0.0 and (not intro_playing or panel == enemy_stage) and (not _ui_hidden or panel == enemy_stage)
 
 
 ## The battlefield remains visible while the presentation and input are suspended.
@@ -342,14 +351,45 @@ func _update_portrait_pivot() -> void:
 func _command(title: String, callback: Callable, container: GridContainer = null) -> Button:
 	var button := Button.new()
 	button.text = L10n.text(title)
-	button.clip_text = true
-	button.tooltip_text = L10n.text(title)
-	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	button.custom_minimum_size.y = 32
-	button.add_theme_font_size_override("font_size", 18)
+	_style_command(button)
 	button.pressed.connect(callback)
 	(container if container != null else actions).add_child(button)
 	return button
+
+
+func _style_command(button: Button) -> void:
+	button.clip_text = true
+	button.tooltip_text = L10n.text(button.text)
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.custom_minimum_size.y = 32
+	button.add_theme_font_size_override("font_size", 18)
+	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	button.add_theme_constant_override("outline_size", 4)
+	button.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
+	var backgrounds := {
+		"normal": Color(0.12, 0.14, 0.18, 0.95),
+		"hover": Color(0.22, 0.27, 0.34, 0.98),
+		"pressed": Color(0.14, 0.26, 0.37, 0.98),
+		"hover_pressed": Color(0.20, 0.34, 0.47, 0.98),
+		"disabled": Color(0.10, 0.11, 0.13, 0.80),
+		"focus": Color.TRANSPARENT,
+	}
+	for state in backgrounds:
+		var style := StyleBoxFlat.new()
+		style.bg_color = backgrounds[state]
+		style.set_corner_radius_all(8)
+		style.set_border_width_all(1)
+		style.border_color = Color(0.42, 0.49, 0.58, 0.8)
+		if state == "focus":
+			style.draw_center = false
+			style.border_color = Color(0.78, 0.86, 0.96)
+		elif state == "disabled":
+			style.border_color = Color(0.25, 0.27, 0.31, 0.65)
+		style.content_margin_left = 8
+		style.content_margin_right = 8
+		style.content_margin_top = 4
+		style.content_margin_bottom = 4
+		button.add_theme_stylebox_override(state, style)
 
 
 func _hover_target(character: CharacterState) -> void:
@@ -381,7 +421,7 @@ func _select_target(character: CharacterState) -> void:
 func _toggle_observe() -> void:
 	session.toggle_observe()
 	for command in actions.get_children():
-		if command.text == L10n.text("Observe"):
+		if command.text == L10n.text("ui.observe"):
 			command.grab_focus()
 			break
 
@@ -395,11 +435,11 @@ func _open_special() -> void:
 		child.queue_free()
 	var actor := session.active_character()
 	for ability in actor.get_abilities():
-		var button := _command(L10n.text("%s (%d SP)") % [L10n.text(ability.display_name), ability.mana_cost], _choose_special.bind(ability), special_actions)
+		var button := _command(L10n.text("ui.battle.ability_cost") % [L10n.text(ability.display_name), ability.mana_cost], _choose_special.bind(ability), special_actions)
 		button.disabled = not actor.can_act() or actor.current_mp < ability.mana_cost
-		button.tooltip_text = L10n.text(ability.description)
+		button.tooltip_text = CharacterInformation.ability_tooltip(ability)
 	if special_actions.get_child_count() == 0:
-		_command(L10n.text("No abilities available"), func(): pass, special_actions).disabled = true
+		_command(L10n.text("ui.no_abilities_available"), func(): pass, special_actions).disabled = true
 	_special_open = true
 	_refresh()
 	$SpecialDrawer/SpecialPanel/Layout/Scroll.scroll_vertical = 0
@@ -411,7 +451,7 @@ func _close_special() -> void:
 	_slide_panel(special_panel, false)
 	if session.phase == BattleSession.Phase.ACTION_SELECTION:
 		for command in actions.get_children():
-			if command.text == L10n.text("Special"):
+			if command.text == L10n.text("ui.character.abilities"):
 				command.grab_focus()
 				break
 
@@ -509,7 +549,7 @@ func _finish_battle() -> void:
 	if not is_inside_tree():
 		return
 	information.close_immediately()
-	_log(L10n.text("Escaped!") if session.escaped else L10n.text("Victory!") if session.victory else L10n.text("Defeat."))
+	_log(L10n.text("ui.escaped") if session.escaped else L10n.text("ui.victory") if session.victory else L10n.text("ui.defeat"))
 	await get_tree().create_timer(1.0, false).timeout
 	if not is_inside_tree():
 		return
@@ -533,6 +573,13 @@ func _log(message: String) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if session != null and event.is_action_pressed("toggle_battle_ui"):
+		_toggle_ui_visibility()
+		get_viewport().set_input_as_handled()
+		return
+	if _ui_hidden:
+		get_viewport().set_input_as_handled()
+		return
 	if intro_playing or _ending or session == null:
 		return
 	if not information.visible:
@@ -574,13 +621,60 @@ func _close_information() -> void:
 
 
 func _restore_information_focus() -> void:
-	if is_instance_valid(_information_focus) and _information_focus.is_visible_in_tree():
+	if not _ui_hidden and is_instance_valid(_information_focus) and _information_focus.is_visible_in_tree():
 		_information_focus.grab_focus()
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if intro_playing or _ending or information.visible:
+	if _ui_hidden or intro_playing or _ending or information.visible:
 		return
 	if session != null and event.is_action_pressed("ui_cancel"):
 		_back()
 		get_viewport().set_input_as_handled()
+
+
+func _queue_drawer_alignment() -> void:
+	_align_special_drawer.call_deferred()
+
+
+func _align_special_drawer() -> void:
+	if not is_inside_tree():
+		return
+	var action_scroll: ScrollContainer = $ActionPanel/Layout/Commands/ActionScroll
+	action_scroll.custom_minimum_size.y = minf(actions.get_combined_minimum_size().y, action_panel.size.y)
+	for button in actions.get_children():
+		if button.text == L10n.text("ui.character.abilities"):
+			var drawer: Control = $SpecialDrawer
+			var top: float = (get_global_transform().affine_inverse() * button.get_global_rect().position).y / maxf(size.y, 1.0)
+			drawer.anchor_top = clampf(top, 0.1, drawer.anchor_bottom - 0.1)
+			return
+
+
+func _layout_confirmation() -> void:
+	if not is_inside_tree() or not _panel_homes.has(confirmation.name):
+		return
+	var height := confirmation.get_combined_minimum_size().y
+	var half := height * 0.5 / maxf(size.y, 1.0)
+	var home: Vector4 = _panel_homes[confirmation.name]
+	home.y = 0.5 - half
+	home.w = 0.5 + half
+	_panel_homes[confirmation.name] = home
+	_set_panel_progress(float(_panel_progress[confirmation.name]), confirmation)
+
+
+func _toggle_ui_visibility() -> void:
+	_ui_hidden = not _ui_hidden
+	if _ui_hidden:
+		_ui_hidden_focus = get_viewport().gui_get_focus_owner()
+		if is_instance_valid(_ui_hidden_focus):
+			_ui_hidden_focus.release_focus()
+		_hovered_target = null
+		_refresh_target_highlights()
+	for panel in [action_panel, special_panel, confirmation, portrait, round_counter, party_cards, battle_log]:
+		_set_panel_progress(float(_panel_progress[panel.name]), panel)
+	information.modulate.a = 0.0 if _ui_hidden else 1.0
+	$InformationBlocker.visible = information.visible and not _ui_hidden
+	if not _ui_hidden and is_instance_valid(_ui_hidden_focus) and _ui_hidden_focus.is_visible_in_tree():
+		_ui_hidden_focus.grab_focus()
+	elif not _ui_hidden and not information.visible:
+		_focus_panel(confirmation if session.phase == BattleSession.Phase.READY else special_panel if _special_open else action_panel, true)

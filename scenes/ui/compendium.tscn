@@ -25,7 +25,7 @@ layout_mode = 2
 
 [node name="Title" type="Label" parent="Panel/Layout" unique_id=1742237451]
 layout_mode = 2
-text = "MONSTERS"
+text = "ui.monsters_heading"
 horizontal_alignment = 1
 
 [node name="Content" type="HBoxContainer" parent="Panel/Layout" unique_id=623501369]
@@ -57,4 +57,4 @@ theme_override_font_sizes/normal_font_size = 18
 
 [node name="CompendiumBack" type="Button" parent="Panel/Layout" unique_id=1407782974]
 layout_mode = 2
-text = "Return (Esc)"
+text = "ui.return_esc"

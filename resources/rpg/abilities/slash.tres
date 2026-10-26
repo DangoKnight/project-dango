@@ -7,8 +7,8 @@
 [resource]
 script = ExtResource("Script")
 id = &"slash"
-display_name = "Slash"
-description = "A simple slashing attack."
+display_name = "content.abilities.slash.name"
+description = "content.abilities.slash.description"
 effect = 0
 power = 5
 mana_cost = 0

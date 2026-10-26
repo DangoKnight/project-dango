@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="12_87i2n"]
 [ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="AbilityScript"]
 [ext_resource type="Resource" uid="uid://du7r731oh8usj" path="res://resources/rpg/classes/explorer.tres" id="Class"]
-[ext_resource type="Resource" path="res://resources/rpg/weapon_types/dagger.tres" id="dagger"]
 [ext_resource type="Resource" path="res://resources/rpg/damage_types/fire.tres" id="fire"]
 [ext_resource type="Resource" path="res://resources/rpg/damage_types/frost.tres" id="frost"]
 [ext_resource type="Resource" path="res://resources/rpg/passives/collected.tres" id="HiddenPassive"]
@@ -11,12 +10,15 @@
 [ext_resource type="Texture2D" uid="uid://b0sr46kryglp6" path="res://textures/Characters/Koumi/Koumi-chan_Portrait.png" id="Portrait"]
 [ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="ResistanceScript"]
 [ext_resource type="Script" uid="uid://cftevjhnkln3e" path="res://scripts/rpg/character_definition.gd" id="Script"]
-[ext_resource type="Resource" path="res://resources/rpg/weapon_types/staff.tres" id="staff"]
 [ext_resource type="Script" uid="uid://ddt764fvrnnt0" path="res://scripts/rpg/stats.gd" id="Stats"]
 [ext_resource type="Resource" uid="uid://5ps1icyrmbfa" path="res://resources/rpg/abilities/bonk.tres" id="Unique0"]
 [ext_resource type="Resource" uid="uid://baklc0036soit" path="res://resources/rpg/abilities/cover.tres" id="Unique1"]
-[ext_resource type="Resource" path="res://resources/rpg/weapon_types/wand.tres" id="wand"]
 [ext_resource type="Script" uid="uid://dbonx52hipraq" path="res://scripts/rpg/weapon_type.gd" id="WeaponTypeScript"]
+
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/dagger.tres" id="dagger"]
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/hammer.tres" id="hammer"]
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/spear.tres" id="spear"]
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/sword.tres" id="sword"]
 
 [sub_resource type="Resource" id="Base"]
 script = ExtResource("Stats")
@@ -51,9 +53,9 @@ speed = 1.0
 [resource]
 script = ExtResource("Script")
 id = &"koumi"
-display_name = "Koumi"
-title = "Emotions hare"
-description = "A quiet, enigmatic hare whose intentions are hard to read. It is unclear whether Koumi feels emotions at all, but her actions are straightforward and deliberate."
+display_name = "content.characters.koumi.name"
+title = "content.characters.koumi.title"
+description = "content.characters.koumi.description"
 starting_class = ExtResource("Class")
 base_stats = SubResource("Base")
 stat_growth = SubResource("Growth")
@@ -61,7 +63,7 @@ growth_variation = 1.0
 resistances = Array[ExtResource("ResistanceScript")]([SubResource("frostResistance"), SubResource("fireResistance")])
 unique_abilities = Array[ExtResource("AbilityScript")]([ExtResource("Unique0"), ExtResource("Unique1")])
 hidden_abilities = Array[ExtResource("PassiveScript")]([ExtResource("HiddenPassive")])
-allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("staff"), ExtResource("wand"), ExtResource("dagger")])
+allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("dagger"), ExtResource("hammer"), ExtResource("spear"), ExtResource("sword")])
 critical_rate = 0.05
 accuracy = 0.95
 portrait = ExtResource("Portrait")

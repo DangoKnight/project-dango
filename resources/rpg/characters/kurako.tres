@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="12_iflyo"]
 [ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="AbilityScript"]
-[ext_resource type="Resource" path="res://resources/rpg/weapon_types/axe.tres" id="axe"]
 [ext_resource type="Resource" uid="uid://du7r731oh8usj" path="res://resources/rpg/classes/explorer.tres" id="Class"]
 [ext_resource type="Resource" path="res://resources/rpg/damage_types/fire.tres" id="fire"]
 [ext_resource type="Resource" path="res://resources/rpg/damage_types/frost.tres" id="frost"]
@@ -11,13 +10,14 @@
 [ext_resource type="Texture2D" uid="uid://ijp13wjsqswi" path="res://textures/Characters/Kurako/Kurako-chan_Portrait.png" id="Portrait"]
 [ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="ResistanceScript"]
 [ext_resource type="Script" uid="uid://cftevjhnkln3e" path="res://scripts/rpg/character_definition.gd" id="Script"]
-[ext_resource type="Resource" path="res://resources/rpg/weapon_types/spear.tres" id="spear"]
 [ext_resource type="Script" uid="uid://ddt764fvrnnt0" path="res://scripts/rpg/stats.gd" id="Stats"]
-[ext_resource type="Resource" path="res://resources/rpg/weapon_types/sword.tres" id="sword"]
 [ext_resource type="Resource" uid="uid://dg28461kppbft" path="res://resources/rpg/abilities/painful_stab.tres" id="Unique0"]
 [ext_resource type="Resource" uid="uid://cmijyj4g1okjv" path="res://resources/rpg/abilities/immobilizing_stab.tres" id="Unique1"]
 [ext_resource type="Resource" uid="uid://chln4xmqlsaf" path="res://resources/rpg/abilities/i_am_scary.tres" id="Unique2"]
 [ext_resource type="Script" uid="uid://dbonx52hipraq" path="res://scripts/rpg/weapon_type.gd" id="WeaponTypeScript"]
+
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/dagger.tres" id="dagger"]
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/amplifier.tres" id="amplifier"]
 
 [sub_resource type="Resource" id="Base"]
 script = ExtResource("Stats")
@@ -52,16 +52,16 @@ speed = 1.5
 [resource]
 script = ExtResource("Script")
 id = &"kurako"
-display_name = "Kurako"
-title = "The prankster jellyfish"
-description = "A mischievous jellyfish who treats danger as an opportunity for a prank. Kurako's stinging tricks leave hostiles weakened, poisoned, or unable to move, and seeing a weakened target really boosts her spirit."
+display_name = "content.characters.kurako.name"
+title = "content.characters.kurako.title"
+description = "content.characters.kurako.description"
 starting_class = ExtResource("Class")
 base_stats = SubResource("Base")
 stat_growth = SubResource("Growth")
 resistances = Array[ExtResource("ResistanceScript")]([SubResource("fireResistance"), SubResource("frostResistance")])
 unique_abilities = Array[ExtResource("AbilityScript")]([ExtResource("Unique0"), ExtResource("Unique1"), ExtResource("Unique2")])
 hidden_abilities = Array[ExtResource("PassiveScript")]([ExtResource("HiddenPassive")])
-allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("sword"), ExtResource("axe"), ExtResource("spear")])
+allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("dagger"), ExtResource("amplifier")])
 critical_rate = 0.05
 accuracy = 0.95
 portrait = ExtResource("Portrait")

@@ -6,7 +6,7 @@ const SAFE_ZONE_COLOR := Color(0.24, 0.85, 0.87)
 const LANDMARK_COLOR := Color(0.78, 0.56, 1.0)
 const PLAYER_COLOR := Color(1.0, 0.82, 0.3)
 @export var ink_on_paper := false
-var source: LabyrinthMap
+var source: LabyrinthMapSnapshot
 var _landmark_labels: Dictionary[StringName, Label] = {}
 
 
@@ -15,8 +15,8 @@ func _ready() -> void:
 	resized.connect(_position_landmark_labels)
 
 
-func configure(map: LabyrinthMap) -> void:
-	source = map
+func configure(map: Variant) -> void:
+	source = LabyrinthMapSnapshot.capture(map) if map is LabyrinthMap else map
 	for label in _landmark_labels.values():
 		remove_child(label)
 		label.queue_free()
@@ -114,9 +114,9 @@ func _draw() -> void:
 				center + Vector2(0, -radius), center + Vector2(radius, 0),
 				center + Vector2(0, radius), center + Vector2(-radius, 0),
 			]), landmark_color)
-	var position := source.player.position
+	var position := source.player_position
 	var center := origin + (Vector2(position.x, position.z) / source.definition.cell_size + Vector2(0.5, 0.5)) * cell_size
-	var heading := Vector2(-sin(source.player.rotation.y), -cos(source.player.rotation.y))
+	var heading := Vector2(-sin(source.player_rotation), -cos(source.player_rotation))
 	var tangent := Vector2(-heading.y, heading.x)
 	var radius := cell_size * 0.3
 	draw_colored_polygon(PackedVector2Array([

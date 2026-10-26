@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("Script")
 id = &"easy_target"
-display_name = "Easy target"
+display_name = "content.passives.easy_target.name"
 condition = 2
 stat_multipliers = {&"mental_acuity": 1.2}

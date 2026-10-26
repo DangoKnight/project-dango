@@ -271,27 +271,23 @@ func has_weapon_restrictions() -> bool:
 func can_equip_weapon_type(weapon_type: WeaponType) -> bool:
 	if weapon_type == null or weapon_type.id.is_empty():
 		return false
-	return _allows_type(definition.allowed_weapon_types, weapon_type.id) and (character_class == null or _allows_type(character_class.allowed_weapon_types, weapon_type.id))
-
-
-func _allows_type(allowed: Array[WeaponType], type_id: StringName) -> bool:
-	if allowed.is_empty():
+	if not has_weapon_restrictions():
 		return true
-	for weapon_type in allowed:
-		if weapon_type != null and weapon_type.id == type_id:
+	for allowed in get_allowed_weapon_types():
+		if allowed.id == weapon_type.id:
 			return true
 	return false
 
 
-## Empty can mean no matching types; use has_weapon_restrictions() to distinguish unrestricted.
+## Character and class proficiencies grant access independently.
 func get_allowed_weapon_types() -> Array[WeaponType]:
 	var result: Array[WeaponType] = []
-	var candidates := definition.allowed_weapon_types
-	if candidates.is_empty() and character_class != null:
-		candidates = character_class.allowed_weapon_types
+	var candidates := definition.allowed_weapon_types.duplicate()
+	if character_class != null:
+		candidates.append_array(character_class.allowed_weapon_types)
 	var seen: Dictionary = {}
 	for weapon_type in candidates:
-		if can_equip_weapon_type(weapon_type) and not seen.has(weapon_type.id):
+		if weapon_type != null and not weapon_type.id.is_empty() and not seen.has(weapon_type.id):
 			result.append(weapon_type)
 			seen[weapon_type.id] = true
 	return result
@@ -314,19 +310,19 @@ func get_equipped_gear() -> Array[GearInstance]:
 	return _gear.duplicate()
 
 
-func gear_equip_error(item: GearInstance) -> String:
+func gear_equip_error(item: GearInstance, replacing: GearInstance = null) -> String:
 	if item == null or item.definition == null or not item.definition.is_valid() or item.is_destroyed():
-		return L10n.text("This gear is invalid or depleted.")
+		return L10n.text("ui.this_gear_is_invalid_or_depleted")
 	if item.get_carrier() != null or item in _gear:
-		return L10n.text("This item is already equipped.")
-	if _gear.size() >= GEAR_LIMIT:
-		return L10n.text("A character can carry only four pieces of gear.")
+		return L10n.text("ui.this_item_is_already_equipped")
+	if _gear.size() - int(replacing != null and replacing in _gear) >= GEAR_LIMIT:
+		return L10n.text("ui.a_character_can_carry_only_four_pieces_of_gear")
 	var count := 0
 	for equipped in _gear:
-		if equipped.definition.kind == item.definition.kind:
+		if equipped != replacing and equipped.definition.kind == item.definition.kind:
 			count += 1
 	if count >= GEAR_TYPE_LIMITS[item.definition.kind]:
-		return L10n.text("Maximum %d %s gear allowed.") % [GEAR_TYPE_LIMITS[item.definition.kind], item.definition.type_name()]
+		return L10n.text("ui.maximum_d_s_gear_allowed") % [GEAR_TYPE_LIMITS[item.definition.kind], item.definition.type_name()]
 	return ""
 
 
@@ -431,4 +427,18 @@ func can_act() -> bool:
 	for status in _statuses.values():
 		if status.definition.prevents_action:
 			return false
+	return true
+
+
+## Replace in one transaction so previewing or swapping gear never clamps vitals twice.
+func replace_gear(previous: GearInstance, item: GearInstance) -> bool:
+	if previous == null:
+		return equip_gear(item)
+	if previous not in _gear or not gear_equip_error(item, previous).is_empty():
+		return false
+	_gear[_gear.find(previous)] = item
+	previous._set_carrier(null)
+	item._set_carrier(self)
+	_clamp_vitals()
+	changed.emit()
 	return true

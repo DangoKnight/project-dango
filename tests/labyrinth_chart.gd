@@ -18,7 +18,7 @@ func run() -> void:
 	root.add_child(game)
 	game.new_game(false)
 	game.show_pause("town")
-	check(not game.ui.get_child(0).command("Map").visible, "Town menu does not offer a nonexistent current map")
+	check(game.ui.get_child(0).command("Map").visible and game.ui.get_child(0).command("Map").disabled, "Town map entry is disabled before any labyrinth has been charted")
 	game.show_town()
 	game.explore()
 	var map := game.world as LabyrinthMap
@@ -44,7 +44,7 @@ func run() -> void:
 	check(game.screen == "pause" and game.ui.get_child(0).current_page == "map" and not map.player.movement_enabled, "Map opens with movement paused")
 	var view: Control = game.ui.get_child(0)
 	var canvas: Control = view.widget("MapCanvas")
-	check(canvas.source == map, "Map renders the active labyrinth")
+	check(canvas.source.layout == map.layout and canvas.source.walked_cells == map.walked_cells, "Map renders the active labyrinth")
 	check(canvas.visible_safe_zones().size() == 1 and canvas.visible_safe_zones()[0] == entry, "Only discovered Safe Zones are shown")
 	var expected_walls := 0
 	for cell in map.walked_cells:

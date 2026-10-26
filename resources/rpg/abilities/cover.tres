@@ -7,8 +7,8 @@
 script = ExtResource("Ability")
 id = &"cover"
 battle_animation = "cover"
-display_name = "Cover"
-description = "Temporarily grants a moderate boost to own defense and draws enemy attention."
+display_name = "content.abilities.cover.name"
+description = "content.abilities.cover.description"
 effect = 2
 targeting = 2
 status_effect = ExtResource("Status")

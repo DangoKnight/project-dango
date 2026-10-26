@@ -17,7 +17,7 @@ func check(condition: bool, message: String) -> void:
 func click(title: String) -> void:
 	var buttons: Array[Node] = game.ui.find_children("*", "Button", true, false)
 	for button in buttons:
-		if button.text == title:
+		if L10n.text(button.text) == title:
 			button.pressed.emit()
 			if game.ui.get_child(0) is PauseBook:
 				for frame in range(100):
@@ -60,7 +60,7 @@ func run() -> void:
 	for index in range(expected_names.size()):
 		var definition: CharacterDefinition = game.state.roster[index].definition
 		check(definition.starting_class.id == &"explorer", "All starting characters should be Explorers")
-		check(definition.display_name == expected_names[index], "Starting party should contain " + expected_names[index])
+		check(L10n.text(definition.display_name) == expected_names[index], "Starting party should contain " + expected_names[index])
 		check(definition.portrait != null and definition.portrait.resource_path == "res://textures/Characters/" + expected_names[index] + "/" + expected_images[index] + "_Portrait.png", "Each character should use their matching portrait")
 		check(definition.combat_texture == definition.portrait, "Character combat texture should match its new portrait")
 	var original_character: CharacterState = game.state.party[0]
@@ -68,15 +68,19 @@ func run() -> void:
 	tab.action = "party_information"
 	tab.pressed = true
 	game._input(tab)
-	check(game.screen == "characters", "Characters should open the party screen")
+	check(game.screen == "town", "Tab does not open character details from town")
+	game.show_pause("town")
+	await game.ui.get_child(0).open_page("characters")
+	check(game.screen == "pause", "Characters opens inside the book")
 	var roster: Control = game.ui.get_child(0)
-	check(roster.get_node("Panel/Buttons/Content/Members").item_count == 3, "Characters lists only recruited characters")
-	check("Usami" in roster.get_node("Panel/Buttons/Content/Details").text, "Party screen should show selected character")
-	check("Unarmed" in roster.get_node("Panel/Buttons/Content/Details").text, "Starting party has no equipped weapons")
-	check("Allowed types: Sword, Axe, Spear" in roster.get_node("Panel/Buttons/Content/Details").text, "Party screen should show combined weapon restrictions")
-	roster.get_node("Panel/Buttons/Content/Members").item_selected.emit(1)
-	check("Takane" in roster.get_node("Panel/Buttons/Content/Details").text, "Selecting a character should update details")
-	await click("Back to Station 45-B")
+	check(roster.widget("Characters").get_child_count() == 3, "Characters lists only recruited characters")
+	check("Usami" in roster.widget("CharacterDetails").text, "Party screen should show selected character")
+	check(game.state.roster[0].equipped_weapon == null, "Starting party has no equipped weapons")
+	check(not "Allowed types:" in roster.widget("CharacterDetails").text, "Overview omits equipment data")
+	roster.widget("Characters").get_child(1).pressed.emit()
+	check("Takane" in roster.widget("CharacterDetails").text, "Selecting a character should update details")
+	await roster.open_page("index")
+	await click("Return")
 	check(game.state.party[0] == original_character, "Returning to town should preserve character state")
 	for location in ["Barracks", "Tinkerer", "Barterer"]:
 		await click(location)

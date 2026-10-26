@@ -58,7 +58,7 @@ size = Vector3(1, 8, 40)
 
 [node name="ExplorationRoom" unique_id=1617398071 instance=ExtResource("Map")]
 map_id = &"exploration_room"
-display_name = "Exploration Room"
+display_name = "ui.exploration_room"
 encounter = ExtResource("Encounter")
 
 [node name="SpawnPoint" parent="." index="0"]

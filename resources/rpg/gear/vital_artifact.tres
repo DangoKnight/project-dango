@@ -6,6 +6,6 @@
 hidden_value = 35
 script = ExtResource("Gear")
 id = &"vital_artifact"
-display_name = "Vital Artifact"
-description = "max_hp +15."
+display_name = "content.gear.vital_artifact.name"
+description = "content.gear.vital_artifact.description"
 stat_modifiers = Dictionary[StringName, float]({&"max_hp": 15.0})

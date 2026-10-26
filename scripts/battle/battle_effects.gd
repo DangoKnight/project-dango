@@ -29,6 +29,7 @@ const PROFILES := {
 	"cover": [["cover", Color.WHITE, 1.5]],
 }
 var active: Array[Dictionary] = []
+var enemy_frames := SpriteFrames.new()
 var suspended := false:
 	set(value):
 		suspended = value
@@ -62,7 +63,7 @@ func play_effect(preset: String, target: Control, duration: float) -> void:
 	var layers: Array = PROFILES.get(preset, PROFILES.blunt)
 	for layer in layers:
 		var sprite := AnimatedSprite2D.new()
-		sprite.sprite_frames = FRAMES
+		sprite.sprite_frames = FRAMES if target.has_node("SP") else _enemy_frames(layer[0])
 		sprite.modulate = layer[1]
 		add_child(sprite)
 		var effect := {"sprite": sprite, "target": target, "size": float(layer[2])}
@@ -91,6 +92,7 @@ func _position(effect: Dictionary) -> void:
 		return
 	var target: Control = effect.target
 	var sprite: AnimatedSprite2D = effect.sprite
+	sprite.visible = target.is_visible_in_tree()
 	var rect := target.get_global_rect()
 	var center := get_global_transform().affine_inverse() * rect.get_center()
 	var side := minf(size.x, size.y) * 0.3 * float(effect.size)
@@ -100,7 +102,7 @@ func _position(effect: Dictionary) -> void:
 		sprite.position = center
 	else:
 		sprite.position = Vector2(clampf(center.x, side * 0.5, maxf(side * 0.5, size.x - side * 0.5)), clampf(center.y, side * 0.5, maxf(side * 0.5, size.y - side * 0.5)))
-	var texture := FRAMES.get_frame_texture(sprite.animation, sprite.frame)
+	var texture := sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
 	sprite.scale = Vector2.ONE * side / maxf(texture.get_width(), texture.get_height())
 
 
@@ -111,3 +113,16 @@ func is_playing() -> bool:
 func wait_until_finished() -> void:
 	while is_playing():
 		await completed
+
+
+# Cache downsampled clips without changing the source pack or their screen footprint.
+func _enemy_frames(clip: StringName) -> SpriteFrames:
+	if not enemy_frames.has_animation(clip):
+		enemy_frames.add_animation(clip)
+		enemy_frames.set_animation_loop(clip, FRAMES.get_animation_loop(clip))
+		enemy_frames.set_animation_speed(clip, FRAMES.get_animation_speed(clip))
+		for index in FRAMES.get_frame_count(clip):
+			var image := FRAMES.get_frame_texture(clip, index).get_image()
+			image.resize(maxi(1, image.get_width() / 2), maxi(1, image.get_height() / 2), Image.INTERPOLATE_NEAREST)
+			enemy_frames.add_frame(clip, ImageTexture.create_from_image(image), FRAMES.get_frame_duration(clip, index))
+	return enemy_frames

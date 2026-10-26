@@ -4,7 +4,7 @@ extends "res://scripts/ui/screen.gd"
 signal exploration_requested(map_scene: PackedScene)
 
 @export var town_id: StringName
-@export var display_name: String = "Safe Zone"
+@export var display_name: String = "ui.safe_zone"
 @export var background_texture: Texture2D
 @export var exploration_map: PackedScene
 @export var location_backgrounds: Dictionary[String, Texture2D] = {}
@@ -22,7 +22,7 @@ signal exploration_requested(map_scene: PackedScene)
 ## Walking steps per artifact refresh cycle, started by talking to the Barterer.
 @export_range(1, 10000) var barter_restock_steps := 25
 @export_group("Tinkerer")
-@export var fabrication_ideas: Array[FabricationRecipe] = [preload("res://resources/rpg/recipes/sword.tres"), preload("res://resources/rpg/recipes/dagger.tres"), preload("res://resources/rpg/recipes/staff.tres"), preload("res://resources/rpg/recipes/spell_medallion.tres")]
+@export var fabrication_ideas: Array[FabricationRecipe] = [preload("res://resources/rpg/recipes/sword.tres"), preload("res://resources/rpg/recipes/dagger.tres"), preload("res://resources/rpg/recipes/amplifier.tres"), preload("res://resources/rpg/recipes/spell_medallion.tres")]
 @export_group("")
 var module_view: Control
 var _navigation_pending := false

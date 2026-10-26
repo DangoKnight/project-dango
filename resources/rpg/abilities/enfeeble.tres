@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("Script")
 id = &"enfeeble"
-display_name = "Enfeeble"
-description = "Temporarily weakens an enemy's mental resilience."
+display_name = "content.abilities.enfeeble.name"
+description = "content.abilities.enfeeble.description"
 effect = 2
 status_effect = ExtResource("Status")
 mana_cost = 4

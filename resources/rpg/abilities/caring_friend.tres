@@ -6,8 +6,8 @@
 script = ExtResource("Ability")
 id = &"caring_friend"
 battle_animation = "caring_friend"
-display_name = "Caring friend"
-description = "Restores a small amount of HP to one ally."
+display_name = "content.abilities.caring_friend.name"
+description = "content.abilities.caring_friend.description"
 effect = 1
 targeting = 1
 power = 8

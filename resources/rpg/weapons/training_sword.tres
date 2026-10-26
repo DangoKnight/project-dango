@@ -6,5 +6,5 @@
 [resource]
 script = ExtResource("Script")
 id = &"training_sword"
-display_name = "Training Sword"
+display_name = "content.weapons.training_sword.name"
 weapon_type = ExtResource("Type")

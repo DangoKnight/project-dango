@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://byvufvvwd2n4v"
-path="res://.godot/imported/Sydney.png-d5bc70f40dfeb85fece193bfffec4848.ctex"
+path="res://.godot/imported/Sydney.png-fcbd8a1fc0bbc3df39922059d5636fdf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/NPCs/Station_45B/Tinkerer/Sydney.png"
-dest_files=["res://.godot/imported/Sydney.png-d5bc70f40dfeb85fece193bfffec4848.ctex"]
+source_file="res://textures/NPCs/Station_45-B/Tinkerer/Sydney.png"
+dest_files=["res://.godot/imported/Sydney.png-fcbd8a1fc0bbc3df39922059d5636fdf.ctex"]
 
 [params]
 

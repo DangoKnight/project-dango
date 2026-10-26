@@ -8,5 +8,5 @@ extends Resource
 @export var stat_growth: RPGStats
 @export var resistances: Array[DamageResistance] = []
 @export var learned_abilities: Array[AbilityUnlock] = []
-## Empty means unrestricted. Otherwise the type must also be allowed by the character.
+## Grants these proficiencies in addition to the other character/class list. Both empty means unrestricted.
 @export var allowed_weapon_types: Array[WeaponType] = []

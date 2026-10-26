@@ -4,6 +4,6 @@
 [ext_resource type="Resource" path="res://resources/rpg/enemies/rat.tres" id="Rat"]
 [resource]
 script = ExtResource("Script")
-display_name = "Rat Pair"
+display_name = "content.encounters.rat_pair.name"
 enemies = Array[ExtResource("Character")]([ExtResource("Rat"), ExtResource("Rat")])
 enemy_level = 1

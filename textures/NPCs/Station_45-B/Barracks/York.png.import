@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bpmiw0qmtcf02"
-path="res://.godot/imported/York.png-8e166dba5b3dce89fc498619318721a4.ctex"
+path="res://.godot/imported/York.png-caaf06d0440c69c6e5f34916e87b04f2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/NPCs/Station_45B/Barracks/York.png"
-dest_files=["res://.godot/imported/York.png-8e166dba5b3dce89fc498619318721a4.ctex"]
+source_file="res://textures/NPCs/Station_45-B/Barracks/York.png"
+dest_files=["res://.godot/imported/York.png-caaf06d0440c69c6e5f34916e87b04f2.ctex"]
 
 [params]
 

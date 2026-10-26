@@ -1,119 +1,122 @@
 keys,en
-A basic attack that costs no MP.,A basic attack that costs no MP.
-A determined blunt strike against a single target.,A determined blunt strike against a single target.
-A heavy slashing attack.,A heavy slashing attack.
-"A mischievous jellyfish who treats danger as an opportunity for a prank. Kurako's stinging tricks leave hostiles weakened, poisoned, or unable to move, and seeing a weakened target really boosts her spirit.","A mischievous jellyfish who treats danger as an opportunity for a prank. Kurako's stinging tricks leave hostiles weakened, poisoned, or unable to move, and seeing a weakened target really boosts her spirit."
-A moderate single-target bash attack using blunt damage.,A moderate single-target bash attack using blunt damage.
-A normal-power pierce attack that cannot miss.,A normal-power pierce attack that cannot miss.
-A powerful arcane attack against a single target.,A powerful arcane attack against a single target.
-"A quiet, enigmatic hare whose intentions are hard to read. It is unclear whether Koumi feels emotions at all, but her actions are straightforward and deliberate.","A quiet, enigmatic hare whose intentions are hard to read. It is unclear whether Koumi feels emotions at all, but her actions are straightforward and deliberate."
-A sharp bite from a labyrinth rat.,A sharp bite from a labyrinth rat.
-"A sharp-eyed hawk who studies every opening before committing to a precise strike. Fast and focused, Takane stays one step ahead of the labyrinth's threats. Despite her cool demeanor, she is fiercely overprotective of her younger sister, Usami.","A sharp-eyed hawk who studies every opening before committing to a precise strike. Fast and focused, Takane stays one step ahead of the labyrinth's threats. Despite her cool demeanor, she is fiercely overprotective of her younger sister, Usami."
-A simple slashing attack.,A simple slashing attack.
-A small fire spell.,A small fire spell.
-A surge of unsettling energy from an ethereal orb.,A surge of unsettling energy from an ethereal orb.
-A versatile starting class with balanced growth and no additional weapon restrictions.,A versatile starting class with balanced growth and no additional weapon restrictions.
-A warm-hearted rabbit girl who keeps the group together when the labyrinth feels endless. Usami lifts spirits with a cheerful word and tends to companions when the journey takes its toll. Seeing everyone safe and healthy puts an extra spring in her step.,A warm-hearted rabbit girl who keeps the group together when the labyrinth feels endless. Usami lifts spirits with a cheerful word and tends to companions when the journey takes its toll. Seeing everyone safe and healthy puts an extra spring in her step.
-Apprentice Staff,Apprentice Staff
-Arcane,Arcane
-Arcanist,Arcanist
-Attack,Attack
-Axe,Axe
-Bite,Bite
-Blunt,Blunt
-Bonk,Bonk
-Bow,Bow
-"Briefly paralyzes a single enemy, preventing them from acting.","Briefly paralyzes a single enemy, preventing them from acting."
-Caring friend,Caring friend
-Cleave,Cleave
-Collected,Collected
-Cover,Cover
-Dagger,Dagger
-Deals 20 fire damage to one enemy and reduces Mental Resilience for three turns. Three total uses.,Deals 20 fire damage to one enemy and reduces Mental Resilience for three turns. Three total uses.
-Distant Safe Zone,Distant Safe Zone
-Drifting Orbs,Drifting Orbs
-Easy target,Easy target
-Ember,Ember
-Emotions hare,Emotions hare
-Enfeeble,Enfeeble
-Ethereal Orb,Ethereal Orb
-Ethereal Orbs,Ethereal Orbs
-Ethereal Pulse,Ethereal Pulse
-Explorer,Explorer
-Fire,Fire
-Fortified,Fortified
-Fortify,Fortify
-Frailty,Frailty
-Frailty Bomb,Frailty Bomb
-Frost,Frost
-Graceful assault,Graceful assault
-Grants Ember and Mend while equipped. Normal MP costs apply.,Grants Ember and Mend while equipped. Normal MP costs apply.
-Hammer,Hammer
-Happy friends,Happy friends
-Healing Draught,Healing Draught
-Heals one ally for 30 HP. Three total uses.,Heals one ally for 30 HP. Three total uses.
-Heals the living party for 18 HP and grants +4 strength for three turns. Three total uses.,Heals the living party for 18 HP and grants +4 strength for three turns. Three total uses.
-I am scary!,I am scary!
-Immobilizing stab,Immobilizing stab
-"Inflicts a lingering, weak poison on a single enemy.","Inflicts a lingering, weak poison on a single enemy."
-Iron Artifact,Iron Artifact
-Jolly Cheer,Jolly Cheer
-Jolly cheer,Jolly cheer
-Koumi,Koumi
-Kurako,Kurako
-Lightning,Lightning
-Lock-on,Lock-on
-Mend,Mend
-Office Patrol,Office Patrol
-Overprotective sister,Overprotective sister
-Painful Poison,Painful Poison
-Painful stab,Painful stab
-Paralysis,Paralysis
-Pierce,Pierce
-Poison,Poison
-Rally,Rally
-Rally Flask,Rally Flask
-Rat,Rat
-Rat Pair,Rat Pair
-Rats,Rats
-Restore HP to a living ally.,Restore HP to a living ally.
-Restores 10 HP to one ally. Two uses.,Restores 10 HP to one ally. Two uses.
-Restores a small amount of HP to one ally.,Restores a small amount of HP to one ally.
-Ride the Gale,Ride the Gale
-Ride the gale,Ride the gale
-Scared,Scared
-Service Junction,Service Junction
-"Sharpens focus, making own strikes more devastating for a short time.","Sharpens focus, making own strikes more devastating for a short time."
-Simple Rations,Simple Rations
-Slash,Slash
-Spear,Spear
-Spell Medallion,Spell Medallion
-Staff,Staff
-Starfall,Starfall
-Station 45-B,Station 45-B
-Steadfast Strike,Steadfast Strike
-"Strength +3, speed -1. Grants slash resistance.","Strength +3, speed -1. Grants slash resistance."
-Sword,Sword
-Takane,Takane
-Temporarily bolsters an ally's defense.,Temporarily bolsters an ally's defense.
-Temporarily grants a moderate boost to all living allies' strength and defense.,Temporarily grants a moderate boost to all living allies' strength and defense.
-Temporarily grants a moderate boost to own defense and draws enemy attention.,Temporarily grants a moderate boost to own defense and draws enemy attention.
-Temporarily grants a moderate boost to own speed.,Temporarily grants a moderate boost to own speed.
-Temporarily increases defense.,Temporarily increases defense.
-Temporarily reduces mental resilience.,Temporarily reduces mental resilience.
-Temporarily reduces one enemy row's strength and mental acuity.,Temporarily reduces one enemy row's strength and mental acuity.
-Temporarily weakens an enemy's mental resilience.,Temporarily weakens an enemy's mental resilience.
-The Office Labyrinth,The Office Labyrinth
-The friendly rabbit,The friendly rabbit
-The hunting hawk,The hunting hawk
-The prankster jellyfish,The prankster jellyfish
-Training Dagger,Training Dagger
-Training Encounter,Training Encounter
-Training Sword,Training Sword
-Usami,Usami
-Vanguard,Vanguard
-Vital Artifact,Vital Artifact
-Wand,Wand
-Wind Artifact,Wind Artifact
-max_hp +15.,max_hp +15.
-speed +2.,speed +2.
+content.abilities.basic_attack.description,A basic attack that costs no MP.
+content.abilities.basic_attack.name,Attack
+content.abilities.bite.description,A sharp bite from a labyrinth rat.
+content.abilities.bite.name,Bite
+content.abilities.bonk.description,A moderate single-target bash attack using blunt damage.
+content.abilities.bonk.name,Bonk
+content.abilities.caring_friend.description,Restores a small amount of HP to one ally.
+content.abilities.caring_friend.name,Caring friend
+content.abilities.cleave.description,A heavy slashing attack.
+content.abilities.cleave.name,Cleave
+content.abilities.cover.description,Temporarily grants a moderate boost to own defense and draws enemy attention.
+content.abilities.cover.name,Cover
+content.abilities.ember.description,A small fire spell.
+content.abilities.ember.name,Ember
+content.abilities.enfeeble.description,Temporarily weakens an enemy's mental resilience.
+content.abilities.enfeeble.name,Enfeeble
+content.abilities.ethereal_pulse.description,A surge of unsettling energy from an ethereal orb.
+content.abilities.ethereal_pulse.name,Ethereal Pulse
+content.abilities.fortify.description,Temporarily bolsters an ally's defense.
+content.abilities.fortify.name,Fortify
+content.abilities.graceful_assault.description,A normal-power pierce attack that cannot miss.
+content.abilities.graceful_assault.name,Graceful assault
+content.abilities.i_am_scary.description,Temporarily reduces one enemy row's strength and mental acuity.
+content.abilities.i_am_scary.name,I am scary!
+content.abilities.immobilizing_stab.description,"Briefly paralyzes a single enemy, preventing them from acting."
+content.abilities.immobilizing_stab.name,Immobilizing stab
+content.abilities.jolly_cheer.description,Temporarily grants a moderate boost to all living allies' strength and defense.
+content.abilities.jolly_cheer.name,Jolly cheer
+content.abilities.lock_on.description,"Sharpens focus, making own strikes more devastating for a short time."
+content.abilities.lock_on.name,Lock-on
+content.abilities.mend.description,Restore HP to a living ally.
+content.abilities.mend.name,Mend
+content.abilities.painful_stab.description,"Inflicts a lingering, weak poison on a single enemy."
+content.abilities.painful_stab.name,Painful stab
+content.abilities.ride_the_gale.description,Temporarily grants a moderate boost to own speed.
+content.abilities.ride_the_gale.name,Ride the gale
+content.abilities.slash.description,A simple slashing attack.
+content.abilities.slash.name,Slash
+content.abilities.starfall.description,A powerful arcane attack against a single target.
+content.abilities.starfall.name,Starfall
+content.abilities.steadfast_strike.description,A determined blunt strike against a single target.
+content.abilities.steadfast_strike.name,Steadfast Strike
+content.bow,Bow
+content.characters.koumi.description,"A quiet, enigmatic hare whose intentions are hard to read. It is unclear whether Koumi feels emotions at all, but her actions are straightforward and deliberate."
+content.characters.koumi.name,Koumi
+content.characters.koumi.title,Emotions hare
+content.characters.kurako.description,"A mischievous jellyfish who treats danger as an opportunity for a prank. Kurako's stinging tricks leave hostiles weakened, poisoned, or unable to move, and seeing a weakened target really boosts her spirit."
+content.characters.kurako.name,Kurako
+content.characters.kurako.title,The prankster jellyfish
+content.characters.takane.description,"A sharp-eyed hawk who studies every opening before committing to a precise strike. Fast and focused, Takane stays one step ahead of the labyrinth's threats. Despite her cool demeanor, she is fiercely overprotective of her younger sister, Usami."
+content.characters.takane.name,Takane
+content.characters.takane.title,The hunting hawk
+content.characters.usami.description,A warm-hearted rabbit girl who keeps the group together when the labyrinth feels endless. Usami lifts spirits with a cheerful word and tends to companions when the journey takes its toll. Seeing everyone safe and healthy puts an extra spring in her step.
+content.characters.usami.name,Usami
+content.characters.usami.title,The friendly rabbit
+content.classes.arcanist.name,Arcanist
+content.classes.explorer.description,A versatile starting class with balanced growth and no additional weapon restrictions.
+content.classes.explorer.name,Explorer
+content.classes.vanguard.name,Vanguard
+content.damage_types.arcane.name,Arcane
+content.damage_types.blunt.name,Blunt
+content.damage_types.fire.name,Fire
+content.damage_types.frost.name,Frost
+content.damage_types.lightning.name,Lightning
+content.damage_types.pierce.name,Pierce
+content.damage_types.poison.name,Poison
+content.damage_types.slash.name,Slash
+content.encounters.office_patrol.name,Office Patrol
+content.encounters.orb_pair.name,Drifting Orbs
+content.encounters.rat_pair.name,Rat Pair
+content.encounters.training.name,Training Encounter
+content.enemies.ethereal_orb.name,Ethereal Orb
+content.enemies.rat.name,Rat
+content.ethereal_orbs,Ethereal Orbs
+content.gear.frailty_bomb.description,Deals 20 fire damage to one enemy and reduces Mental Resilience for three turns. Three total uses.
+content.gear.frailty_bomb.name,Frailty Bomb
+content.gear.healing_draught.description,Heals one ally for 30 HP. Three total uses.
+content.gear.healing_draught.name,Healing Draught
+content.gear.iron_artifact.description,"Strength +3, speed -1. Grants slash resistance."
+content.gear.iron_artifact.name,Iron Artifact
+content.gear.rally_flask.description,Heals the living party for 18 HP and grants +4 strength for three turns. Three total uses.
+content.gear.rally_flask.name,Rally Flask
+content.gear.simple_rations.description,Restores 10 HP to one ally. Two uses.
+content.gear.simple_rations.name,Simple Rations
+content.gear.spell_medallion.description,Grants Ember and Mend while equipped. Normal MP costs apply.
+content.gear.spell_medallion.name,Spell Medallion
+content.gear.vital_artifact.description,max_hp +15.
+content.gear.vital_artifact.name,Vital Artifact
+content.gear.wind_artifact.description,speed +2.
+content.gear.wind_artifact.name,Wind Artifact
+content.labyrinths.office.definition.display_name,The Office Labyrinth
+content.labyrinths.office.definition.landmarks.distant_refuge.display_name,Distant Safe Zone
+content.labyrinths.office.definition.landmarks.entry_refuge.display_name,Station 45-B
+content.labyrinths.office.definition.landmarks.service_hub.display_name,Service Junction
+content.passives.collected.name,Collected
+content.passives.easy_target.name,Easy target
+content.passives.happy_friends.name,Happy friends
+content.passives.overprotective_sister.name,Overprotective sister
+content.rats,Rats
+content.statuses.cover.name,Cover
+content.statuses.fortified.description,Temporarily increases defense.
+content.statuses.fortified.name,Fortified
+content.statuses.frailty.description,Temporarily reduces mental resilience.
+content.statuses.frailty.name,Frailty
+content.statuses.jolly_cheer.name,Jolly Cheer
+content.statuses.lock_on.name,Lock-on
+content.statuses.painful_poison.name,Painful Poison
+content.statuses.paralysis.name,Paralysis
+content.statuses.rally.name,Rally
+content.statuses.ride_the_gale.name,Ride the Gale
+content.statuses.scared.name,Scared
+content.weapon_types.dagger.name,Dagger
+content.weapon_types.hammer.name,Hammer
+content.weapon_types.spear.name,Spear
+content.weapon_types.sword.name,Sword
+content.weapons.apprentice_amplifier.name,Apprentice Amplifier
+content.weapons.training_dagger.name,Training Dagger
+content.weapons.training_sword.name,Training Sword
+content.weapon_types.amplifier.name,Amplifier
+content.weapon_types.gun.name,Gun
+content.weapon_types.crossbow.name,Crossbow

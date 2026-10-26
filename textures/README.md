@@ -4,7 +4,7 @@
 | --- | --- |
 | `Characters/<Name>/` | Active character portraits, grouped by character |
 | `NPCs/Enemies/` | Monster sprites shared by enemy resources |
-| `NPCs/Station_45B/<Service>/` | Station 45-B NPC artwork, grouped by service |
+| `NPCs/Station_45-B/<Service>/` | Station 45-B NPC artwork, grouped by service |
 | `Backgrounds/SafeZones/` | Shared safe zone and service room backgrounds |
 | `Backgrounds/Menus/` | Main menu and options backgrounds |
 | `Backgrounds/Battle/` | Combat backgrounds |
@@ -13,7 +13,7 @@
 | `battle_fx/` | Imported battle effect packs, credits and frame mappings |
 
 Reuse `Backgrounds/SafeZones/` across safe zones. NPCs vary by safe zone: add
-new station folders under `NPCs/`, following `NPCs/Station_45B/<Service>/`.
+new station folders under `NPCs/`, following `NPCs/Station_45-B/<Service>/`.
 Keep active portraits grouped by character, and keep backgrounds separate
 from NPC sprites. Add distinct labyrinth environments as sibling folders.
 Art prompts in `docs/art_prompts.json` use the current asset paths.

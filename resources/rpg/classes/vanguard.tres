@@ -1,6 +1,5 @@
 [gd_resource type="Resource" script_class="CharacterClass" format=3 uid="uid://cqtjael6l4xpt"]
 
-[ext_resource type="Resource" path="res://resources/rpg/weapon_types/axe.tres" id="axe"]
 [ext_resource type="Resource" path="res://resources/rpg/abilities/cleave.tres" id="cleave"]
 [ext_resource type="Resource" uid="uid://dlx51xox380i7" path="res://resources/rpg/abilities/fortify.tres" id="fortify"]
 [ext_resource type="Resource" path="res://resources/rpg/weapon_types/hammer.tres" id="hammer"]
@@ -50,9 +49,9 @@ speed = 0.5
 [resource]
 script = ExtResource("Script")
 id = &"vanguard"
-display_name = "Vanguard"
+display_name = "content.classes.vanguard.name"
 base_stats = SubResource("Base")
 stat_growth = SubResource("Growth")
 resistances = Array[ExtResource("ResistanceScript")]([SubResource("Resistance")])
 learned_abilities = Array[ExtResource("UnlockScript")]([SubResource("Unlockslash"), SubResource("Unlockcleave"), SubResource("StatusUnlock")])
-allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("sword"), ExtResource("axe"), ExtResource("hammer")])
+allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("sword"), ExtResource("hammer")])

@@ -3,6 +3,7 @@ class_name CharacterDefinition
 extends Resource
 
 @export var id: StringName
+## Stable translation key; edit its English wording in localization/content.csv.
 @export var display_name: String
 @export var title: String:
 	set(value):
@@ -20,7 +21,7 @@ extends Resource
 @export var unique_abilities: Array[AbilityDefinition] = []
 ## Automatic combat passives; excluded from skill menus and character information.
 @export var hidden_abilities: Array[PassiveAbilityDefinition] = []
-## Empty means unrestricted. Otherwise the type must also be allowed by the class.
+## Grants these proficiencies in addition to the other character/class list. Both empty means unrestricted.
 @export var allowed_weapon_types: Array[WeaponType] = []
 @export var starting_weapon: WeaponDefinition
 @export_group("Combat Traits")

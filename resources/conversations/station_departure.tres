@@ -1,17 +1,17 @@
-[gd_resource type="Resource" script_class="ConversationEvent" load_steps=40 format=3]
+[gd_resource type="Resource" script_class="ConversationEvent" format=3 uid="uid://47lexo5je05m"]
 
-[ext_resource type="Script" path="res://scripts/conversation/conversation_event.gd" id="Event"]
-[ext_resource type="Script" path="res://scripts/conversation/conversation_line.gd" id="Line"]
-[ext_resource type="Resource" path="res://resources/rpg/characters/usami.tres" id="Usami"]
-[ext_resource type="Resource" path="res://resources/rpg/characters/takane.tres" id="Takane"]
-[ext_resource type="Resource" path="res://resources/rpg/characters/kurako.tres" id="Kurako"]
-[ext_resource type="Resource" path="res://resources/rpg/characters/koumi.tres" id="Koumi"]
+[ext_resource type="Script" uid="uid://cu3lcycu15kpr" path="res://scripts/conversation/conversation_event.gd" id="Event"]
+[ext_resource type="Resource" uid="uid://bvf0h5rk7p1j" path="res://resources/rpg/characters/koumi.tres" id="Koumi"]
+[ext_resource type="Resource" uid="uid://5i8ornk5ktfl" path="res://resources/rpg/characters/kurako.tres" id="Kurako"]
+[ext_resource type="Script" uid="uid://j6qkokwt15" path="res://scripts/conversation/conversation_line.gd" id="Line"]
+[ext_resource type="Resource" uid="uid://dtoao4rtk4kh1" path="res://resources/rpg/characters/takane.tres" id="Takane"]
+[ext_resource type="Resource" uid="uid://dvyjvvqp4xbwp" path="res://resources/rpg/characters/usami.tres" id="Usami"]
 
 [sub_resource type="Resource" id="1"]
 script = ExtResource("Line")
 right_character = ExtResource("Kurako")
 speaker = 2
-text = "I feel like this station has a very clear favourite..."
+text = "dialogue.station_departure.1.text"
 right_entrance = 2
 
 [sub_resource type="Resource" id="2"]
@@ -19,7 +19,7 @@ script = ExtResource("Line")
 left_character = ExtResource("Usami")
 right_character = ExtResource("Kurako")
 speaker = 1
-text = "Hm? Is something wrong, Kurako-chan?"
+text = "dialogue.station_departure.2.text"
 left_entrance = 1
 
 [sub_resource type="Resource" id="3"]
@@ -27,227 +27,227 @@ script = ExtResource("Line")
 left_character = ExtResource("Usami")
 right_character = ExtResource("Kurako")
 speaker = 2
-text = "Don't worry, it's nothing. Let's go explore!"
+text = "dialogue.station_departure.3.text"
 
 [sub_resource type="Resource" id="4"]
 script = ExtResource("Line")
 left_character = ExtResource("Usami")
 right_character = ExtResource("Kurako")
 speaker = 1
-text = "Yay! The adventure begins now!"
+text = "dialogue.station_departure.4.text"
 
 [sub_resource type="Resource" id="5"]
 script = ExtResource("Line")
 left_character = ExtResource("Usami")
 right_character = ExtResource("Takane")
 speaker = 2
-text = "..."
-right_exit = 2
+text = "dialogue.station_departure.5.text"
 right_entrance = 2
+right_exit = 2
 
 [sub_resource type="Resource" id="6"]
 script = ExtResource("Line")
 left_character = ExtResource("Usami")
 right_character = ExtResource("Takane")
 speaker = 1
-text = "What's wrong, Takane-chan?"
+text = "dialogue.station_departure.6.text"
 
 [sub_resource type="Resource" id="7"]
 script = ExtResource("Line")
 left_character = ExtResource("Usami")
 right_character = ExtResource("Takane")
 speaker = 2
-text = "Hey you. How long are you planning to follow us?"
+text = "dialogue.station_departure.7.text"
 
 [sub_resource type="Resource" id="8"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Takane")
 speaker = 1
-text = "That's so mean! Adventuring was my idea!"
-left_exit = 1
+text = "dialogue.station_departure.8.text"
 left_entrance = 1
+left_exit = 1
 
 [sub_resource type="Resource" id="9"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Takane")
 speaker = 2
-text = "I'm not talking to you, Kurako."
+text = "dialogue.station_departure.9.text"
 
 [sub_resource type="Resource" id="10"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Takane")
 speaker = 2
-text = "You, back there. You've been following us since this morning."
+text = "dialogue.station_departure.10.text"
 
 [sub_resource type="Resource" id="11"]
 script = ExtResource("Line")
 left_character = ExtResource("Koumi")
 right_character = ExtResource("Takane")
 speaker = 1
-text = "..."
-left_exit = 1
+text = "dialogue.station_departure.11.text"
 left_entrance = 1
+left_exit = 1
 
 [sub_resource type="Resource" id="12"]
 script = ExtResource("Line")
 left_character = ExtResource("Koumi")
 right_character = ExtResource("Usami")
 speaker = 2
-text = "Ah! Koumi-chan! Did you come to see us off?"
-right_exit = 2
+text = "dialogue.station_departure.12.text"
 right_entrance = 2
+right_exit = 2
 
 [sub_resource type="Resource" id="13"]
 script = ExtResource("Line")
 left_character = ExtResource("Koumi")
 right_character = ExtResource("Usami")
 speaker = 1
-text = "..."
+text = "dialogue.station_departure.13.text"
 
 [sub_resource type="Resource" id="14"]
 script = ExtResource("Line")
 left_character = ExtResource("Koumi")
 right_character = ExtResource("Usami")
 speaker = 2
-text = "..."
+text = "dialogue.station_departure.14.text"
 
 [sub_resource type="Resource" id="15"]
 script = ExtResource("Line")
 left_character = ExtResource("Koumi")
 right_character = ExtResource("Usami")
 speaker = 1
-text = "..."
+text = "dialogue.station_departure.15.text"
 
 [sub_resource type="Resource" id="16"]
 script = ExtResource("Line")
 left_character = ExtResource("Koumi")
 right_character = ExtResource("Usami")
 speaker = 2
-text = "Ugh... Takane-chan..."
+text = "dialogue.station_departure.16.text"
 
 [sub_resource type="Resource" id="17"]
 script = ExtResource("Line")
 left_character = ExtResource("Koumi")
 right_character = ExtResource("Takane")
 speaker = 2
-text = "... It'll be dangerous, are you sure?"
-right_exit = 2
+text = "dialogue.station_departure.17.text"
 right_entrance = 2
+right_exit = 2
 
 [sub_resource type="Resource" id="18"]
 script = ExtResource("Line")
 left_character = ExtResource("Koumi")
 right_character = ExtResource("Takane")
 speaker = 1
-text = "..."
+text = "dialogue.station_departure.18.text"
 
 [sub_resource type="Resource" id="19"]
 script = ExtResource("Line")
 left_character = ExtResource("Koumi")
 right_character = ExtResource("Takane")
 speaker = 2
-text = "I see. I'll try to keep an eye out for you, but Usami is my first priority. Understood?"
+text = "dialogue.station_departure.19.text"
 
 [sub_resource type="Resource" id="20"]
 script = ExtResource("Line")
 left_character = ExtResource("Koumi")
 right_character = ExtResource("Takane")
 speaker = 1
-text = "[b][i]*Nods*[/i][/b]"
+text = "dialogue.station_departure.20.text"
 
 [sub_resource type="Resource" id="21"]
 script = ExtResource("Line")
 left_character = ExtResource("Koumi")
 right_character = ExtResource("Takane")
 speaker = 2
-text = "Very well."
+text = "dialogue.station_departure.21.text"
 
 [sub_resource type="Resource" id="22"]
 script = ExtResource("Line")
 left_character = ExtResource("Koumi")
 right_character = ExtResource("Usami")
 speaker = 2
-text = "... What just happened?"
-right_exit = 2
+text = "dialogue.station_departure.22.text"
 right_entrance = 2
+right_exit = 2
 
 [sub_resource type="Resource" id="23"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Usami")
 speaker = 1
-text = "I see... So that's what it is..."
-left_exit = 1
+text = "dialogue.station_departure.23.text"
 left_entrance = 1
+left_exit = 1
 
 [sub_resource type="Resource" id="24"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Usami")
 speaker = 2
-text = "Kurako-chan! Please explain it to me!"
+text = "dialogue.station_departure.24.text"
 
 [sub_resource type="Resource" id="25"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Usami")
 speaker = 1
-text = "I am sorry, Usami-chan. But that won't be possible."
+text = "dialogue.station_departure.25.text"
 
 [sub_resource type="Resource" id="26"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Usami")
 speaker = 2
-text = "Why?!"
+text = "dialogue.station_departure.26.text"
 
 [sub_resource type="Resource" id="27"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Usami")
 speaker = 1
-text = "Because I don't know either!"
+text = "dialogue.station_departure.27.text"
 
 [sub_resource type="Resource" id="28"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Usami")
 speaker = 2
-text = "..."
+text = "dialogue.station_departure.28.text"
 
 [sub_resource type="Resource" id="29"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Usami")
 speaker = 1
-text = "..."
+text = "dialogue.station_departure.29.text"
 
 [sub_resource type="Resource" id="30"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Takane")
 speaker = 2
-text = "..."
-right_exit = 2
+text = "dialogue.station_departure.30.text"
 right_entrance = 2
+right_exit = 2
 
 [sub_resource type="Resource" id="31"]
 script = ExtResource("Line")
 left_character = ExtResource("Koumi")
 right_character = ExtResource("Takane")
 speaker = 1
-text = "..."
-left_exit = 1
+text = "dialogue.station_departure.31.text"
 left_entrance = 1
+left_exit = 1
 
 [sub_resource type="Resource" id="32"]
 script = ExtResource("Line")
 auto_advance = true
 minimum_duration = 2.0
-notification_text = "Koumi joined the party."
+notification_text = "dialogue.station_departure.32.notification_text"
 notification_duration = 2.0
 recruit_character = ExtResource("Koumi")
 left_exit = 1

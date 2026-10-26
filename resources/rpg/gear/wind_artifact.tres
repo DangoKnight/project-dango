@@ -6,6 +6,6 @@
 hidden_value = 25
 script = ExtResource("Gear")
 id = &"wind_artifact"
-display_name = "Wind Artifact"
-description = "speed +2."
+display_name = "content.gear.wind_artifact.name"
+description = "content.gear.wind_artifact.description"
 stat_modifiers = Dictionary[StringName, float]({&"speed": 2.0})

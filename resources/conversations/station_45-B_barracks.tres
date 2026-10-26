@@ -1,73 +1,72 @@
-[gd_resource type="Resource" script_class="ConversationEvent" load_steps=21 format=3]
+[gd_resource type="Resource" script_class="ConversationEvent" format=3 uid="uid://0llqu1y5pfob"]
 
-[ext_resource type="Script" path="res://scripts/conversation/conversation_event.gd" id="Event"]
-[ext_resource type="Script" path="res://scripts/conversation/conversation_line.gd" id="Line"]
-[ext_resource type="Resource" path="res://resources/rpg/characters/usami.tres" id="Usami"]
-[ext_resource type="Resource" path="res://resources/rpg/characters/takane.tres" id="Takane"]
-[ext_resource type="Resource" path="res://resources/rpg/characters/kurako.tres" id="Kurako"]
-[ext_resource type="Resource" path="res://resources/rpg/characters/koumi.tres" id="Koumi"]
-[ext_resource type="Texture2D" path="res://textures/NPCs/Station_45B/Barracks/York.png" id="NPC"]
-
-[ext_resource type="Resource" path="res://resources/rpg/gear/simple_rations.tres" id="Rations"]
+[ext_resource type="Script" uid="uid://cu3lcycu15kpr" path="res://scripts/conversation/conversation_event.gd" id="Event"]
+[ext_resource type="Resource" uid="uid://bvf0h5rk7p1j" path="res://resources/rpg/characters/koumi.tres" id="Koumi"]
+[ext_resource type="Resource" uid="uid://5i8ornk5ktfl" path="res://resources/rpg/characters/kurako.tres" id="Kurako"]
+[ext_resource type="Script" uid="uid://j6qkokwt15" path="res://scripts/conversation/conversation_line.gd" id="Line"]
+[ext_resource type="Texture2D" uid="uid://bpmiw0qmtcf02" path="res://textures/NPCs/Station_45-B/Barracks/York.png" id="NPC"]
+[ext_resource type="Resource" uid="uid://dukrby1hhgohf" path="res://resources/rpg/gear/simple_rations.tres" id="Rations"]
+[ext_resource type="Resource" uid="uid://dtoao4rtk4kh1" path="res://resources/rpg/characters/takane.tres" id="Takane"]
+[ext_resource type="Resource" uid="uid://dvyjvvqp4xbwp" path="res://resources/rpg/characters/usami.tres" id="Usami"]
 
 [sub_resource type="Resource" id="1"]
 script = ExtResource("Line")
 left_character = ExtResource("Usami")
 speaker = 1
-text = "Miss York! We're going exploring now!"
+text = "dialogue.station_45_b_barracks.1.text"
 left_entrance = 1
 
 [sub_resource type="Resource" id="2"]
 script = ExtResource("Line")
 left_character = ExtResource("Usami")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.2.right_name"
 speaker = 2
-text = "Ah, it's you girls. Are you all ready for your first expedition?"
+text = "dialogue.station_45_b_barracks.2.text"
 right_entrance = 2
 
 [sub_resource type="Resource" id="3"]
 script = ExtResource("Line")
 left_character = ExtResource("Usami")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.3.right_name"
 speaker = 1
-text = "Yes! We've been preparing all month! Mister Cairo has taught us everything about exploring the labrynth!"
+text = "dialogue.station_45_b_barracks.3.text"
 
 [sub_resource type="Resource" id="4"]
 script = ExtResource("Line")
 left_character = ExtResource("Usami")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.4.right_name"
 speaker = 2
-text = "Cairo is a really nice person, isn't he? By the way... Takane. There's something I wanted to give you."
+text = "dialogue.station_45_b_barracks.4.text"
 
 [sub_resource type="Resource" id="5"]
 script = ExtResource("Line")
 left_character = ExtResource("Takane")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.5.right_name"
 speaker = 1
-text = "What is it?"
-left_exit = 1
+text = "dialogue.station_45_b_barracks.5.text"
 left_entrance = 1
+left_exit = 1
 
 [sub_resource type="Resource" id="6"]
 script = ExtResource("Line")
 left_character = ExtResource("Takane")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.6.right_name"
 speaker = 2
-text = "It's a few field rations. I'm sure Cairo has explained to you how food can become an issue if you stay out on the labrynth for too long."
+text = "dialogue.station_45_b_barracks.6.text"
 
 [sub_resource type="Resource" id="Receipt"]
 script = ExtResource("Line")
 left_character = ExtResource("Takane")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.receipt.right_name"
 auto_advance = true
 minimum_duration = 2.0
-notification_text = "Takane received 4 Simple Rations from York."
+notification_text = "dialogue.station_45_b_barracks.receipt.notification_text"
 notification_duration = 2.0
 reward_gear = ExtResource("Rations")
 reward_quantity = 4
@@ -76,101 +75,101 @@ reward_quantity = 4
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.7.right_name"
 speaker = 1
-text = "Eh?! Why Takane?!"
-left_exit = 1
+text = "dialogue.station_45_b_barracks.7.text"
 left_entrance = 1
+left_exit = 1
 
 [sub_resource type="Resource" id="8"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.8.right_name"
 speaker = 2
-text = "Because she's Usami's older sister. Also, I don't trust you with food. You would probably eat it all before you even leave Station 45B."
+text = "dialogue.station_45_b_barracks.8.text"
 
 [sub_resource type="Resource" id="8_1"]
 script = ExtResource("Line")
 left_character = ExtResource("Takane")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.8_1.right_name"
 speaker = 1
-text = "Or sprinkle chilli on them."
-left_exit = 1
+text = "dialogue.station_45_b_barracks.8_1.text"
 left_entrance = 1
+left_exit = 1
 
 [sub_resource type="Resource" id="8_2"]
 script = ExtResource("Line")
 left_character = ExtResource("Takane")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.8_2.right_name"
 speaker = 2
-text = "Or use them as bait to attract mice into the common area."
+text = "dialogue.station_45_b_barracks.8_2.text"
 
 [sub_resource type="Resource" id="8_3"]
 script = ExtResource("Line")
 left_character = ExtResource("Takane")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.8_3.right_name"
 speaker = 1
-text = "Or trade them for Sydney's prank replicas."
+text = "dialogue.station_45_b_barracks.8_3.text"
 
 [sub_resource type="Resource" id="9"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.9.right_name"
 speaker = 1
-text = "Ugh..."
-left_exit = 1
+text = "dialogue.station_45_b_barracks.9.text"
 left_entrance = 1
+left_exit = 1
 
 [sub_resource type="Resource" id="10"]
 script = ExtResource("Line")
 left_character = ExtResource("Usami")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.10.right_name"
 speaker = 1
-text = "Thank you, Miss York! You're always so nice to us!"
-left_exit = 1
+text = "dialogue.station_45_b_barracks.10.text"
 left_entrance = 1
+left_exit = 1
 
 [sub_resource type="Resource" id="11"]
 script = ExtResource("Line")
 left_character = ExtResource("Usami")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.11.right_name"
 speaker = 2
-text = "You're such a sweetie, little Usami. Don't forget to come back to take a break often. [color=red]Resting will help you grow stronger[/color]."
+text = "dialogue.station_45_b_barracks.11.text"
 
 [sub_resource type="Resource" id="12"]
 script = ExtResource("Line")
 left_character = ExtResource("Usami")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.12.right_name"
 speaker = 2
-text = "Takane, please make sure to keep Usami safe, alright?"
+text = "dialogue.station_45_b_barracks.12.text"
 
 [sub_resource type="Resource" id="13"]
 script = ExtResource("Line")
 left_character = ExtResource("Takane")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.13.right_name"
 speaker = 1
-text = "Of course. I won't let anything happen to her."
-left_exit = 1
+text = "dialogue.station_45_b_barracks.13.text"
 left_entrance = 1
+left_exit = 1
 
 [sub_resource type="Resource" id="14"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_portrait = ExtResource("NPC")
-right_name = "York"
+right_name = "dialogue.station_45_b_barracks.14.right_name"
 speaker = 1
-text = "... What about me?"
-left_exit = 1
+text = "dialogue.station_45_b_barracks.14.text"
 left_entrance = 1
+left_exit = 1
 
 [sub_resource type="Resource" id="15"]
 script = ExtResource("Line")
@@ -183,7 +182,7 @@ right_exit = 2
 script = ExtResource("Line")
 right_character = ExtResource("Koumi")
 speaker = 2
-text = "..."
+text = "dialogue.station_45_b_barracks.16.text"
 right_entrance = 2
 
 [sub_resource type="Resource" id="17"]
@@ -194,6 +193,6 @@ right_exit = 2
 
 [resource]
 script = ExtResource("Event")
-id = &"station_45b_barracks_intro"
+id = &"station_45-B_barracks_intro"
 once_per_game = true
 lines = Array[ExtResource("Line")]([SubResource("1"), SubResource("2"), SubResource("3"), SubResource("4"), SubResource("5"), SubResource("6"), SubResource("Receipt"), SubResource("7"), SubResource("8"), SubResource("8_1"), SubResource("8_2"), SubResource("8_3"), SubResource("9"), SubResource("10"), SubResource("11"), SubResource("12"), SubResource("13"), SubResource("14"), SubResource("15"), SubResource("16"), SubResource("17")])

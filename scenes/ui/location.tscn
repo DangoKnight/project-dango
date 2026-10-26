@@ -41,15 +41,15 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Panel/Buttons"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "LOCATION"
+text = "ui.location"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="Panel/Buttons"]
 layout_mode = 2
-text = "Coming soon"
+text = "ui.coming_soon"
 horizontal_alignment = 1
 
 [node name="ReturnToHub" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
-text = "Return to Hub"
+text = "ui.return_to_hub"
 custom_minimum_size = Vector2(0, 40)

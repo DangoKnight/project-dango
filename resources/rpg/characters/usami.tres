@@ -3,7 +3,6 @@
 [ext_resource type="Texture2D" uid="uid://050q54qhh4xl" path="res://textures/Characters/Usami/Usami-chan_Portrait.png" id="6_yqqym"]
 [ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="12_yqqym"]
 [ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="AbilityScript"]
-[ext_resource type="Resource" path="res://resources/rpg/weapon_types/axe.tres" id="axe"]
 [ext_resource type="Resource" uid="uid://du7r731oh8usj" path="res://resources/rpg/classes/explorer.tres" id="Class"]
 [ext_resource type="Resource" path="res://resources/rpg/damage_types/fire.tres" id="fire"]
 [ext_resource type="Resource" path="res://resources/rpg/damage_types/frost.tres" id="frost"]
@@ -11,12 +10,13 @@
 [ext_resource type="Script" uid="uid://cgpdt2kimfbak" path="res://scripts/rpg/passive_ability.gd" id="PassiveScript"]
 [ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="ResistanceScript"]
 [ext_resource type="Script" uid="uid://cftevjhnkln3e" path="res://scripts/rpg/character_definition.gd" id="Script"]
-[ext_resource type="Resource" path="res://resources/rpg/weapon_types/spear.tres" id="spear"]
 [ext_resource type="Script" uid="uid://ddt764fvrnnt0" path="res://scripts/rpg/stats.gd" id="Stats"]
-[ext_resource type="Resource" path="res://resources/rpg/weapon_types/sword.tres" id="sword"]
 [ext_resource type="Resource" uid="uid://b742sut8hgeom" path="res://resources/rpg/abilities/jolly_cheer.tres" id="Unique0"]
 [ext_resource type="Resource" uid="uid://dgy4id4jn6kxy" path="res://resources/rpg/abilities/caring_friend.tres" id="Unique1"]
 [ext_resource type="Script" uid="uid://dbonx52hipraq" path="res://scripts/rpg/weapon_type.gd" id="WeaponTypeScript"]
+
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/dagger.tres" id="dagger"]
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/amplifier.tres" id="amplifier"]
 
 [sub_resource type="Resource" id="Base"]
 script = ExtResource("Stats")
@@ -51,16 +51,16 @@ speed = 1.0
 [resource]
 script = ExtResource("Script")
 id = &"usami"
-display_name = "Usami"
-title = "The friendly rabbit"
-description = "A warm-hearted rabbit girl who keeps the group together when the labyrinth feels endless. Usami lifts spirits with a cheerful word and tends to companions when the journey takes its toll. Seeing everyone safe and healthy puts an extra spring in her step."
+display_name = "content.characters.usami.name"
+title = "content.characters.usami.title"
+description = "content.characters.usami.description"
 starting_class = ExtResource("Class")
 base_stats = SubResource("Base")
 stat_growth = SubResource("Growth")
 resistances = Array[ExtResource("ResistanceScript")]([SubResource("fireResistance"), SubResource("frostResistance")])
 unique_abilities = Array[ExtResource("AbilityScript")]([ExtResource("Unique0"), ExtResource("Unique1")])
 hidden_abilities = Array[ExtResource("PassiveScript")]([ExtResource("HiddenPassive")])
-allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("sword"), ExtResource("axe"), ExtResource("spear")])
+allowed_weapon_types = Array[ExtResource("WeaponTypeScript")]([ExtResource("dagger"), ExtResource("amplifier")])
 critical_rate = 0.05
 accuracy = 0.95
 portrait = ExtResource("6_yqqym")

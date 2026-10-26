@@ -4,7 +4,7 @@
 [resource]
 script = ExtResource("Script")
 id = &"basic_attack"
-display_name = "Attack"
-description = "A basic attack that costs no MP."
+display_name = "content.abilities.basic_attack.name"
+description = "content.abilities.basic_attack.description"
 damage_type = ExtResource("Type")
 power = 5

@@ -2,6 +2,7 @@ class_name ConversationOverlay
 extends CanvasLayer
 
 signal dismissed
+signal skip_requested
 signal line_entered(index: int, line: ConversationLine)
 
 var event: ConversationEvent
@@ -19,10 +20,12 @@ var _entrance_tweens: Dictionary = {}
 @onready var speaker_label: Label = $Root/Dialogue/Margin/Content/Speaker
 @onready var body: RichTextLabel = $Root/Dialogue/Margin/Content/Text
 @onready var next_button: Button = $Root/Dialogue/Margin/Content/Next
+@onready var skip_button: Button = $Root/Skip
 
 
 func _ready() -> void:
 	next_button.pressed.connect(advance)
+	skip_button.pressed.connect(skip)
 	for portrait in [left_portrait, right_portrait]:
 		_portrait_homes[portrait] = Vector4(portrait.anchor_left, portrait.anchor_top, portrait.anchor_right, portrait.anchor_bottom)
 
@@ -48,7 +51,7 @@ func _show_line() -> void:
 	_revealed = 0.0
 	_line_elapsed = 0.0
 	body.visible_characters = -1 if event.characters_per_second <= 0.0 else 0
-	next_button.text = L10n.text("Finish") if line_index == event.lines.size() - 1 else L10n.text("Continue")
+	next_button.text = L10n.text("ui.finish") if line_index == event.lines.size() - 1 else L10n.text("ui.continue")
 	$Root/Dialogue.visible = not (line.auto_advance and line.text.strip_edges().is_empty())
 	next_button.visible = not line.auto_advance
 
@@ -159,6 +162,15 @@ func advance() -> void:
 	_advance_line()
 
 
+## Bypasses typing, holds, and portrait transitions, including automatic steps.
+func skip() -> void:
+	if _closing or event == null:
+		return
+	_closing = true
+	skip_requested.emit()
+	dismissed.emit()
+
+
 func _advance_line() -> void:
 	if line_index + 1 < event.lines.size():
 		line_index += 1
@@ -173,11 +185,20 @@ func _input(input_event: InputEvent) -> void:
 	if input_event is InputEventMouseMotion:
 		return
 	if input_event is InputEventMouseButton:
+		if skip_button.get_global_rect().has_point(input_event.position):
+			return
 		var scrollbar := body.get_v_scroll_bar()
 		if not input_event.pressed or input_event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN] or (scrollbar.visible and scrollbar.get_global_rect().has_point(input_event.position)):
 			return
 	if input_event is InputEventKey and input_event.echo:
 		get_viewport().set_input_as_handled()
+		return
+	if input_event.is_action_pressed("ui_accept") and skip_button.has_focus():
+		get_viewport().set_input_as_handled()
+		skip()
+		return
+	if input_event.is_action_pressed("ui_focus_next") or input_event.is_action_pressed("ui_focus_prev"):
+		# Let keyboard focus reach Skip without passing Tab to gameplay.
 		return
 	if input_event.is_action_pressed("ui_accept") or (input_event is InputEventMouseButton and input_event.pressed and input_event.button_index == MOUSE_BUTTON_LEFT):
 		advance()

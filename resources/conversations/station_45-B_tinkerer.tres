@@ -1,108 +1,108 @@
-[gd_resource type="Resource" script_class="ConversationEvent" load_steps=8 format=3]
+[gd_resource type="Resource" script_class="ConversationEvent" format=3 uid="uid://ty156b7vf6qi"]
 
-[ext_resource type="Script" path="res://scripts/conversation/conversation_event.gd" id="Event"]
-[ext_resource type="Script" path="res://scripts/conversation/conversation_line.gd" id="Line"]
-[ext_resource type="Resource" path="res://resources/rpg/characters/usami.tres" id="Usami"]
-[ext_resource type="Resource" path="res://resources/rpg/characters/takane.tres" id="Takane"]
-[ext_resource type="Resource" path="res://resources/rpg/characters/kurako.tres" id="Kurako"]
-[ext_resource type="Resource" path="res://resources/rpg/characters/koumi.tres" id="Koumi"]
-[ext_resource type="Texture2D" path="res://textures/NPCs/Station_45B/Tinkerer/Sydney.png" id="NPC"]
+[ext_resource type="Script" uid="uid://cu3lcycu15kpr" path="res://scripts/conversation/conversation_event.gd" id="Event"]
+[ext_resource type="Resource" uid="uid://bvf0h5rk7p1j" path="res://resources/rpg/characters/koumi.tres" id="Koumi"]
+[ext_resource type="Resource" uid="uid://5i8ornk5ktfl" path="res://resources/rpg/characters/kurako.tres" id="Kurako"]
+[ext_resource type="Script" uid="uid://j6qkokwt15" path="res://scripts/conversation/conversation_line.gd" id="Line"]
+[ext_resource type="Texture2D" uid="uid://byvufvvwd2n4v" path="res://textures/NPCs/Station_45-B/Tinkerer/Sydney.png" id="NPC"]
+[ext_resource type="Resource" uid="uid://dtoao4rtk4kh1" path="res://resources/rpg/characters/takane.tres" id="Takane"]
+[ext_resource type="Resource" uid="uid://dvyjvvqp4xbwp" path="res://resources/rpg/characters/usami.tres" id="Usami"]
 
 [sub_resource type="Resource" id="1"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 speaker = 1
-text = "Sydney! We're off to the labrynth now!"
+text = "dialogue.station_45_b_tinkerer.1.text"
 left_entrance = 1
 
 [sub_resource type="Resource" id="2"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_portrait = ExtResource("NPC")
-right_name = "Sydney"
+right_name = "dialogue.station_45_b_tinkerer.2.right_name"
 speaker = 2
-text = "Oh, Kurako! So today's the day, huh?"
+text = "dialogue.station_45_b_tinkerer.2.text"
 right_entrance = 2
 
 [sub_resource type="Resource" id="3"]
 script = ExtResource("Line")
 left_character = ExtResource("Usami")
 right_portrait = ExtResource("NPC")
-right_name = "Sydney"
+right_name = "dialogue.station_45_b_tinkerer.3.right_name"
 speaker = 1
-text = "That's right! Kurako-chan, Takane-chan and me are going to be the best explorers in history!"
-left_exit = 1
+text = "dialogue.station_45_b_tinkerer.3.text"
 left_entrance = 1
+left_exit = 1
 
 [sub_resource type="Resource" id="4"]
 script = ExtResource("Line")
 left_character = ExtResource("Usami")
 right_portrait = ExtResource("NPC")
-right_name = "Sydney"
+right_name = "dialogue.station_45_b_tinkerer.4.right_name"
 speaker = 2
-text = "Hahahaha! Aim for the stars! I see you're a big dreamer as always."
+text = "dialogue.station_45_b_tinkerer.4.text"
 
 [sub_resource type="Resource" id="5"]
 script = ExtResource("Line")
 left_character = ExtResource("Usami")
 right_portrait = ExtResource("NPC")
-right_name = "Sydney"
+right_name = "dialogue.station_45_b_tinkerer.5.right_name"
 speaker = 2
-text = "By the way, Kurako. Don't forget your promise, alright? [color=red]Make sure to bring me those monster materials so that I can make you the best gadgets![/color]."
+text = "dialogue.station_45_b_tinkerer.5.text"
 
 [sub_resource type="Resource" id="6"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_portrait = ExtResource("NPC")
-right_name = "Sydney"
+right_name = "dialogue.station_45_b_tinkerer.6.right_name"
 speaker = 1
-text = "Oh course! I'll bring you the best materials in the labrynth!"
-left_exit = 1
+text = "dialogue.station_45_b_tinkerer.6.text"
 left_entrance = 1
+left_exit = 1
 
 [sub_resource type="Resource" id="7"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_portrait = ExtResource("NPC")
-right_name = "Sydney"
+right_name = "dialogue.station_45_b_tinkerer.7.right_name"
 speaker = 2
-text = "Maybe I'll be able to make that invisibility belt after all!"
+text = "dialogue.station_45_b_tinkerer.7.text"
 
 [sub_resource type="Resource" id="8"]
 script = ExtResource("Line")
 left_character = ExtResource("Takane")
 right_portrait = ExtResource("NPC")
-right_name = "Sydney"
+right_name = "dialogue.station_45_b_tinkerer.8.right_name"
 speaker = 1
-text = "... You two are a dangerous combination."
-left_exit = 1
+text = "dialogue.station_45_b_tinkerer.8.text"
 left_entrance = 1
+left_exit = 1
 
 [sub_resource type="Resource" id="9"]
 script = ExtResource("Line")
 left_character = ExtResource("Takane")
 right_portrait = ExtResource("NPC")
-right_name = "Sydney"
+right_name = "dialogue.station_45_b_tinkerer.9.right_name"
 speaker = 2
-text = "Ah, Takane. Make sure to keep Usami safe, alright?"
+text = "dialogue.station_45_b_tinkerer.9.text"
 
 [sub_resource type="Resource" id="10"]
 script = ExtResource("Line")
 left_character = ExtResource("Takane")
 right_portrait = ExtResource("NPC")
-right_name = "Sydney"
+right_name = "dialogue.station_45_b_tinkerer.10.right_name"
 speaker = 1
-text = "Of course. I will not allow anybody to harm her."
+text = "dialogue.station_45_b_tinkerer.10.text"
 
 [sub_resource type="Resource" id="11"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_portrait = ExtResource("NPC")
-right_name = "Sydney"
+right_name = "dialogue.station_45_b_tinkerer.11.right_name"
 speaker = 1
-text = "Et tu, Sydney...?"
-left_exit = 1
+text = "dialogue.station_45_b_tinkerer.11.text"
 left_entrance = 1
+left_exit = 1
 
 [sub_resource type="Resource" id="12"]
 script = ExtResource("Line")
@@ -115,7 +115,7 @@ right_exit = 2
 script = ExtResource("Line")
 right_character = ExtResource("Koumi")
 speaker = 2
-text = "..."
+text = "dialogue.station_45_b_tinkerer.13.text"
 right_entrance = 2
 
 [sub_resource type="Resource" id="14"]
@@ -126,6 +126,6 @@ right_exit = 2
 
 [resource]
 script = ExtResource("Event")
-id = &"station_45b_tinkerer_intro"
+id = &"station_45-B_tinkerer_intro"
 once_per_game = true
 lines = Array[ExtResource("Line")]([SubResource("1"), SubResource("2"), SubResource("3"), SubResource("4"), SubResource("5"), SubResource("6"), SubResource("7"), SubResource("8"), SubResource("9"), SubResource("10"), SubResource("11"), SubResource("12"), SubResource("13"), SubResource("14")])

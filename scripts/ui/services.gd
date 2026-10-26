@@ -60,7 +60,7 @@ func _build_barter() -> void:
 	var columns := HBoxContainer.new()
 	columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	$Panel/Buttons.add_child(columns)
-	for title in ["Your offer", "Requested goods"]:
+	for title in ["ui.your_offer", "ui.requested_goods"]:
 		var column := VBoxContainer.new()
 		column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		columns.add_child(column)
@@ -72,19 +72,19 @@ func _build_barter() -> void:
 		list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		list.multi_selected.connect(func(_index: int, _selected: bool): _quote())
 		column.add_child(list)
-		if title == "Your offer":
+		if title == "ui.your_offer":
 			offered_list = list
 		else:
 			stock_list = list
-	feedback = _label($Panel/Buttons, L10n.text("Not acceptable"))
-	exchange = _button($Panel/Buttons, "Exchange", _trade)
+	feedback = _label($Panel/Buttons, L10n.text("ui.not_acceptable"))
+	exchange = _button($Panel/Buttons, "ui.exchange", _trade)
 	_refresh_barter()
 
 
 func _goods_label(item: GearInstance) -> String:
 	var text := L10n.text(item.definition.display_name)
 	if item.definition.kind == GearDefinition.Kind.CONSUMABLE:
-		text += L10n.text(" (%d uses)") % item.remaining_uses()
+		text += L10n.text("ui.d_uses_2") % item.remaining_uses()
 	var carrier := item.get_carrier() as CharacterState
 	if carrier != null:
 		text += " · " + L10n.text(carrier.definition.display_name)
@@ -100,7 +100,7 @@ func _refresh_barter() -> void:
 			player_goods.append(item)
 			offered_list.add_item(_goods_label(item))
 	for item in services.stock:
-		stock_list.add_item(_goods_label(item) + (L10n.text(" · Unlimited") if item.definition.kind == GearDefinition.Kind.CONSUMABLE else ""))
+		stock_list.add_item(_goods_label(item) + (L10n.text("ui.unlimited") if item.definition.kind == GearDefinition.Kind.CONSUMABLE else ""))
 	exchange.disabled = true
 
 
@@ -114,14 +114,14 @@ func _selected_goods(list: ItemList, goods: Array[GearInstance]) -> Array[GearIn
 
 func _quote() -> void:
 	var acceptable := services.trade_acceptable(_selected_goods(offered_list, player_goods), _selected_goods(stock_list, services.stock), inventory)
-	feedback.text = L10n.text("Acceptable") if acceptable else L10n.text("Not acceptable")
+	feedback.text = L10n.text("ui.acceptable") if acceptable else L10n.text("ui.not_acceptable")
 	exchange.disabled = not acceptable
 
 
 func _trade() -> void:
 	var accepted := services.trade(_selected_goods(offered_list, player_goods), _selected_goods(stock_list, services.stock), inventory)
 	_refresh_barter()
-	feedback.text = L10n.text("Acceptable") if accepted else L10n.text("Not acceptable")
+	feedback.text = L10n.text("ui.acceptable") if accepted else L10n.text("ui.not_acceptable")
 
 
 func _build_tinkerer() -> void:
@@ -132,14 +132,14 @@ func _build_tinkerer() -> void:
 	var content := VBoxContainer.new()
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(content)
-	_label(content, L10n.text("Equipment designs"))
+	_label(content, L10n.text("ui.equipment_designs"))
 	ideas = ItemList.new()
 	ideas.custom_minimum_size.y = 100
 	ideas.item_selected.connect(func(_index: int): _refresh_commission())
 	content.add_child(ideas)
 	requirements_label = _label(content, "")
-	accept_button = _button(content, L10n.text("Accept commission"), _accept)
-	claim_button = _button(content, L10n.text("Collect equipment"), _claim)
+	accept_button = _button(content, L10n.text("ui.accept_commission"), _accept)
+	claim_button = _button(content, L10n.text("ui.collect_equipment"), _claim)
 	feedback = _label(content, "")
 	_refresh_tinkerer()
 
@@ -148,7 +148,7 @@ func _refresh_tinkerer() -> void:
 	var selected := maxi(0, ideas.get_selected_items()[0]) if not ideas.get_selected_items().is_empty() else 0
 	ideas.clear()
 	for recipe in services.recipes:
-		ideas.add_item(L10n.text(recipe.product_name()) + (L10n.text(" · Known design") if services.made_designs.has(recipe.product_key()) else L10n.text(" · Idea")))
+		ideas.add_item(L10n.text(recipe.product_name()) + (L10n.text("ui.known_design") if services.made_designs.has(recipe.product_key()) else L10n.text("ui.idea")))
 	if ideas.item_count > 0:
 		ideas.select(mini(selected, ideas.item_count - 1))
 	_refresh_commission()
@@ -164,22 +164,22 @@ func _refresh_commission() -> void:
 	accept_button.disabled = recipe == null
 	claim_button.disabled = recipe == null or not services.commission_complete(recipe)
 	if recipe == null:
-		requirements_label.text = L10n.text("No designs available.")
+		requirements_label.text = L10n.text("ui.no_designs_available")
 		return
-	claim_button.text = L10n.text("Collect medallion") if recipe.medallion != null else L10n.text("Collect weapon")
+	claim_button.text = L10n.text("ui.collect_medallion") if recipe.medallion != null else L10n.text("ui.collect_weapon")
 	var active := services.commissions.has(recipe.product_key())
 	accept_button.disabled = active
 	var needed: Dictionary = services.commissions[recipe.product_key()].requirements if active else services.requirements(recipe)
 	var kills: Dictionary = services.commissions[recipe.product_key()].kills if active else {}
-	var lines := PackedStringArray([L10n.text("Commission in progress") if active else L10n.text("Required enemies")])
+	var lines := PackedStringArray([L10n.text("ui.commission_in_progress") if active else L10n.text("ui.required_enemies")])
 	for species in needed:
-		lines.append(L10n.text("%s: %d / %d") % [L10n.text(recipe.enemy_names.get(species, String(species).capitalize())), kills.get(species, 0), needed[species]])
+		lines.append(L10n.text("ui.services.enemy_requirement") % [L10n.text(recipe.enemy_names.get(species, String(species).capitalize())), kills.get(species, 0), needed[species]])
 	requirements_label.text = "\n".join(lines)
 
 
 func _accept() -> void:
 	if services.accept_commission(_recipe()):
-		feedback.text = L10n.text("Commission accepted.")
+		feedback.text = L10n.text("ui.commission_accepted")
 	_refresh_commission()
 
 
@@ -189,12 +189,12 @@ func _claim() -> void:
 		return
 	if recipe.medallion != null:
 		if services.claim_medallion(recipe, inventory) != null:
-			feedback.text = L10n.text("Medallion ready.")
+			feedback.text = L10n.text("ui.medallion_ready")
 	else:
 		var weapon := services.claim_weapon(recipe)
 		if weapon != null:
 			weapons.append(weapon)
-			feedback.text = L10n.text("Weapon ready.")
+			feedback.text = L10n.text("ui.weapon_ready")
 	_refresh_tinkerer()
 
 

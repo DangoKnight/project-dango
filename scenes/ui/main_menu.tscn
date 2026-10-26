@@ -41,25 +41,25 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Panel/Buttons"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "PROJECT DANGO"
+text = "ui.project_dango"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="Panel/Buttons"]
 layout_mode = 2
-text = "Prototype"
+text = "ui.prototype"
 horizontal_alignment = 1
 
 [node name="NewGame" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 48)
-text = "New Game"
+text = "ui.new_game"
 
 [node name="Options" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 48)
-text = "Options"
+text = "ui.options"
 
 [node name="Exit" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 48)
-text = "Exit"
+text = "ui.exit"

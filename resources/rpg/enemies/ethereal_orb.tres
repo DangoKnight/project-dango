@@ -23,7 +23,7 @@ speed = 6.0
 [resource]
 script = ExtResource("Script")
 id = &"ethereal_orb"
-display_name = "Ethereal Orb"
+display_name = "content.enemies.ethereal_orb.name"
 base_experience_reward = 30.0
 base_stats = SubResource("Base")
 unique_abilities = Array[ExtResource("AbilityScript")]([ExtResource("Ability")])

@@ -6,4 +6,4 @@
 [resource]
 script = ExtResource("Script")
 id = &"frost"
-display_name = "Frost"
+display_name = "content.damage_types.frost.name"

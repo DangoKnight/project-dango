@@ -21,8 +21,8 @@ status = ExtResource("Frailty")
 [resource]
 script = ExtResource("Gear")
 id = &"frailty_bomb"
-display_name = "Frailty Bomb"
-description = "Deals 20 fire damage to one enemy and reduces Mental Resilience for three turns. Three total uses."
+display_name = "content.gear.frailty_bomb.name"
+description = "content.gear.frailty_bomb.description"
 kind = 2
 max_uses = 3
 consumable_target = 3

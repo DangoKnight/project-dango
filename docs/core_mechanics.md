@@ -47,13 +47,13 @@ Vanguard learns **Fortify** at level 2, applying **Fortified** (+25% defense for
 
 ## Weapons and restrictions
 
-Edit **Allowed Weapon Types** on both character and class resources. An empty list means unrestricted for that source. If both lists are populated, a type must appear in **both** lists. Matching uses the weapon type's ID. A character without a class uses only their character list.
+Edit **Allowed Weapon Types** on character and class resources. A type listed by either source is permitted. Matching uses the weapon type’s ID. A character without a class uses only their personal proficiencies.
 
-Use `can_equip_weapon_type(type)` or `can_equip_weapon(weapon)` to check eligibility, and `equip_weapon(weapon)` to equip. Rejected equipment leaves the existing weapon unchanged. Passing `null` unequips. `get_allowed_weapon_types()` returns the effective intersection; when that returns an empty array, `has_weapon_restrictions()` distinguishes unrestricted access from no allowed types. Changing class automatically unequips any weapon that is no longer allowed. A starting weapon is equipped only when it satisfies both restrictions.
+Use `can_equip_weapon_type(type)` or `can_equip_weapon(weapon)` to check eligibility, and `equip_weapon(weapon)` to equip. Rejected equipment leaves the existing weapon unchanged. Passing `null` unequips. `get_allowed_weapon_types()` combines character and class proficiencies, deduplicated by type ID. Either source grants access independently; only when both lists are empty is the character unrestricted. Changing class removes that class’s grants while preserving personal proficiencies, and unequips a weapon if it is no longer permitted.
 
-Initial types are sword, axe, spear, hammer, dagger, staff, wand, and bow. Explorer has no class weapon restrictions, so each starting character uses their own allowed types. For example, a character permitting sword/axe/spear who changes to Vanguard (sword/axe/hammer) can use only sword/axe. Training Sword, Apprentice Staff, and Training Dagger remain available as example resources.
+Weapon types include swords, spears, hammers, daggers, amplifiers, guns, and crossbows. Usami and Kurako personally use Daggers and Amplifiers; Takane uses Guns, Daggers, and Crossbows; Koumi uses Daggers, Hammers, Spears, and Swords. Explorer additionally grants Swords, Guns, and Crossbows. Training Sword, Apprentice Amplifier, and Training Dagger remain available as example resources.
 
-Weapon definitions currently provide identity and type for eligibility. Weapon stat bonuses, weapon attacks, inventory ownership, and equipment-selection UI are not implemented. Weapon types do not implicitly assign damage types to abilities.
+Weapon definitions provide identity and type for eligibility. The character book’s Gear tab equips compatible weapons from the shared inventory, excluding weapons already carried by another character. Weapon stat bonuses and weapon-specific attacks are not implemented. Weapon types do not implicitly assign damage types to abilities.
 
 ## Damage and healing
 
@@ -83,7 +83,7 @@ print(result) # Buffs both allies' strength and defense and spends Usami's MP.
 
 Usami, Takane, Kurako, and Koumi start as Explorers with character-specific abilities. Vanguard grants Slash at level 1, Fortify at level 2, and Cleave at level 3; Arcanist grants Ember at level 1, Mend at level 2, and Enfeeble at level 3. These classes remain available for class changes. Slash, pierce, blunt, fire, frost, lightning, poison, and arcane are the initial damage types.
 
-Select **New Game**, then press **Tab** in the Safe Zone to inspect the party, current stats, available abilities and their effect types, future class unlocks, equipped weapon, effective allowed types, active statuses, and resistances. The starting-party definitions are exposed on the main scene's root node. The resistance types displayed by the Characters screen are exposed on its root node.
+Select **New Game**, then open **Escape → Characters** in the book to inspect the party, current stats, available abilities and their effect types, future class unlocks, equipped weapon, effective allowed types, active statuses, and resistances. The starting-party definitions are exposed on the main scene's root node. The Characters book chapter displays the shared damage types defined by MonsterCompendium.
 
 The rules foundation is connected to a [turn-based 2D combat scene](battle.md), with encounters, basic enemy AI, action planning, and target selection. Experience rewards and save files are not implemented yet.
 
@@ -98,7 +98,7 @@ godot --headless --path . --script res://tests/smoke.gd
 ```
 
 The RPG tests cover growth, unlocks, class changes, instance isolation, damage scaling, resistance stacking, weaknesses, immunity, MP validation, healing, and defeated characters. The smoke test also checks party creation and the Characters screen.
-Equipment/status tests cover character/class restriction intersections, starting weapons, class-change unequipping, status MP costs, refresh and expiration, debuffs affecting damage, and instance isolation.
+Equipment/status tests cover combined character/class proficiencies, starting weapons, class-change unequipping, status MP costs, refresh and expiration, debuffs affecting damage, and instance isolation.
 
 See [gear](gear.md) for artifact stat/resistance modifiers, medallion spell grants, and consumables with friendly or enemy targets.
 
@@ -147,3 +147,7 @@ When sleep grants levels, the screen remains fully black beneath a notification 
 A landed player damage attack discovers its damage type for every monster actually hit, including zero-damage immunity. Misses and failed actions reveal nothing. Damaging consumables and poison/status-damage abilities also discover their types. An enemy ability is recorded only after successful execution, even if it misses; queued abilities skipped because of defeat or paralysis remain unknown. Each discovered affinity is shown as Very weak, Weak, Normal, Resistant, Very resistant, or Immune. No multipliers or untested affinity values are shown.
 
 The Escape menu opens a standalone Compendium with encountered species, sprites, and learned details. Battle Information uses the same entries for Hostiles. Neither view exposes enemy HP/SP values, maxima, levels, or overall stats. Friendly information is unchanged. Enemy battlefield bars show only relative health, without numeric values.
+
+Character pages in **Escape → Characters** display a large portrait on the left, with character selection tabs above it. **Overview**, **Class**, **Gear**, and **Abilities** tabs switch the right page while keeping the selected portrait visible. Overview shows character details, visible stats, statuses, and affinities without equipment or ability data. Class shows its description and weapon grants. Abilities lists all currently available unique, learned class, and equipped medallion abilities as compact rows formatted as `Name (Origin/Type) — cost`, with colored types. Hover a row for its description and damage type, including damage dealt by a status effect. Damage uses dark red ink, Heal green, Buff blue, Debuff brown, and other Status effects purple. Poison and paralysis are Status effects; stat increases are Buffs and stat reductions are Debuffs. Future unlocks, hidden passives, and growth values remain hidden. Gear has a separate weapon slot and four carried gear slots; selecting a slot lists compatible shared-stash choices underneath in a compact scrolling list. Weapon choices have family subtabs; carried gear choices have Consumables, Artifacts, and Medallions subtabs. Click a choice to equip or replace, or Unequip to return the current item. Replacing gear preserves its list position and validates all carry limits before changing anything. Gear descriptions omit hidden stats, growth modifiers, and trade values. Enemy battle FX use frames at half the source resolution while retaining their display size and timing; effects on player cards retain the original frames.
+
+The book’s **Cairo’s lessons** chapter has a topic list on the left and the selected lesson on the right. Its notes cover damage types, weapon eligibility (Weapons I), weapon family specializations (Weapons II), physical versus mental combat, gear, status effects, commissions, sleeping, observing in battle, and exploration completion; edit their English text in `localization/ui.csv` under `ui.lessons.*`.

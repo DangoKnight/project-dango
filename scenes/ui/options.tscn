@@ -41,12 +41,12 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Panel/Buttons"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "OPTIONS"
+text = "ui.options_2"
 horizontal_alignment = 1
 
 [node name="VolumeLabel" type="Label" parent="Panel/Buttons"]
 layout_mode = 2
-text = "Master volume"
+text = "ui.master_volume"
 horizontal_alignment = 1
 [node name="Volume" type="HSlider" parent="Panel/Buttons"]
 layout_mode = 2
@@ -55,9 +55,9 @@ step = 0.01
 value = 1.0
 [node name="Fullscreen" type="CheckButton" parent="Panel/Buttons"]
 layout_mode = 2
-text = "Fullscreen"
+text = "ui.fullscreen"
 
 [node name="Back" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 48)
-text = "Back"
+text = "ui.back"

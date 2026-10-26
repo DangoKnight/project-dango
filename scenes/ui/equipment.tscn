@@ -20,7 +20,7 @@ anchor_bottom = 0.96
 layout_mode = 2
 [node name="Title" type="Label" parent="Panel/Layout"]
 layout_mode = 2
-text = "EQUIPMENT"
+text = "ui.equipment_2"
 horizontal_alignment = 1
 [node name="Members" type="OptionButton" parent="Panel/Layout"]
 layout_mode = 2
@@ -32,7 +32,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 [node name="Title" type="Label" parent="Panel/Layout/Lists/Carried"]
 layout_mode = 2
-text = "Carried"
+text = "ui.carried"
 [node name="Items" type="ItemList" parent="Panel/Layout/Lists/Carried"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -41,7 +41,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 [node name="Title" type="Label" parent="Panel/Layout/Lists/Stash"]
 layout_mode = 2
-text = "Shared stash"
+text = "ui.shared_stash"
 [node name="Items" type="ItemList" parent="Panel/Layout/Lists/Stash"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -56,12 +56,12 @@ layout_mode = 2
 [node name="Equip" type="Button" parent="Panel/Layout/Actions"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Equip"
+text = "ui.equip"
 [node name="Unequip" type="Button" parent="Panel/Layout/Actions"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Unequip"
+text = "ui.unequip"
 [node name="Characters" type="Button" parent="Panel/Layout/Actions"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Back to Characters"
+text = "ui.back_to_characters"

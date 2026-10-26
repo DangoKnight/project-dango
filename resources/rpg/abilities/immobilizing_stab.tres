@@ -7,8 +7,8 @@
 script = ExtResource("Ability")
 id = &"immobilizing_stab"
 battle_animation = "immobilizing_stab"
-display_name = "Immobilizing stab"
-description = "Briefly paralyzes a single enemy, preventing them from acting."
+display_name = "content.abilities.immobilizing_stab.name"
+description = "content.abilities.immobilizing_stab.description"
 effect = 2
 status_effect = ExtResource("Status")
 power = 3

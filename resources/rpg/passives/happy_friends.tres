@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("Script")
 id = &"happy_friends"
-display_name = "Happy friends"
+display_name = "content.passives.happy_friends.name"
 condition = 0
 health_threshold = 0.7
 stat_multipliers = {&"speed": 1.2}

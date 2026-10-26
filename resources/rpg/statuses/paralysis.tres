@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("Status")
 id = &"paralysis"
-display_name = "Paralysis"
+display_name = "content.statuses.paralysis.name"
 duration_turns = 2
 prevents_action = true

@@ -1,111 +1,97 @@
 #!/usr/bin/env python3
-"""Refresh Godot CSV tables without overwriting translations or deleting old keys."""
+"""Validate stable translation keys, or add a new English message without rewriting tables."""
 import argparse
 import csv
 import io
-import json
 from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-STRING = r'"(?:[^"\\]|\\.)*"'
-FIELDS = r'display_name|description|title|text|notification_text|speaker_name|left_name|right_name|tooltip_text'
+TABLES = ("ui", "content", "dialogue")
+KEY = re.compile(r"^(ui|content|dialogue)\.[a-z0-9_]+(?:\.[a-z0-9_]+)*$")
+REFERENCE = re.compile(r'["\']((?:ui|content|dialogue)\.[^"\'\n]+)["\']')
+PLACEHOLDER = re.compile(r'%(?:\d+\$)?[-+0 #]*(?:\d+|\*)?(?:\.(?:\d+|\*))?[sdifFeEgGxXoc]')
 
 
-def decode(value):
-    return json.loads(value, strict=False)
-
-
-def collect():
-    groups = {"dialogue": set(), "content": set(), "ui": set()}
-    for folder, extension in [("scenes", "*.tscn"), ("resources", "*.tres")]:
-        for path in sorted((ROOT / folder).rglob(extension)):
-            if folder == "scenes" and path.stem in {"portrait_preview", "conversation_preview"}:
-                continue
-            group = "ui" if folder == "scenes" else "dialogue" if "conversations" in path.parts else "content"
-            source = path.read_text(encoding="utf-8")
-            for match in re.finditer(rf'^(?:{FIELDS})\s*=\s*({STRING})', source, re.MULTILINE):
-                groups[group].add(decode(match[1]))
-            for match in re.finditer(r'enemy_names\s*=.*?\(\{(.*?)\}\)', source, re.DOTALL):
-                groups["content"].update(decode(m[1]) for m in re.finditer(rf':\s*({STRING})', match[1]))
-    def visit(value):
-        if isinstance(value, dict):
-            for key, child in value.items():
-                if key in {"display_name", "description"} and isinstance(child, str):
-                    groups["content"].add(child)
-                else:
-                    visit(child)
-        elif isinstance(value, list):
-            for child in value:
-                visit(child)
-    for path in sorted((ROOT / "resources/labyrinths").glob("*.json")):
-        visit(json.loads(path.read_text(encoding="utf-8")))
-    for path in sorted((ROOT / "scripts").rglob("*.gd")):
-        if path.stem == "portrait_preview":
-            continue
-        source = path.read_text(encoding="utf-8")
-        patterns = [
-            rf'(?:L10n\.text|\btr|TranslationServer\.translate)\(\s*({STRING})',
-            rf'\.(?:text|tooltip_text)\s*=\s*({STRING})',
-            rf'_command\(\s*({STRING})',
-            rf'_(?:label|button)\([^,\n]+,\s*({STRING})',
-            rf'_index_button\([^,\n]+,\s*{STRING}\s*,\s*({STRING})',
-        ]
-        for pattern in patterns:
-            groups["ui"].update(decode(m[1]) for m in re.finditer(pattern, source))
-        if path.stem == "damage_resistance":
-            groups["ui"].update(decode(m[1]) for m in re.finditer(rf'return\s+({STRING})', source))
-    # These runtime branches contain source labels rather than direct translation calls.
-    groups["ui"].update({"Normal", "Your offer", "Requested goods", "Return", "Resume", "Safe Zone"})
-    seen = set()
-    for keys in groups.values():
-        keys.difference_update(key for key in list(keys) if not key.strip())
-        keys.difference_update(seen)
-        seen.update(keys)
-    return groups
-
-
-def render(path, keys):
-    columns = ["keys", "en"]
-    existing = {}
-    if path.exists():
+def read_tables():
+    tables = {}
+    for name in TABLES:
+        path = ROOT / "localization" / f"{name}.csv"
         with path.open(encoding="utf-8", newline="") as stream:
             reader = csv.DictReader(stream)
             columns = reader.fieldnames
-            if not columns or columns[:2] != ["keys", "en"]:
-                raise ValueError(f"{path}: expected keys,en as first two columns")
-            for row in reader:
-                if row["keys"] in existing:
-                    raise ValueError(f"{path}: duplicate key {row['keys']!r}")
-                existing[row["keys"]] = row
-    result = io.StringIO(newline="")
-    writer = csv.DictWriter(result, columns, lineterminator="\n")
-    writer.writeheader()
-    for key in sorted(keys | existing.keys()):
-        row = existing.get(key, {column: "" for column in columns})
-        row["keys"] = key
-        row["en"] = key
-        writer.writerow(row)
-    return result.getvalue()
+            if not columns or columns[:2] != ["keys", "en"] or len(set(columns)) != len(columns):
+                raise ValueError(f"{path}: expected unique columns starting with keys,en")
+            tables[name] = (columns, list(reader))
+    return tables
+
+
+def validate(tables):
+    messages = {}
+    errors = []
+    for name, (columns, rows) in tables.items():
+        for row in rows:
+            key = row.get("keys", "")
+            if not KEY.fullmatch(key) or not key.startswith(name + "."):
+                errors.append(f"{name}.csv: invalid key {key!r}")
+            if key in messages:
+                errors.append(f"Duplicate translation key: {key}")
+            if None in row or any(row.get(column) is None for column in columns):
+                errors.append(f"{key}: malformed CSV row")
+            english = row.get("en") or ""
+            if not english.strip():
+                errors.append(f"{key}: English text must not be empty")
+            messages[key] = english
+            for locale in columns[2:]:
+                translated = row.get(locale) or ""
+                if translated and PLACEHOLDER.findall(translated.replace('%%', '')) != PLACEHOLDER.findall(english.replace('%%', '')):
+                    errors.append(f"{key}: {locale} placeholders differ from English")
+        print(f"{name}: {len(rows)} messages")
+    for directory in ("scripts", "scenes", "resources"):
+        for path in sorted((ROOT / directory).rglob("*")):
+            if path.suffix not in {".gd", ".tscn", ".tres", ".json"}:
+                continue
+            for key in REFERENCE.findall(path.read_text(encoding="utf-8")):
+                if not KEY.fullmatch(key):
+                    errors.append(f"{path.relative_to(ROOT)}: invalid translation key {key}")
+                elif key not in messages:
+                    errors.append(f"{path.relative_to(ROOT)}: missing translation {key}")
+    return errors
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--check", action="store_true", help="Check that all extracted text is in the tables")
+    parser.add_argument("--check", action="store_true", help="Validate without modifying files (also the default)")
+    parser.add_argument("--add", metavar="KEY", help="Add a stable key, e.g. ui.new_game")
+    parser.add_argument("--english", help="English text for --add; other language columns stay empty")
     args = parser.parse_args()
-    changed = False
-    for name, keys in collect().items():
-        path = ROOT / "localization" / f"{name}.csv"
-        output = render(path, keys)
-        if not path.exists() or path.read_text(encoding="utf-8") != output:
-            changed = True
-            if args.check:
-                print(f"Needs update: {path.relative_to(ROOT)}")
-            else:
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_text(output, encoding="utf-8", newline="")
-        print(f"{name}: {len(keys)} current messages")
-    return int(args.check and changed)
+    if args.add and (args.check or args.english is None or not KEY.fullmatch(args.add)):
+        parser.error("--add requires a valid namespaced key and --english, without --check")
+    if args.english is not None and not args.add:
+        parser.error("--english requires --add")
+    try:
+        tables = read_tables()
+        if args.add:
+            name = args.add.split(".")[0]
+            columns, rows = tables[name]
+            if any(row["keys"] == args.add for _, all_rows in tables.values() for row in all_rows):
+                raise ValueError(f"Key already exists: {args.add}; edit its English cell in the CSV")
+            rows.append({**{column: "" for column in columns}, "keys": args.add, "en": args.english})
+        errors = validate(tables)
+        if errors:
+            for error in errors:
+                print(error)
+            return 1
+        if args.add:
+            output = io.StringIO(newline="")
+            writer = csv.DictWriter(output, columns, lineterminator="\n")
+            writer.writeheader()
+            writer.writerows(sorted(rows, key=lambda row: row["keys"]))
+            (ROOT / "localization" / f"{name}.csv").write_text(output.getvalue(), encoding="utf-8", newline="")
+        return 0
+    except (ValueError, OSError) as error:
+        print(error)
+        return 1
 
 
 if __name__ == "__main__":

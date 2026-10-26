@@ -12,8 +12,8 @@ amount = 30
 [resource]
 script = ExtResource("Gear")
 id = &"healing_draught"
-display_name = "Healing Draught"
-description = "Heals one ally for 30 HP. Three total uses."
+display_name = "content.gear.healing_draught.name"
+description = "content.gear.healing_draught.description"
 kind = 2
 max_uses = 3
 consumable_target = 0

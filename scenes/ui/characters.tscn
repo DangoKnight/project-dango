@@ -33,7 +33,7 @@ layout_mode = 1
 layout_mode = 2
 [node name="Title" type="Label" parent="Panel/Buttons"]
 layout_mode = 2
-text = "CHARACTERS"
+text = "ui.characters"
 horizontal_alignment = 1
 [node name="Content" type="HBoxContainer" parent="Panel/Buttons"]
 layout_mode = 2
@@ -50,9 +50,9 @@ size_flags_stretch_ratio = 3.0
 [node name="Town" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 48)
-text = "Back to Safe Zone"
+text = "ui.back_to_safe_zone"
 
 [node name="Equipment" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 40)
-text = "Equipment"
+text = "ui.equipment"

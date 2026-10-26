@@ -34,23 +34,23 @@ layout_mode = 2
 
 [node name="Title" type="Label" parent="Panel/Buttons"]
 layout_mode = 2
-text = "BARRACKS"
+text = "ui.barracks_2"
 theme_override_font_sizes/font_size = 30
 horizontal_alignment = 1
 
 [node name="Sleep" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
-text = "Sleep"
+text = "ui.sleep"
 custom_minimum_size = Vector2(0, 40)
 
 [node name="ManageParty" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
-text = "Manage Party"
+text = "ui.manage_party"
 custom_minimum_size = Vector2(0, 40)
 
 [node name="Save" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
-text = "Save"
+text = "ui.save"
 disabled = true
 custom_minimum_size = Vector2(0, 40)
 
@@ -63,7 +63,7 @@ size_flags_vertical = 3
 
 [node name="ReturnToHub" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
-text = "Return to Hub"
+text = "ui.return_to_hub"
 custom_minimum_size = Vector2(0, 40)
 
 [node name="PartyPanel" type="PanelContainer" parent="."]
@@ -79,7 +79,7 @@ layout_mode = 2
 
 [node name="Title" type="Label" parent="PartyPanel/Buttons"]
 layout_mode = 2
-text = "MANAGE PARTY"
+text = "ui.manage_party_2"
 theme_override_font_sizes/font_size = 30
 
 [node name="Content" type="HBoxContainer" parent="PartyPanel/Buttons"]
@@ -94,7 +94,7 @@ size_flags_stretch_ratio = 1.25
 
 [node name="Name" type="Label" parent="PartyPanel/Buttons/Content/Character"]
 layout_mode = 2
-text = "Select a character"
+text = "ui.select_a_character"
 clip_text = true
 
 [node name="Title" type="Label" parent="PartyPanel/Buttons/Content/Character"]
@@ -121,7 +121,7 @@ size_flags_horizontal = 3
 
 [node name="Title" type="Label" parent="PartyPanel/Buttons/Content/Party"]
 layout_mode = 2
-text = "Party (0 / 4)"
+text = "ui.party_0_4"
 theme_override_font_sizes/font_size = 18
 
 [node name="Slots" type="VBoxContainer" parent="PartyPanel/Buttons/Content/Party"]
@@ -134,7 +134,7 @@ size_flags_horizontal = 3
 
 [node name="Title" type="Label" parent="PartyPanel/Buttons/Content/Reserve"]
 layout_mode = 2
-text = "Reserve"
+text = "ui.reserve"
 theme_override_font_sizes/font_size = 18
 
 [node name="Scroll" type="ScrollContainer" parent="PartyPanel/Buttons/Content/Reserve"]
@@ -150,11 +150,11 @@ theme_override_constants/separation = 10
 
 [node name="Feedback" type="Label" parent="PartyPanel/Buttons"]
 layout_mode = 2
-text = "Drag names between Party and Reserve, or between party slots."
+text = "ui.drag_names_between_party_and_reserve_or_between_party_slots"
 autowrap_mode = 2
 theme_override_font_sizes/font_size = 16
 
 [node name="CloseParty" type="Button" parent="PartyPanel/Buttons"]
 layout_mode = 2
-text = "Back to Barracks"
+text = "ui.back_to_barracks"
 custom_minimum_size = Vector2(0, 40)

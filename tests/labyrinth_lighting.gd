@@ -70,7 +70,7 @@ func run() -> void:
 			for candidate: Label3D in map._cell_labels[approach]:
 				if candidate.get_parent() == map.get_node(String(safe_zone.id)):
 					sign = candidate
-			check(sign != null and sign.text == safe_zone.display_name, "Safe Zone labels display their configured names")
+			check(sign != null and sign.text == L10n.text(safe_zone.display_name), "Safe Zone labels display their configured names")
 			check(sign.visible == (map.cell_lights[approach].state != LabyrinthCeilingLight.State.OFF), "Safe Zone name visibility follows the approach room's light")
 			if map.discovered_landmarks.has(safe_zone.id):
 				check(map.walked_cells.has(approach) and map.cell_lights[approach].state == LabyrinthCeilingLight.State.LIT, "Known Safe Zone approaches are revealed and lit immediately")
@@ -78,7 +78,7 @@ func run() -> void:
 				check(not map.walked_cells.has(approach) and map.cell_lights[approach].state == LabyrinthCeilingLight.State.OFF, "Unknown unvisited Safe Zone approaches remain hidden and unlit")
 	check_lights(map)
 	var entry := map.layout.landmark(map.definition.spawn_landmark)
-	check(entry.display_name == "Station 45-B", "The initial Safe Zone is named Station 45-B")
+	check(L10n.text(entry.display_name) == "Station 45-B", "The initial Safe Zone is named Station 45-B")
 	var neighbor: Vector2i = map.layout.passages[entry.coordinate][0]
 	check(map.cell_lights[entry.coordinate].state == LabyrinthCeilingLight.State.OFF, "Safe Zone endpoints keep their own ceiling lights off")
 	check(map.cell_lights[neighbor].state == LabyrinthCeilingLight.State.LIT, "The cell in front of the Safe Zone starts fully lit")
@@ -141,7 +141,7 @@ func run() -> void:
 		if map.layout.rewards.has(cell):
 			check(label.text == "Collect [E]", "Item labels use the generic collect prompt")
 		else:
-			check(label.text == map.layout.landmark(&"service_hub").display_name, "Landmarks retain their names")
+			check(label.text == L10n.text(map.layout.landmark(&"service_hub").display_name), "Landmarks retain their names")
 		map.walked_cells.clear()
 		map.discovered_landmarks.clear()
 		map._refresh_cell_lighting()

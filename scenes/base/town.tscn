@@ -68,7 +68,7 @@ mouse_filter = 2
 [node name="Title" type="Label" parent="Panel/Buttons"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "SAFE ZONE"
+text = "ui.safe_zone_heading"
 horizontal_alignment = 1
 
 [node name="HeadingSpacer" type="Control" parent="Panel/Buttons"]
@@ -79,30 +79,24 @@ mouse_filter = 2
 [node name="Barracks" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 48)
-text = "Barracks"
+text = "ui.barracks"
 
 [node name="Tinkerer" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 48)
-text = "Tinkerer"
+text = "ui.tinkerer"
 
 [node name="Barterer" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 48)
-text = "Barterer"
+text = "ui.barterer"
 
 [node name="Explore" type="Button" parent="Panel/Buttons"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 48)
-text = "Enter the Labyrinth"
+text = "ui.enter_the_labyrinth"
 
 [node name="Spacer" type="Control" parent="Panel/Buttons"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
-
-[node name="Shortcuts" type="Label" parent="Panel/Buttons"]
-layout_mode = 2
-text = "Tab · Characters\nEsc · Menu"
-horizontal_alignment = 1
-theme_override_font_sizes/font_size = 16

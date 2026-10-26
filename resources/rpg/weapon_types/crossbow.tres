@@ -4,5 +4,5 @@
 
 [resource]
 script = ExtResource("Script")
-id = &"wand"
-display_name = "Wand"
+id = &"crossbow"
+display_name = "content.weapon_types.crossbow.name"

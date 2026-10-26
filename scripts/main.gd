@@ -7,8 +7,6 @@ const LEVEL_UP_NOTICE := preload("res://scenes/ui/level_up_notice.tscn")
 const OPTIONS := preload("res://scenes/ui/options.tscn")
 const PAUSE_MENU := preload("res://scenes/ui/pause_menu.tscn")
 const HUD := preload("res://scenes/ui/exploration_hud.tscn")
-const CHARACTERS := preload("res://scenes/ui/characters.tscn")
-const EQUIPMENT := preload("res://scenes/ui/equipment.tscn")
 const COMBAT := preload("res://scenes/battle/combat.tscn")
 @export var starting_town: PackedScene = preload("res://scenes/ui/town.tscn")
 @export var opening_conversation: ConversationEvent = preload("res://resources/conversations/station_check_in.tres")
@@ -50,7 +48,7 @@ var screen := "main"
 var options_return := "main"
 var pause_return := "explore"
 var location_backgrounds: Dictionary[String, Texture2D] = {}
-var current_town_name := "Safe Zone"
+var current_town_name := "ui.safe_zone"
 
 
 func _ready() -> void:
@@ -113,6 +111,8 @@ func _on_action_requested(action: String) -> void:
 
 func _remove_world() -> void:
 	if is_instance_valid(world):
+		if world is LabyrinthMap and world.layout != null and world.layout.error.is_empty():
+			state.labyrinth_maps[world.scene_file_path] = LabyrinthMapSnapshot.capture(world)
 		world_container.remove_child(world)
 		world.queue_free()
 	world = null
@@ -160,6 +160,7 @@ func new_game(with_opening_conversation: bool = true) -> void:
 	_module_intro_location = ""
 	Conversations.reset()
 	_opening_event = opening_conversation if with_opening_conversation and opening_conversation != null and opening_conversation.is_valid() else null
+	_remove_world()
 	state.start_new_game(starting_town, starting_characters, starting_gear, starting_party_size)
 	if with_opening_conversation:
 		_battle_transition = true
@@ -209,13 +210,13 @@ func _on_conversation_finished(event: ConversationEvent) -> void:
 
 
 func show_equipment() -> void:
-	var view := _show_scene(EQUIPMENT, "equipment")
-	view.configure(state.roster, state.gear_inventory)
+	var view := _pause_book()
+	view.character_tab = 2
+	await view.open_page("characters")
 
 
 func show_characters() -> void:
-	var view := _show_scene(CHARACTERS, "characters")
-	view.configure(state.roster, current_town_name)
+	await _pause_book().open_page("characters")
 
 
 func show_location(location: String) -> void:
@@ -435,7 +436,7 @@ func _pause_book() -> PauseBook:
 
 
 func show_labyrinth_map() -> void:
-	if world is LabyrinthMap and world.layout.error.is_empty():
+	if (world is LabyrinthMap and world.layout.error.is_empty()) or not state.labyrinth_maps.is_empty():
 		_pause_book().open_page("map")
 
 
@@ -446,7 +447,9 @@ func show_compendium() -> void:
 func show_pause(return_to: String = "explore") -> void:
 	pause_return = return_to
 	var view := _show_scene(PAUSE_MENU, "pause") as PauseBook
-	view.configure(world, state.compendium, return_to == "town", current_town_name)
+	view.configure(world, state.compendium, return_to == "town", current_town_name, state.roster, state.labyrinth_maps.values(), state.current_map_scene.resource_path if state.current_map_scene != null else "")
+	view.inventory = state.gear_inventory
+	view.weapons = state.weapon_inventory
 
 func _resume_pause() -> void:
 	if pause_return == "town":
@@ -529,16 +532,18 @@ func _input(event: InputEvent) -> void:
 	if _battle_transition or _module_busy():
 		get_viewport().set_input_as_handled()
 		return
-	if event.is_action_pressed("party_information") and screen in ["town", "location", "characters"]:
-		get_viewport().set_input_as_handled()
-		if screen in ["town", "location"]:
-			if screen == "location":
-				_battle_transition = true
-				await ui.get_child(0).dismiss_module()
-				_battle_transition = false
-			show_characters()
-		else:
-			show_town()
+	if event.is_action_pressed("party_information"):
+		if screen == "explore":
+			get_viewport().set_input_as_handled()
+			show_labyrinth_map()
+		elif screen == "pause" and pause_return == "explore":
+			get_viewport().set_input_as_handled()
+			var book := ui.get_child(0) as PauseBook
+			if not book.transitioning:
+				if book.current_page == "map":
+					_resume_pause()
+				else:
+					book.open_page("map")
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -568,7 +573,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				if town.module_view != null and town.module_view.has_method("close_party") and town.module_view.get_node("PartyPanel").visible:
 					town.module_view.close_party()
 				else:
-					show_town()
+					show_pause("town")
 			"characters": show_town()
 			"town": show_pause("town")
 		get_viewport().set_input_as_handled()

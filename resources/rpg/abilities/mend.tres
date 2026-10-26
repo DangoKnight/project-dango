@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("Script")
 id = &"mend"
-display_name = "Mend"
-description = "Restore HP to a living ally."
+display_name = "content.abilities.mend.name"
+description = "content.abilities.mend.description"
 effect = 1
 power = 12
 mana_cost = 4

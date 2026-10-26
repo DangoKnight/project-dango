@@ -1,248 +1,338 @@
 keys,en
-"
-ABILITIES LEARNED","
+ui.a_character_can_carry_only_four_pieces_of_gear,A character can carry only four pieces of gear.
+ui.abilities_learned,"
 ABILITIES LEARNED"
-"
-ACTIVE STATUSES","
+ui.ability.details,%s [%s / %s] — %d MP
+ui.ability.mana_cost,%s — %d MP
+ui.accept_commission,Accept commission
+ui.acceptable,Acceptable
+ui.actions_are_resolving,Actions are resolving…
+ui.active_statuses,"
 ACTIVE STATUSES"
-"
-AVAILABLE ABILITIES","
+ui.all_actions_chosen,All actions chosen
+ui.all_enemies,all enemies
+ui.all_enemies_2,All enemies
+ui.allowed_types_s,Allowed types: %s
+ui.an_enemy_row,an enemy row
+ui.any,Any
+ui.artifact,Artifact
+ui.attack,Attack
+ui.available_abilities,"
 AVAILABLE ABILITIES"
-"
-FUTURE CLASS ABILITIES","
+ui.back,Back
+ui.back_to_barracks,Back to Barracks
+ui.back_to_characters,Back to Characters
+ui.back_to_safe_zone,Back to Safe Zone
+ui.barracks,Barracks
+ui.barracks_2,BARRACKS
+ui.barterer,Barterer
+ui.battle.ability_cost,%s (%d SP)
+ui.battle.log.ability_effect,%s uses %s on %s: %d %s.
+ui.battle.log.action_failed,%s: %s failed (%s).
+ui.battle.log.cannot_act,%s cannot act.
+ui.battle.log.consumable_effect,"%s uses %s: %d healing, %d damage, %d SP restored; effects applied. %d uses left%s."
+ui.battle.log.defend,%s defends.
+ui.battle.log.escape_failed,%s fails to escape.
+ui.battle.log.escaped,%s leads the party to safety.
+ui.battle.log.miss,%s uses %s on %s: miss.
+ui.battle.log.paralyzed,%s is paralyzed and cannot act.
+ui.battle.log.status_ability,%s uses %s on %s.
+ui.battle.log.status_damage, %s takes %d status damage.
+ui.battle.log.wait,%s waits.
+ui.battle.observe_description,"Halves strength, defense, mental acuity, mental resilience, and speed while active. Increases experience earned by 50%."
+ui.battle.return_to_character,Return to %s
+ui.battle.round_counter,Round %d
+ui.battle_information,BATTLE INFORMATION
+ui.carried,Carried
+ui.carried_d_4,Carried (%d / 4)
+ui.character.level_and_class,%s — Level %d %s
+ui.characters,Characters
+ui.choose_an_action,Choose an action
+ui.class,Class
+ui.collect_e,Collect [E]
+ui.collect_equipment,Collect equipment
+ui.collect_medallion,Collect medallion
+ui.collect_weapon,Collect weapon
+ui.coming_soon,Coming soon
+ui.commission_accepted,Commission accepted.
+ui.commission_in_progress,Commission in progress
+ui.common.label_value,%s: %s
+ui.common.stat_value,%s: %d
+ui.confirm_actions,Confirm actions
+ui.consumable,Consumable
+ui.consumable.name_and_uses,%s (%d uses)
+ui.continue,Continue
+ui.conversation.skip,Skip dialogue
+ui.critical_damage,critical damage
+ui.d, %d
+ui.d_empty,%d. Empty
+ui.d_s,%d. %s
+ui.d_uses, — %d uses
+ui.d_uses_2, (%d uses)
+ui.damage,damage
+ui.damage_2,Damage
+ui.defeat,Defeat.
+ui.defeated, (defeated)
+ui.defend,Defend
+ui.defense,Defense
+ui.destroyed, (destroyed)
+ui.discovered_landmarks_d,"Discovered landmarks
+%d"
+ui.discovered_resistances,DISCOVERED RESISTANCES
+ui.display,Display
+ui.drag_names_between_party_and_reserve_or_between_party_slots,"Drag names between Party and Reserve, or between party slots."
+ui.ellipsis,+
+ui.empty,Empty
+ui.enter_the_labyrinth,Enter the Labyrinth
+ui.equip,Equip
+ui.equip_weapon,Equip weapon
+ui.equipment,Equipment
+ui.equipment.capacity_hint,4 total · up to 3 Artifacts · 1 Medallion · 1 Consumable
+ui.equipment.name_and_type,%s [%s]%s
+ui.equipment.selection_hint,Select gear to see its effects. Weapons use their separate weapon slot.
+ui.equipment.stat_modifier,%s: %+.1f
+ui.equipment_2,EQUIPMENT
+ui.equipment_designs,Equipment designs
+ui.equipped,Equipped.
+ui.escaped,Escaped!
+ui.everyone_is_rested_hp_and_sp_fully_restored,Everyone is rested. HP and SP fully restored.
+ui.exchange,Exchange
+ui.execute_round,Execute round
+ui.exit,Exit
+ui.exploration,Exploration
+ui.exploration_room,Exploration Room
+ui.field_journal,Field journal
+ui.field_notes,Field notes
+ui.finish,Finish
+ui.friendlies,Friendlies
+ui.fullscreen,Fullscreen
+ui.future_class_abilities,"
 FUTURE CLASS ABILITIES"
-"
-GEAR (%d / 4)","
+ui.gear_d_4,"
 GEAR (%d / 4)"
-"
-OBSERVED ABILITIES","
-OBSERVED ABILITIES"
-"
-RESISTANCES AND WEAKNESSES","
-RESISTANCES AND WEAKNESSES"
-"
-WEAPON","
-WEAPON"
- %d, %d
- %s takes %d status damage., %s takes %d status damage.
- (%d uses), (%d uses)
- (defeated), (defeated)
- (destroyed), (destroyed)
- · Idea, · Idea
- · Known design, · Known design
- · Unlimited, · Unlimited
- — %d uses, — %d uses
-%d. %s,%d. %s
-%d. Empty,%d. Empty
-%s (%d SP),%s (%d SP)
-%s (%d uses),%s (%d uses)
-%s [%s / %s] — %d MP,%s [%s / %s] — %d MP
-%s [%s]%s,%s [%s]%s
-%s cannot act.,%s cannot act.
-%s defends.,%s defends.
-%s fails to escape.,%s fails to escape.
-%s is paralyzed and cannot act.,%s is paralyzed and cannot act.
-%s is staying in reserve.,%s is staying in reserve.
-%s joined the active party.,%s joined the active party.
-%s leads the party to safety.,%s leads the party to safety.
-%s uses %s on %s.,%s uses %s on %s.
-%s uses %s on %s: %d %s.,%s uses %s on %s: %d %s.
-%s uses %s on %s: miss.,%s uses %s on %s: miss.
-"%s uses %s: %d healing, %d damage, %d SP restored; effects applied. %d uses left%s.","%s uses %s: %d healing, %d damage, %d SP restored; effects applied. %d uses left%s."
-%s waits.,%s waits.
-%s · Level %d → %d,%s · Level %d → %d
-%s — %d MP,%s — %d MP
-%s — Level %d %s,%s — Level %d %s
-%s — choose an action,%s — choose an action
-%s — paralyzed (choose Wait),%s — paralyzed (choose Wait)
-%s: %+.1f,%s: %+.1f
-%s: %d,%s: %d
-%s: %d / %d,%s: %d / %d
-%s: %d turns,%s: %d turns
-%s: %d → %d (%+d),%s: %d → %d (%+d)
-%s: %s,%s: %s
-%s: %s failed (%s).,%s: %s failed (%s).
-+,+
-4 total · up to 3 Artifacts · 1 Medallion · 1 Consumable,4 total · up to 3 Artifacts · 1 Medallion · 1 Consumable
-A character can carry only four pieces of gear.,A character can carry only four pieces of gear.
-Accept commission,Accept commission
-Acceptable,Acceptable
-Actions are resolving…,Actions are resolving…
-All actions chosen,All actions chosen
-All enemies,All enemies
-Allowed types: %s,Allowed types: %s
-Any,Any
-Artifact,Artifact
-BARRACKS,BARRACKS
-BATTLE INFORMATION,BATTLE INFORMATION
-Back,Back
-Back to %s,Back to %s
-Back to Barracks,Back to Barracks
-Back to Characters,Back to Characters
-Back to Safe Zone,Back to Safe Zone
-Barracks,Barracks
-Barterer,Barterer
-CHARACTERS,CHARACTERS
-Carried,Carried
-Carried (%d / 4),Carried (%d / 4)
-Choose an action,Choose an action
-Class,Class
-Collect [E],Collect [E]
-Collect equipment,Collect equipment
-Collect medallion,Collect medallion
-Collect weapon,Collect weapon
-Coming soon,Coming soon
-Commission accepted.,Commission accepted.
-Commission in progress,Commission in progress
-Confirm actions,Confirm actions
-Consumable,Consumable
-Continue,Continue
-DISCOVERED RESISTANCES,DISCOVERED RESISTANCES
-Damage,Damage
-Defeat.,Defeat.
-Defend,Defend
-Defense,Defense
-"Discovered landmarks
-%d","Discovered landmarks
-%d"
-Display,Display
-"Drag names between Party and Reserve, or between party slots.","Drag names between Party and Reserve, or between party slots."
-EQUIPMENT,EQUIPMENT
-Empty,Empty
-Enter the Labyrinth,Enter the Labyrinth
-Equip,Equip
-Equip weapon,Equip weapon
-Equipment,Equipment
-Equipment designs,Equipment designs
-Equipped.,Equipped.
-Escaped!,Escaped!
-Everyone is rested. HP and SP fully restored.,Everyone is rested. HP and SP fully restored.
-Exchange,Exchange
-Execute round,Execute round
-Exit,Exit
-Exploration,Exploration
-Exploration Room,Exploration Room
-Field journal,Field journal
-Field notes,Field notes
-Finish,Finish
-Friendlies,Friendlies
-Fullscreen,Fullscreen
-HP  %d / %d,HP  %d / %d
-HP %d / %d,HP %d / %d
-HP %d / %d    MP %d / %d,HP %d / %d    MP %d / %d
-"Halves strength, defense, mental acuity, mental resilience, and speed while active. Increases experience earned by 50%.","Halves strength, defense, mental acuity, mental resilience, and speed while active. Increases experience earned by 50%."
-Heal,Heal
-Hostiles,Hostiles
-Immune,Immune
-LABYRINTH MAP,LABYRINTH MAP
-LOCATION,LOCATION
-Level %d · %s,Level %d · %s
-Level %d: %s,Level %d: %s
-Level up,Level up
-MANAGE PARTY,MANAGE PARTY
-MONSTERS,MONSTERS
-Main Menu,Main Menu
-MainMenu,MainMenu
-Make yourself comfortable.,Make yourself comfortable.
-Manage Party,Manage Party
-Map,Map
-"Map completion
-%.1f%%","Map completion
+ui.heal,Heal
+ui.healing,healing
+ui.hostiles,Hostiles
+ui.hp_d_d,HP  %d / %d
+ui.hp_d_d_2,HP %d / %d
+ui.hp_d_d_mp_d_d,HP %d / %d    MP %d / %d
+ui.idea, · Idea
+ui.immune,Immune
+ui.known_design, · Known design
+ui.labyrinth_map,LABYRINTH MAP
+ui.level_d_s,Level %d: %s
+ui.level_d_s_2,Level %d · %s
+ui.level_up,Level up
+ui.level_up.character_levels,%s · Level %d → %d
+ui.level_up.stat_change,%s: %d → %d (%+d)
+ui.location,LOCATION
+ui.main_menu,Main Menu
+ui.mainmenu,MainMenu
+ui.make_yourself_comfortable,Make yourself comfortable.
+ui.manage_party,Manage Party
+ui.manage_party_2,MANAGE PARTY
+ui.map,Map
+ui.map_completion_1f,"Map completion
 %.1f%%"
-Master volume,Master volume
-Master volume · %d%%,Master volume · %d%%
-Max HP,Max HP
-Max Hp,Max Hp
-Max Mp,Max Mp
-Max SP,Max SP
-Maximum %d %s gear allowed.,Maximum %d %s gear allowed.
-Medallion,Medallion
-Medallion ready.,Medallion ready.
-Mental Acuity,Mental Acuity
-Mental Resilience,Mental Resilience
-Monsters,Monsters
-New Game,New Game
-No abilities available,No abilities available
-No designs available.,No designs available.
-No information discovered.,No information discovered.
-No monsters encountered yet.,No monsters encountered yet.
-No reserves,No reserves
-None,None
-Normal,Normal
-Not acceptable,Not acceptable
-Notes & settings,Notes & settings
-OPTIONS,OPTIONS
-Observe,Observe
-Options,Options
-PROJECT DANGO,PROJECT DANGO
-Party,Party
-Party (%d / 4),Party (%d / 4)
-Party (0 / 4),Party (0 / 4)
-Party order updated.,Party order updated.
-"Picked up items
-%d","Picked up items
+ui.master_volume,Master volume
+ui.master_volume_d,Master volume · %d%%
+ui.max_hp,Max Hp
+ui.max_hp_2,Max HP
+ui.max_mp,Max Mp
+ui.max_sp,Max SP
+ui.maximum_d_s_gear_allowed,Maximum %d %s gear allowed.
+ui.medallion,Medallion
+ui.medallion_ready,Medallion ready.
+ui.mental_acuity,Mental Acuity
+ui.mental_resilience,Mental Resilience
+ui.monsters,Monsters
+ui.monsters_heading,MONSTERS
+ui.navigation.back_to_location,Back to %s
+ui.new_game,New Game
+ui.no_abilities_available,No abilities available
+ui.no_designs_available,No designs available.
+ui.no_information_discovered,No information discovered.
+ui.no_monsters_encountered_yet,No monsters encountered yet.
+ui.no_reserves,No reserves
+ui.none,None
+ui.normal,Normal
+ui.not_acceptable,Not acceptable
+ui.notes_settings,Notes & settings
+ui.observe,Observe
+ui.observed_abilities,"
+OBSERVED ABILITIES"
+ui.options,Options
+ui.options_2,OPTIONS
+ui.party,Party
+ui.party.joined_active,%s joined the active party.
+ui.party.staying_in_reserve,%s is staying in reserve.
+ui.party_0_4,Party (0 / 4)
+ui.party_d_4,Party (%d / 4)
+ui.party_order_updated,Party order updated.
+ui.picked_up_items_d,"Picked up items
 %d"
-Proceed with this round?,Proceed with this round?
-Prototype,Prototype
-Ready to equip.,Ready to equip.
-Requested goods,Requested goods
-Required enemies,Required enemies
-Reserve,Reserve
-Resistant,Resistant
-Rest a moment,Rest a moment
-Resume,Resume
-Return,Return
-Return (Esc),Return (Esc)
-Return to %s,Return to %s
-Return to Barracks,Return to Barracks
-Return to Hub,Return to Hub
-Return to battle (Tab / Esc),Return to battle (Tab / Esc)
-Return to contents (Esc),Return to contents (Esc)
-Round %d,Round %d
-Round 1,Round 1
-Run,Run
-SAFE ZONE,SAFE ZONE
-SP  %d / %d,SP  %d / %d
-SP %d / %d,SP %d / %d
-STAT CHANGES,STAT CHANGES
-STATS,STATS
-Safe Zone,Safe Zone
-Save,Save
-Select a character,Select a character
-Select gear to see its effects. Weapons use their separate weapon slot.,Select gear to see its effects. Weapons use their separate weapon slot.
-Self,Self
-Shared stash,Shared stash
-Single ally,Single ally
-Single enemy,Single enemy
-Sleep,Sleep
-Sound,Sound
-Sound & display,Sound & display
-Special,Special
-Speed,Speed
-Status,Status
-Strength,Strength
-"Tab · Characters
-Esc · Menu","Tab · Characters
-Esc · Menu"
-This gear is invalid or depleted.,This gear is invalid or depleted.
-This item is already equipped.,This item is already equipped.
-Tinkerer,Tinkerer
-Unarmed,Unarmed
-Unequip,Unequip
-Unequip to return to the shared stash.,Unequip to return to the shared stash.
-Unique,Unique
-Uses: %d / %d · Target: %s,Uses: %d / %d · Target: %s
-Very resistant,Very resistant
-Very weak,Very weak
-Victory!,Victory!
-Wait,Wait
-Weak,Weak
-Weapon ready.,Weapon ready.
-Weapon stash,Weapon stash
-Your offer,Your offer
-all enemies,all enemies
-an enemy row,an enemy row
-critical damage,critical damage
-damage,damage
-healing,healing
-the party,the party
+ui.proceed_with_this_round,Proceed with this round?
+ui.project_dango,PROJECT DANGO
+ui.prototype,Prototype
+ui.ready_to_equip,Ready to equip.
+ui.requested_goods,Requested goods
+ui.required_enemies,Required enemies
+ui.reserve,Reserve
+ui.resistances_and_weaknesses,"
+RESISTANCES AND WEAKNESSES"
+ui.resistant,Resistant
+ui.rest_a_moment,Rest a moment
+ui.resume,Resume
+ui.return,Return
+ui.return_esc,Return (Esc)
+ui.return_to_barracks,Return to Barracks
+ui.return_to_battle_tab_esc,Return to battle (Tab / Esc)
+ui.return_to_contents_esc,Return to contents (Esc)
+ui.return_to_hub,Return to Hub
+ui.round_1,Round 1
+ui.run,Run
+ui.s_choose_an_action,%s — choose an action
+ui.s_paralyzed_choose_wait,%s — paralyzed (choose Wait)
+ui.safe_zone,Safe Zone
+ui.safe_zone_heading,SAFE ZONE
+ui.save,Save
+ui.select_a_character,Select a character
+ui.self,Self
+ui.services.enemy_requirement,%s: %d / %d
+ui.shared_stash,Shared stash
+ui.single_ally,Single ally
+ui.single_enemy,Single enemy
+ui.sleep,Sleep
+ui.sound,Sound
+ui.sound_display,Sound & display
+ui.sp_d_d,SP  %d / %d
+ui.sp_d_d_2,SP %d / %d
+ui.special,Special
+ui.speed,Speed
+ui.stat_changes,STAT CHANGES
+ui.station_45_b,Station 45-B
+ui.stats,STATS
+ui.status,Status
+ui.status.remaining_turns,%s: %d turns
+ui.strength,Strength
+ui.tab_characters_esc_menu,Esc · Menu
+ui.the_party,the party
+ui.this_gear_is_invalid_or_depleted,This gear is invalid or depleted.
+ui.this_item_is_already_equipped,This item is already equipped.
+ui.tinkerer,Tinkerer
+ui.unarmed,Unarmed
+ui.unequip,Unequip
+ui.unequip_to_return_to_the_shared_stash,Unequip to return to the shared stash.
+ui.unique,Unique
+ui.unlimited, · Unlimited
+ui.uses_d_d_target_s,Uses: %d / %d · Target: %s
+ui.very_resistant,Very resistant
+ui.very_weak,Very weak
+ui.victory,Victory!
+ui.wait,Wait
+ui.weak,Weak
+ui.weapon,Weapon
+ui.weapon_ready,Weapon ready.
+ui.weapon_stash,Weapon stash
+ui.your_offer,Your offer
+ui.character.breakdown,Breakdown
+ui.equipment.slot,Gear %d: %s
+ui.equipment.choices,Available equipment
+ui.equipment.no_choices,No compatible equipment available.
+ui.character.overview,Overview
+ui.character.abilities,Abilities
+ui.lessons.title,Cairo's lessons
+ui.character.gear,Gear
+ui.lessons.damage_types.title,Damage types
+ui.lessons.damage_types.text,"Attacks can deal Slash, Pierce, Blunt, Fire, Frost, Lightning, Poison, or Arcane damage. Monsters have different levels of resistance to these damage types.
+
+Try different attacks to learn what works best. A monster's resistance to a given type of damage is automatically registered on their entry on the diary."
+ui.lessons.weapons.title,Weapons I
+ui.lessons.weapons.text,"People have different affinities with weapons, which in turn dictate what weapons they are capable of using.
+
+The weapons available to each individual can be altered by learning a different class."
+ui.lessons.physical_mental.title,Physical vs Mental
+ui.lessons.physical_mental.text,"Strength supports physical attacks, while Mental Acuity supports mental abilities.
+
+Defense reduces damage from attacks that test physical defenses; Mental Resilience reduces damage from those that test mental defenses.
+
+Each ability determines which stats it uses. Elemental damage types tend to be associated with mental damage, but there are exceptions."
+ui.lessons.gear.title,"Artifacts, Medallions, and Consumables"
+ui.lessons.gear.text,"Explorers may equip one weapon and carry 4 pieces of gear. Out of those four, they may only equip up to 3 artifacts, up to one medallion and up to one consumable.
+
+They can equip up to three Artifacts, one Medallion, and one Consumable, within that total.
+
+Artifacts modify stats and affinities.
+
+Medallions grant abilities while equipped.
+
+Consumables can heal, strengthen allies, harm enemies, or weaken them; their uses are limited."
+ui.lessons.statuses.title,"Buffs, debuffs, and status effects"
+ui.lessons.statuses.text,"Buffs temporarily strengthen a unit, while debuffs weaken it. Other status effects can cause ongoing damage or prevent actions.
+
+Check a character’s Overview to see active effects and their remaining turns.
+
+Choose your abilities wisely to inflice the status you need."
+ui.lessons.weapons_ii.title,Weapons II
+ui.lessons.weapons_ii.text,"Every weapon family has its own focus. Individual designs may vary.
+
+Guns
+Great damage and great Speed, suited to fast physical offense.
+
+Crossbows
+Focus on damage, with some Speed and a modest boost to Mental Acuity.
+
+Daggers
+Specialize in Speed, favoring quick attacks over heavy blows.
+
+Amplifiers
+Specialize in Mental Acuity, strengthening mental offense.
+
+Swords
+Balance physical damage and Speed, making them versatile weapons.
+
+Hammers
+Favor powerful physical damage at the expense of Speed.
+
+Spears
+Balance physical damage with Defense, favoring a steadier approach."
+ui.ability.buff,Buff
+ui.ability.debuff,Debuff
+ui.ability.damage_type,Damage type: %s
+ui.artifacts,Artifacts
+ui.medallions,Medallions
+ui.consumables,Consumables
+ui.ability.book_row,%s (%s/%s) — %d MP
+ui.lessons.commissions.title,Commissions
+ui.lessons.commissions.text,"Visit the Tinkerer to commission weapons and medallions from their available designs.
+
+Accept a commission before setting out: defeating the requested monsters automatically gathers the materials for it. Kills made before accepting the commission do not count.
+
+Return to the Tinkerer when the requirements are met to collect the finished item. A design they have never fabricated needs more materials than one they have made before.
+
+Your new equipment enters the shared stash; equip it from the character’s Gear tab."
+ui.lessons.sleeping.title,Sleeping
+ui.lessons.sleeping.text,"Sleep at the barracks to restore the whole party’s health and SP, including companions in reserve.
+
+Experience gained in battle takes effect when you sleep.
+
+If a character has earned enough experience to level up, you can review their progress and any newly learned abilities before waking.
+
+Sleeping does not replenish consumable uses, so check your supplies before leaving."
+ui.lessons.observing.title,Observing
+ui.lessons.observing.text,"Toggle Observe while choosing a character’s action in battle to help them learn more from the encounter.
+
+While observing, that character earns more experience, but their Strength, Defense, Mental Acuity, Mental Resilience, and Speed are greatly reduced.
+
+Once switched on, the effects of Observe are maintained until ends when the battle ends or the option is switched off.
+
+Use Observe when you need a big boost in experience for an explorer."
+ui.lessons.exploration_completion.title,Exploration completion
+ui.lessons.exploration_completion.text,"Map completion represents how much of the current labyrinth you have charted. Walk through uncharted rooms to increase it.
+
+You can check your progress in the book’s Map section and labryinths are recreated every time you enter them, so the completion is reset every time.
+
+The party remembers its highest completion reached in a single visit since its last sleep.
+
+Be sure to explore as much as you can to ensure efficient growth."
+ui.battle.return_previous,Return to previous character

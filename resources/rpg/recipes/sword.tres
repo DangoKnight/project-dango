@@ -7,4 +7,4 @@
 script = ExtResource("Script")
 weapon = ExtResource("Weapon")
 required_kills = Dictionary[StringName, int]({&"rat": 3})
-enemy_names = Dictionary[StringName, String]({&"rat": "Rats", &"ethereal_orb": "Ethereal Orbs"})
+enemy_names = Dictionary[StringName, String]({&"rat": "content.rats", &"ethereal_orb": "content.ethereal_orbs"})

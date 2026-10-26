@@ -23,7 +23,7 @@ layout_mode = 2
 
 [node name="Title" type="Label" parent="Panel/Layout"]
 layout_mode = 2
-text = "Level up"
+text = "ui.level_up"
 theme_override_font_sizes/font_size = 28
 autowrap_mode = 2
 
@@ -52,5 +52,5 @@ focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath(".")
 focus_next = NodePath(".")
 focus_previous = NodePath(".")
-text = "Continue"
+text = "ui.continue"
 custom_minimum_size = Vector2(0, 40)

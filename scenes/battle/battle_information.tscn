@@ -25,7 +25,7 @@ theme_override_constants/separation = 16
 
 [node name="Heading" type="Label" parent="Layout"]
 layout_mode = 2
-text = "BATTLE INFORMATION"
+text = "ui.battle_information"
 horizontal_alignment = 1
 
 [node name="Tabs" type="HBoxContainer" parent="Layout"]
@@ -37,7 +37,7 @@ size_flags_horizontal = 3
 
 [node name="Enemies" type="Button" parent="Layout/Tabs"]
 layout_mode = 2
-text = "Hostiles"
+text = "ui.hostiles"
 
 [node name="Content" type="HBoxContainer" parent="Layout"]
 layout_mode = 2
@@ -58,4 +58,4 @@ theme_override_font_sizes/normal_font_size = 18
 
 [node name="Close" type="Button" parent="Layout"]
 layout_mode = 2
-text = "Return to battle (Tab / Esc)"
+text = "ui.return_to_battle_tab_esc"

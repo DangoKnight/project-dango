@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("Status")
 id = &"painful_poison"
-display_name = "Painful Poison"
+display_name = "content.statuses.painful_poison.name"
 duration_turns = 5
 turn_damage = 3
 damage_type = ExtResource("Poison")

@@ -5,6 +5,6 @@
 [ext_resource type="Resource" path="res://resources/rpg/enemies/ethereal_orb.tres" id="Orb"]
 [resource]
 script = ExtResource("Script")
-display_name = "Office Patrol"
+display_name = "content.encounters.office_patrol.name"
 enemies = Array[ExtResource("Character")]([ExtResource("Rat"), ExtResource("Orb")])
 enemy_level = 1

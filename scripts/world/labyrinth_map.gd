@@ -245,7 +245,7 @@ func _build_geometry() -> void:
 		var material := StandardMaterial3D.new()
 		material.albedo_color = Color(0.7, 0.55, 0.24)
 		_box("SupplyCache", Vector3(0, 0.35, 0), Vector3(0.8, 0.7, 0.6), material, marker)
-		_label(marker, "Collect [E]", 1.3, cell)
+		_label(marker, "ui.collect_e", 1.3, cell)
 
 
 func _box(title: String, position: Vector3, size: Vector3, material: Material, parent: Node = self) -> void:

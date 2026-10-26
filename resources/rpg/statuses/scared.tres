@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("Status")
 id = &"scared"
-display_name = "Scared"
+display_name = "content.statuses.scared.name"
 stat_percent_modifiers = Dictionary[StringName, float]({
 &"mental_acuity": -0.2,
 &"strength": -0.2

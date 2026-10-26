@@ -20,9 +20,9 @@ func _ready() -> void:
 	members.item_selected.connect(_show_character)
 
 
-func configure(characters: Array[CharacterState], town_name: String = "Safe Zone") -> void:
+func configure(characters: Array[CharacterState], town_name: String = "ui.safe_zone") -> void:
 	party = characters
-	$Panel/Buttons/Town.text = L10n.text("Back to %s") % L10n.text(town_name)
+	$Panel/Buttons/Town.text = L10n.text("ui.navigation.back_to_location") % L10n.text(town_name)
 	members.clear()
 	for character in party:
 		members.add_item(L10n.text(character.definition.display_name))

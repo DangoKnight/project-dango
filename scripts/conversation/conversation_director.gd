@@ -67,6 +67,7 @@ func _start_next() -> void:
 	overlay = OVERLAY.instantiate() as ConversationOverlay
 	add_child(overlay)
 	overlay.line_entered.connect(_on_line_entered)
+	overlay.skip_requested.connect(_grant_remaining_rewards)
 	overlay.configure(active_event)
 	overlay.dismissed.connect(_finish, CONNECT_DEFERRED | CONNECT_ONE_SHOT)
 	started.emit(active_event)
@@ -82,6 +83,13 @@ func _on_line_entered(index: int, line: ConversationLine) -> void:
 			state.gear_inventory.add(line.reward_gear)
 	if line.recruit_character != null:
 		state.recruit_character(line.recruit_character)
+
+
+func _grant_remaining_rewards() -> void:
+	if active_event == null:
+		return
+	for index in range(active_event.lines.size()):
+		_on_line_entered(index, active_event.lines[index])
 
 
 func _finish() -> void:

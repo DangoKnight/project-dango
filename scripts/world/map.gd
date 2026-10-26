@@ -2,7 +2,7 @@ class_name Map
 extends Node3D
 
 @export var map_id: StringName
-@export var display_name: String = "Map"
+@export var display_name: String = "ui.map"
 @export var encounter: BattleEncounter
 
 @onready var player: CharacterBody3D = $Player

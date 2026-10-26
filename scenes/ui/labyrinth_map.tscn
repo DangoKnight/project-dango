@@ -34,7 +34,7 @@ layout_mode = 2
 
 [node name="Title" type="Label" parent="Panel/Layout" unique_id=2127680437]
 layout_mode = 2
-text = "LABYRINTH MAP"
+text = "ui.labyrinth_map"
 horizontal_alignment = 1
 
 [node name="Canvas" type="Control" parent="Panel/Layout" unique_id=593885299]
@@ -45,4 +45,4 @@ script = ExtResource("Canvas")
 
 [node name="MapBack" type="Button" parent="Panel/Layout" unique_id=1794448566]
 layout_mode = 2
-text = "Return (Esc)"
+text = "ui.return_esc"

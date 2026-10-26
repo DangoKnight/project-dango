@@ -7,8 +7,8 @@
 script = ExtResource("Ability")
 id = &"ride_the_gale"
 battle_animation = "ride_the_gale"
-display_name = "Ride the gale"
-description = "Temporarily grants a moderate boost to own speed."
+display_name = "content.abilities.ride_the_gale.name"
+description = "content.abilities.ride_the_gale.description"
 effect = 2
 targeting = 2
 status_effect = ExtResource("Status")

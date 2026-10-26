@@ -51,7 +51,7 @@ godot --headless --path . --script res://tests/smoke.gd
 
 The Map/Town tests create a second map and town, checking destination selection, custom spawning, activation, return navigation, location backgrounds, and party preservation.
 
-The Safe Zone displays only Barracks, Tinkerer, Barterer, and Enter the Labyrinth. Tab toggles the Characters screen; Escape opens the town menu with Options and Main Menu. Returning from Options preserves this menu’s town context, so Return/Escape goes back to the same town. Service backgrounds use distinct illustrated modern interiors: a bunk room, repair workshop, and chemical workroom. The Safe Zone uses a furnished office refuge.
+The Safe Zone displays only Barracks, Tinkerer, Barterer, and Enter the Labyrinth. Escape opens the book with Characters, Monsters, Map, Options, and Main Menu. Tab during labyrinth exploration opens its map directly; pressing Tab again closes it. The Map chapter is also available in Safe Zones once a labyrinth has been visited. It keeps the last charted layout, walked cells, landmarks, and visit statistics for each labyrinth; a selector appears when multiple charts are available. Returning to a Safe Zone frees the 3D world while retaining this chart data. Re-entering still generates a new labyrinth and resets visit statistics; New Game clears all charts. Returning from Options preserves this menu’s town context, so Return/Escape goes back to the same town. Service backgrounds use distinct illustrated modern interiors: a bunk room, repair workshop, and chemical workroom. The Safe Zone uses a furnished office refuge.
 
 ## Procedural labyrinths
 

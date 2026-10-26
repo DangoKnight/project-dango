@@ -7,8 +7,8 @@
 [resource]
 script = ExtResource("Script")
 id = &"steadfast_strike"
-display_name = "Steadfast Strike"
-description = "A determined blunt strike against a single target."
+display_name = "content.abilities.steadfast_strike.name"
+description = "content.abilities.steadfast_strike.description"
 effect = 0
 power = 10
 mana_cost = 3

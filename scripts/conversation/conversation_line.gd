@@ -17,7 +17,7 @@ enum Exit { INSTANT, TO_LEFT, TO_RIGHT, TO_TOP, TO_BOTTOM, FADE }
 @export var speaker: Speaker = Speaker.NARRATOR
 ## Overrides the displayed speaker name, including narration.
 @export var speaker_name: String
-## Supports BBCode formatting, such as [color=red]important text[/color].
+## Dialogue translation key. Its CSV text supports BBCode, such as [color=red]text[/color].
 @export_multiline var text: String
 ## Styles the dialogue body; speaker names keep their usual presentation.
 @export var text_style: TextStyle = TextStyle.NORMAL
@@ -27,7 +27,7 @@ enum Exit { INSTANT, TO_LEFT, TO_RIGHT, TO_TOP, TO_BOTTOM, FADE }
 @export_range(0.0, 30.0, 0.1) var minimum_duration := 0.0
 
 @export_group("Notification")
-## Optional toast at the top of the conversation, independent of the dialogue card.
+## Optional notification translation key, displayed independently of the dialogue card.
 @export_multiline var notification_text: String
 @export_range(0.5, 30.0, 0.1) var notification_duration := 3.0
 @export_group("Reward")

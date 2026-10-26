@@ -30,7 +30,7 @@ func learn_resistance(monster: CharacterState, damage_type: DamageType) -> void:
 	encounter(monster.definition)
 	var label := DamageResistance.display_label(monster.get_resistance(damage_type))
 	entries[monster.definition.id].resistances[damage_type.id] = {
-		"name": damage_type.display_name, "label": label if not label.is_empty() else "Normal"}
+		"name": damage_type.display_name, "label": label if not label.is_empty() else "ui.normal"}
 	changed.emit()
 
 
@@ -42,19 +42,19 @@ func learn_ability(monster: CharacterDefinition, ability: AbilityDefinition) -> 
 
 func describe(monster_id: StringName) -> String:
 	if not entries.has(monster_id):
-		return L10n.text("No information discovered.")
+		return L10n.text("ui.no_information_discovered")
 	var entry := entries[monster_id]
-	var lines := PackedStringArray([L10n.text(entry.definition.display_name), "", L10n.text("DISCOVERED RESISTANCES")])
+	var lines := PackedStringArray([L10n.text(entry.definition.display_name), "", L10n.text("ui.discovered_resistances")])
 	var listed: Array[StringName] = []
 	for damage_type in DAMAGE_TYPES:
 		listed.append(damage_type.id)
 		var resistance: Dictionary = entry.resistances.get(damage_type.id, {})
-		lines.append(L10n.text("%s: %s") % [L10n.text(damage_type.display_name), L10n.text(resistance.get("label", "???"))])
+		lines.append(L10n.text("ui.common.label_value") % [L10n.text(damage_type.display_name), L10n.text(resistance.get("label", "???"))])
 	for type_id in entry.resistances:
 		if type_id not in listed:
 			var resistance: Dictionary = entry.resistances[type_id]
-			lines.append(L10n.text("%s: %s") % [L10n.text(resistance.name), L10n.text(resistance.label)])
-	lines.append(L10n.text("\nOBSERVED ABILITIES"))
+			lines.append(L10n.text("ui.common.label_value") % [L10n.text(resistance.name), L10n.text(resistance.label)])
+	lines.append(L10n.text("ui.observed_abilities"))
 	if entry.abilities.is_empty():
 		lines.append("???")
 	for ability in entry.abilities.values():

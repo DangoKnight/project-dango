@@ -7,8 +7,8 @@
 [resource]
 script = ExtResource("Script")
 id = &"starfall"
-display_name = "Starfall"
-description = "A powerful arcane attack against a single target."
+display_name = "content.abilities.starfall.name"
+description = "content.abilities.starfall.description"
 effect = 0
 power = 15
 mana_cost = 5

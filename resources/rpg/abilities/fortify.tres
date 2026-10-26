@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("Script")
 id = &"fortify"
-display_name = "Fortify"
-description = "Temporarily bolsters an ally's defense."
+display_name = "content.abilities.fortify.name"
+description = "content.abilities.fortify.description"
 effect = 2
 targeting = 1
 status_effect = ExtResource("Status")

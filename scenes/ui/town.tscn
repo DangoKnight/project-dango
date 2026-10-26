@@ -6,20 +6,20 @@
 [ext_resource type="PackedScene" path="res://scenes/world/office_labyrinth.tscn" id="Map"]
 [ext_resource type="Texture2D" path="res://textures/Backgrounds/SafeZones/tinkerer.png" id="Tinkerer"]
 [ext_resource type="PackedScene" path="res://scenes/base/town.tscn" id="Town"]
-[ext_resource type="Texture2D" path="res://textures/NPCs/Station_45B/Barracks/York.png" id="York"]
-[ext_resource type="Texture2D" path="res://textures/NPCs/Station_45B/Tinkerer/Sydney.png" id="Sydney"]
-[ext_resource type="Texture2D" path="res://textures/NPCs/Station_45B/Barterer/Cairo.png" id="Cairo"]
+[ext_resource type="Texture2D" path="res://textures/NPCs/Station_45-B/Barracks/York.png" id="York"]
+[ext_resource type="Texture2D" path="res://textures/NPCs/Station_45-B/Tinkerer/Sydney.png" id="Sydney"]
+[ext_resource type="Texture2D" path="res://textures/NPCs/Station_45-B/Barterer/Cairo.png" id="Cairo"]
 
 [ext_resource type="Script" path="res://scripts/conversation/conversation_event.gd" id="EventScript"]
-[ext_resource type="Resource" path="res://resources/conversations/station_45b_barracks.tres" id="barracksIntro"]
-[ext_resource type="Resource" path="res://resources/conversations/station_45b_tinkerer.tres" id="tinkererIntro"]
-[ext_resource type="Resource" path="res://resources/conversations/station_45b_barterer.tres" id="bartererIntro"]
+[ext_resource type="Resource" path="res://resources/conversations/station_45-B_barracks.tres" id="barracksIntro"]
+[ext_resource type="Resource" path="res://resources/conversations/station_45-B_tinkerer.tres" id="tinkererIntro"]
+[ext_resource type="Resource" path="res://resources/conversations/station_45-B_barterer.tres" id="bartererIntro"]
 
 [ext_resource type="Resource" path="res://resources/conversations/station_departure.tres" id="Departure"]
 
 [node name="StartingTown" unique_id=1644206447 instance=ExtResource("Town")]
 town_id = &"starting_town"
-display_name = "Station 45-B"
+display_name = "ui.station_45_b"
 departure_conversation = ExtResource("Departure")
 background_texture = ExtResource("Background")
 exploration_map = ExtResource("Map")

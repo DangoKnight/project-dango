@@ -6,6 +6,10 @@
 [ext_resource type="Script" uid="uid://cx7f3hlhhevnq" path="res://scripts/rpg/character_class.gd" id="Class"]
 [ext_resource type="Script" uid="uid://ddt764fvrnnt0" path="res://scripts/rpg/stats.gd" id="Stats"]
 
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/sword.tres" id="sword"]
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/gun.tres" id="gun"]
+[ext_resource type="Resource" path="res://resources/rpg/weapon_types/crossbow.tres" id="crossbow"]
+
 [sub_resource type="Resource" id="Base"]
 script = ExtResource("Stats")
 max_hp = 10.0
@@ -16,18 +20,19 @@ speed = 1.0
 
 [sub_resource type="Resource" id="Growth"]
 script = ExtResource("Stats")
-max_hp = 2.0
-max_mp = 1.0
-strength = 1.0
-defense = 0.5
-mental_acuity = 1.0
-mental_resilience = 0.5
-speed = 1.0
+max_hp = 3.0
+max_mp = 2.0
+strength = 2.0
+defense = 1.5
+mental_acuity = 2.0
+mental_resilience = 1.5
+speed = 2.0
 
 [resource]
 script = ExtResource("Class")
 id = &"explorer"
-display_name = "Explorer"
-description = "A versatile starting class with balanced growth and no additional weapon restrictions."
+display_name = "content.classes.explorer.name"
+description = "content.classes.explorer.description"
 base_stats = SubResource("Base")
 stat_growth = SubResource("Growth")
+allowed_weapon_types = Array[ExtResource("1_5ymyr")]([ExtResource("sword"), ExtResource("gun"), ExtResource("crossbow")])

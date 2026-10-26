@@ -8,7 +8,7 @@
 [resource]
 script = ExtResource("Gear")
 id = &"spell_medallion"
-display_name = "Spell Medallion"
-description = "Grants Ember and Mend while equipped. Normal MP costs apply."
+display_name = "content.gear.spell_medallion.name"
+description = "content.gear.spell_medallion.description"
 kind = 1
 spells = Array[ExtResource("Ability")]([ExtResource("Ember"), ExtResource("Mend")])

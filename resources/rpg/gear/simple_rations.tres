@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="GearDefinition" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="GearDefinition" format=3 uid="uid://dukrby1hhgohf"]
 
-[ext_resource type="Script" path="res://scripts/rpg/gear.gd" id="Gear"]
-[ext_resource type="Script" path="res://scripts/rpg/consumable_effect.gd" id="Effect"]
+[ext_resource type="Script" uid="uid://dldlenrox4krk" path="res://scripts/rpg/damage_resistance.gd" id="2_8qkyx"]
+[ext_resource type="Script" uid="uid://cg6jmyd413emo" path="res://scripts/rpg/ability.gd" id="4_irn8c"]
+[ext_resource type="Script" uid="uid://ogqaxvo5ja6q" path="res://scripts/rpg/consumable_effect.gd" id="Effect"]
+[ext_resource type="Script" uid="uid://dnr70rv6iw8r1" path="res://scripts/rpg/gear.gd" id="Gear"]
 
 [sub_resource type="Resource" id="Heal"]
 script = ExtResource("Effect")
@@ -10,8 +12,8 @@ amount = 10
 [resource]
 script = ExtResource("Gear")
 id = &"simple_rations"
-display_name = "Simple Rations"
-description = "Restores 10 HP to one ally. Two uses."
+display_name = "content.gear.simple_rations.name"
+description = "content.gear.simple_rations.description"
 hidden_value = 5
 kind = 2
 max_uses = 2

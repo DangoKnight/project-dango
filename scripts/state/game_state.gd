@@ -18,6 +18,7 @@ var current_map_scene: PackedScene
 var last_safe_zone_scene: PackedScene
 var labyrinth_entries: Dictionary[String, StringName] = {}
 var labyrinth_discoveries: Dictionary[String, Dictionary] = {}
+var labyrinth_maps: Dictionary[String, LabyrinthMapSnapshot] = {}
 var highest_labyrinth_completion := 0.0
 var completed_conversations: Dictionary[StringName, bool] = {}
 var flags: Dictionary[StringName, Variant] = {}
@@ -37,6 +38,7 @@ func reset() -> void:
 	last_safe_zone_scene = null
 	labyrinth_entries.clear()
 	labyrinth_discoveries.clear()
+	labyrinth_maps.clear()
 	highest_labyrinth_completion = 0.0
 	completed_conversations.clear()
 	flags.clear()

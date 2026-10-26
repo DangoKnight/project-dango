@@ -39,7 +39,8 @@ func run() -> void:
 	book.command("Map").pressed.emit()
 	check(book.transitioning and book.current_page == "index", "Clicking an option starts a transition before replacing contents")
 	await create_timer(0.08).timeout
-	check(book.left_page.modulate.a > 0 and book.left_page.modulate.a < 1 and book.right_page.modulate.a > 0 and book.right_page.modulate.a < 1, "Both pages fade all their options together")
+	# A slow frame can sample an endpoint; both pages must still stay in sync.
+	check(is_equal_approx(book.left_page.modulate.a, book.right_page.modulate.a) and book.left_page.modulate.a >= 0 and book.left_page.modulate.a <= 1, "Both pages fade all their options together")
 	book.command("Options").pressed.emit()
 	await create_timer(0.35).timeout
 	check(book.current_page == "map" and not book.transitioning, "Repeated clicks cannot replace the selected page during its fade")
@@ -49,9 +50,9 @@ func run() -> void:
 	var chart: Control = book.widget("MapCanvas")
 	var landmark: LabyrinthLandmark = chart.visible_landmarks()[0]
 	var map_label: Label = chart._landmark_labels[landmark.id]
-	check(map_label.text == landmark.display_name and chart.is_ancestor_of(map_label), "Discovered landmark names appear on the map")
+	check(map_label.text == L10n.text(landmark.display_name) and chart.is_ancestor_of(map_label), "Discovered landmark names appear on the map")
 	for label in book.left_page.find_children("*", "Label", true, false):
-		check(label.text != landmark.display_name, "Landmark names are omitted from the stats page")
+		check(label.text != L10n.text(landmark.display_name), "Landmark names are omitted from the stats page")
 	for label in book.right_page.find_children("*", "Label", true, false):
 		check(not "Square:" in label.text and not "Arrow:" in label.text, "Map has no explanatory legend")
 	var expected := 100.0 * map.walked_cells.size() / map.layout.passages.size()
@@ -61,13 +62,38 @@ func run() -> void:
 	check(book.right_page.is_ancestor_of(book.widget("MonsterDetails")) and book.widget("MonsterDetails").text.contains("Pierce: ???"), "Monster notes fill the right page and preserve undiscovered information")
 	book.widget("Monsters").item_selected.emit(1)
 	check(book.widget("MonsterDetails").text.contains("Ethereal Orb"), "Selecting a monster changes the right page")
+	await book.open_page("index")
+	check(book.command("Lessons").text == "Cairo's lessons", "Book offers Cairo’s lessons")
+	book.command("Lessons").pressed.emit()
+	while book.transitioning:
+		await process_frame
+	check(book.current_page == "lessons" and book.widget("Lessons").item_count == PauseBook.LESSONS.size(), "Cairo lessons open with a list of topics")
+	book.widget("Lessons").item_selected.emit(1)
+	check(book.widget("LessonDetails").text == L10n.text("ui.lessons.weapons.text"), "Selecting a lesson changes the facing page")
+	for index in PauseBook.LESSONS.size():
+		book.widget("Lessons").item_selected.emit(index)
+		check(book.widget("LessonDetails").text == L10n.text(PauseBook.LESSONS[index][1]), "Each lesson displays its localized body")
+		check(not book.widget("LessonDetails").text.begins_with("ui."), "Lessons never show untranslated keys")
+	var lesson_titles := PackedStringArray()
+	for index in book.widget("Lessons").item_count:
+		lesson_titles.append(book.widget("Lessons").get_item_text(index))
+	for title in ["Damage types", "Weapons I", "Weapons II", "Physical vs Mental", "Commissions", "Sleeping", "Observing", "Exploration completion"]:
+		check(title in lesson_titles, "Requested lesson exists: " + title)
+
+	for title in ["Stay alert", "Planning a round", "Take frequent rests", "Stay well supplied"]:
+		check(title not in lesson_titles, "Removed lesson is absent: " + title)
+	book.widget("Lessons").item_selected.emit(2)
+	for weapon in ["Guns", "Crossbows", "Daggers", "Amplifiers", "Swords", "Hammers", "Spears"]:
+		check(book.widget("LessonDetails").text.contains(weapon), "Weapons II covers " + weapon)
+	for removed in ["Axes", "Staves", "Wands"]:
+		check(not book.widget("LessonDetails").text.contains(removed), "Removed family is absent from Weapons II")
 	await book.open_page("options")
 	var original_volume := AudioServer.get_bus_volume_linear(0)
 	book.widget("Volume").value = 0.37
 	check(is_equal_approx(AudioServer.get_bus_volume_linear(0), 0.37), "Book volume control changes audio settings")
 	AudioServer.set_bus_volume_linear(0, original_volume)
 	check(book.right_page.is_ancestor_of(book.widget("Fullscreen")), "Display controls occupy the right page")
-	for page in ["index", "map", "monsters", "options"]:
+	for page in ["index", "map", "monsters", "characters", "options", "lessons"]:
 		await book.open_page(page)
 		for dimensions in [Vector2i(800, 450), Vector2i(900, 1200), Vector2i(2560, 1080)]:
 			root.size = dimensions

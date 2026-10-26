@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("Script")
 id = &"overprotective_sister"
-display_name = "Overprotective sister"
+display_name = "content.passives.overprotective_sister.name"
 condition = 1
 health_threshold = 0.5
 ally_id = &"usami"

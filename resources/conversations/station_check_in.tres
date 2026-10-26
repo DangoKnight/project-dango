@@ -11,7 +11,7 @@
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 speaker = 1
-text = "Usami! Are you ready?!"
+text = "dialogue.station_check_in.1.text"
 left_entrance = 1
 
 [sub_resource type="Resource" id="2"]
@@ -19,7 +19,7 @@ script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Usami")
 speaker = 2
-text = "I'm ready, Kurako-chan! This is so exciting!"
+text = "dialogue.station_check_in.2.text"
 right_entrance = 2
 
 [sub_resource type="Resource" id="3"]
@@ -27,14 +27,14 @@ script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Usami")
 speaker = 1
-text = "Just think of all the people waiting to be pranked! This is gonna be so much fun!"
+text = "dialogue.station_check_in.3.text"
 
 [sub_resource type="Resource" id="4"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Takane")
 speaker = 2
-text = "This is not a game, Kurako. It is very dangerous out there. Someone could get seriously hurt."
+text = "dialogue.station_check_in.4.text"
 right_entrance = 2
 right_exit = 2
 
@@ -43,21 +43,21 @@ script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Takane")
 speaker = 2
-text = "It should go without saying. If something bad happens I'm taking Usami and running back to the Station."
+text = "dialogue.station_check_in.5.text"
 
 [sub_resource type="Resource" id="6"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Takane")
 speaker = 1
-text = "W-What about me?!"
+text = "dialogue.station_check_in.6.text"
 
 [sub_resource type="Resource" id="7"]
 script = ExtResource("Line")
 left_character = ExtResource("Kurako")
 right_character = ExtResource("Usami")
 speaker = 2
-text = "Don't worry, Kurako-chan! Takane-chan is a really sweet girl. There's no way she would ever leave you behind! Right, Takane-chan?"
+text = "dialogue.station_check_in.7.text"
 right_entrance = 2
 right_exit = 2
 
@@ -66,7 +66,7 @@ script = ExtResource("Line")
 left_character = ExtResource("Takane")
 right_character = ExtResource("Usami")
 speaker = 1
-text = "..."
+text = "dialogue.station_check_in.8.text"
 left_entrance = 1
 left_exit = 1
 
@@ -75,7 +75,7 @@ script = ExtResource("Line")
 left_character = ExtResource("Takane")
 right_character = ExtResource("Kurako")
 speaker = 2
-text = "S-She's not saying yes..."
+text = "dialogue.station_check_in.9.text"
 right_entrance = 2
 right_exit = 2
 
@@ -83,7 +83,7 @@ right_exit = 2
 script = ExtResource("Line")
 right_character = ExtResource("Usami")
 speaker = 2
-text = "[color=red]We should let everyone know we're on our way out[/color]."
+text = "dialogue.station_check_in.beforeleaving.text"
 right_entrance = 2
 left_exit = 1
 right_exit = 2
@@ -98,7 +98,7 @@ right_exit = 2
 script = ExtResource("Line")
 right_character = ExtResource("Koumi")
 speaker = 2
-text = "..."
+text = "dialogue.station_check_in.11.text"
 right_entrance = 2
 
 [sub_resource type="Resource" id="12"]

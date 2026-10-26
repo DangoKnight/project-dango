@@ -7,7 +7,7 @@ Conversations are reusable Godot resources. They overlay the current scene, show
 1. In the FileSystem dock, create a new **ConversationEvent** resource under `resources/conversations/` and save it as a `.tres` file.
 2. Expand **Lines**, set its size, and create a **ConversationLine** resource for each entry.
 3. Assign **Left Character** and/or **Right Character** from `resources/rpg/characters/`. Leaving a side empty hides it. Each line defines both slots, so retain the character assignments on subsequent lines if they should stay visible.
-4. Select **Speaker** (Narrator, Left, or Right) and enter **Text**. Speaking portraits remain bright; the other portrait dims. **Speaker Name**, the side-specific names, and portrait overrides support narration, expressions, and NPCs without a roster resource. Portraits fit their slots without using battle-specific offsets.
+4. Select **Speaker** (Narrator, Left, or Right) and assign a translation key to **Text**. Add or edit its wording in `localization/dialogue.csv` (see [translation tables](localization.md)). Speaking portraits remain bright; the other portrait dims. **Speaker Name**, the side-specific names, and portrait overrides support narration, expressions, and NPCs without a roster resource. Portraits fit their slots without using battle-specific offsets.
 5. Set **Characters Per Second** on the event; zero displays text immediately. Set a unique **ID** and enable **Once Per Game** if the event must only finish once per new game.
 
 `resources/conversations/station_check_in.tres` is the opening conversation with Usami and Takane at Station 45-B. New Game reveals the Safe Zone with a fade from black, then starts the conversation once the fade finishes. Safe Zone action buttons are disabled before the town is presented and remain disabled until the conversation finishes. Returning to town does not replay the opening; starting another New Game does.
@@ -29,6 +29,14 @@ For example, on the line where Takane replaces Usami in slot 2, assign Takane to
 To preview an event, open `scenes/ui/conversation_preview.tscn`, select its root, assign **Event**, and press **F6** to run that scene. The preview initially uses the example event. Close the preview window after the conversation ends.
 
 Click, Enter, or Space reveals the rest of a line, then advances on the next press. The last line closes the event. Escape and Tab do not open other menus during a conversation. Long dialogue can scroll inside the text area. The layout uses anchors and supports window resizing.
+
+**Skip dialogue** (top right) ends the current conversation immediately, including
+automatic steps and forced holds. Tab can focus the button; Enter or Space activates
+it. Skipping grants every remaining item reward and recruits any characters specified
+by the event before normal completion callbacks run. Rewards already received are
+not duplicated. Once-per-game conversations are marked completed, and queued events
+still play afterward. Starting a new game cancels conversations without awarding
+their unclaimed rewards.
 
 ## Triggering in town, exploration, or battle
 
@@ -64,8 +72,8 @@ The overlay scene is `scenes/ui/conversation.tscn`. Edit its portrait anchors, d
 ## Module introductions
 
 Each Town can assign **Module Conversations**, keyed by `Barracks`, `Tinkerer`, and
-`Barterer`. Station 45-B uses `station_45b_barracks.tres`, `station_45b_tinkerer.tres`,
-and `station_45b_barterer.tres` in `resources/conversations/`. Edit their dialogue,
+`Barterer`. Station 45-B uses `station_45-B_barracks.tres`, `station_45-B_tinkerer.tres`,
+and `station_45-B_barterer.tres` in `resources/conversations/`. Edit their dialogue,
 portraits, and entrance/exit settings like other conversation events. Each introduction
 plays before the module UI is instantiated, then opens that module on completion.
 Completion uses GameState conversation history, so revisits skip it and New Game resets it.
@@ -73,7 +81,7 @@ Use distinct event IDs for different NPC introductions at other Safe Zones.
 
 ## Dialogue formatting
 
-Dialogue **Text** supports BBCode. Wrap just the words to highlight:
+The translated English and other language cells for dialogue **Text** support BBCode. Put formatting in the CSV wording, keeping the resource field as its stable key. Wrap just the words to highlight:
 `[color=red]Resting will help you grow stronger[/color]`. Hex colors work too,
 such as `[color=#ff6666]text[/color]`. Close each color tag with `[/color]`
 to restore the normal color. Keep these tags in translated text; the typing
@@ -81,15 +89,15 @@ effect counts the displayed characters rather than the formatting tags.
 
 For a whole line, choose **Text Style → Bold Italic** in the ConversationLine
 Inspector. Normal, Bold, and Italic are also available. For example, set Koumi as
-the speaker, enter `*nods*` as Text, and choose Bold Italic. Her name stays in the
+the speaker, set the English cell for her line to `*nods*`, and choose Bold Italic. Her name stays in the
 speaker heading while the action appears in bold italic below it.
 
-For only part of a line, use `[b][i]*nods*[/i][/b]` in Text. This can be combined
+For only part of a line, use `[b][i]*nods*[/i][/b]` in its CSV wording. This can be combined
 with color tags. Translation happens before the whole-line style is applied.
 
 ## Notifications and item rewards
 
-Each ConversationLine has **Notification Text** and **Notification Duration**. Text
+Each ConversationLine has a **Notification Text** translation key and **Notification Duration**. Its translated text
 appears in a subtly shaded translucent card at the top, fades in and out, and does not replace
 the dialogue card. For a notification-only step, leave Text empty, enable Auto
 Advance, and set Minimum Duration to at least the notification duration.
@@ -101,12 +109,12 @@ to prevent repeat rewards on revisits.
 
 **Recruit Character** adds a character to the roster when that line starts. They
 join the active party if there is a free slot, or reserve if all four slots are
-occupied. Repeated recruitment keeps the existing character. The second-to-last
+occupied. Repeated recruitment keeps the existing character. The recruitment
 step in `station_departure.tres` recruits Koumi and displays her joining notice.
 
-`station_45b_barracks.tres` demonstrates a three-second receipt notification:
+`station_45-B_barracks.tres` demonstrates a three-second receipt notification:
 York gives four Simple Rations. Each ration heals one ally for 10 HP and has two
-uses. Edit the receipt line to change its message, duration, item, or quantity.
+uses. Edit its message in `localization/dialogue.csv`; edit the receipt line to change its key, duration, item, or quantity.
 
 ## First departure
 

@@ -7,8 +7,8 @@
 script = ExtResource("Ability")
 id = &"i_am_scary"
 battle_animation = "i_am_scary"
-display_name = "I am scary!"
-description = "Temporarily reduces one enemy row's strength and mental acuity."
+display_name = "content.abilities.i_am_scary.name"
+description = "content.abilities.i_am_scary.description"
 effect = 2
 targeting = 6
 status_effect = ExtResource("Status")

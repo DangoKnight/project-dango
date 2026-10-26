@@ -55,6 +55,9 @@ func run() -> void:
 	battle._animate_action(action, [target], {"success": true, "missed": false})
 	check(battle.effects.is_playing(), "Successful attacks start a pre-made animation")
 	var sprite: AnimatedSprite2D = battle.effects.active[0].sprite
+	var reduced := sprite.sprite_frames.get_frame_texture(sprite.animation, 0)
+	var source := BattleEffects.FRAMES.get_frame_texture(sprite.animation, 0)
+	check(reduced.get_size() == source.get_size() / 2.0, "Enemy effect frames have half the source resolution")
 	await create_timer(0.07).timeout
 	check(sprite.frame > 0, "Frame animation advances")
 	paused = true
@@ -72,6 +75,7 @@ func run() -> void:
 	var card := battle._effect_target(actor)
 	battle.effects.play_effect("heal", card, 0.2)
 	sprite = battle.effects.active[0].sprite
+	check(sprite.sprite_frames == BattleEffects.FRAMES, "Friendly effects retain their source resolution")
 	var card_center := battle.effects.get_global_transform().affine_inverse() * card.get_global_rect().get_center()
 	check(sprite.position.is_equal_approx(card_center), "Friendly animations are centered directly over their character card")
 	check(battle.effects.get_index() > battle.party_cards.get_index(), "Effects render above character cards")

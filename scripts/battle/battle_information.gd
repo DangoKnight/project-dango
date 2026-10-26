@@ -84,16 +84,16 @@ func _complete_slide() -> void:
 
 func show_side(enemies: bool) -> void:
 	showing_enemies = enemies
-	enemy_tab.text = L10n.text("Friendlies") if enemies else L10n.text("Hostiles")
+	enemy_tab.text = L10n.text("ui.friendlies") if enemies else L10n.text("ui.hostiles")
 	members.clear()
 	var units: Array[CharacterState] = session.enemies if enemies else session.party
 	for index in range(units.size()):
 		var unit := units[index]
 		var label := L10n.text(unit.definition.display_name)
 		if enemies:
-			label += L10n.text(" %d") % (index + 1)
+			label += L10n.text("ui.d") % (index + 1)
 		if not unit.is_alive():
-			label += L10n.text(" (defeated)")
+			label += L10n.text("ui.defeated")
 		members.add_item(label)
 	var selected: int = clampi(_selected[int(enemies)], 0, units.size() - 1)
 	members.select(selected)

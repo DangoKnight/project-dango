@@ -44,7 +44,7 @@ func resolve_round(session: BattleSession) -> void:
 
 func press_command(view: CombatScreen, title: String) -> void:
 	for child in view.actions.get_children() + view.special_actions.get_children() + [view.get_node("Confirmation/Layout/Execute"), view.get_node("Confirmation/Layout/Return")]:
-		if child is Button and child.text == title:
+		if child is Button and L10n.text(child.text) == title:
 			child.pressed.emit()
 			return
 	check(false, "Missing combat command: " + title)
@@ -151,7 +151,7 @@ func run() -> void:
 	for index in range(2, 6):
 		check(not view.enemy_slots[index].visible, "Unused enemy spots should be hidden")
 	for index in range(2, 4):
-		check(view.party_buttons[index].disabled and view.party_buttons[index].get_node("Name").text == "Empty" and view.party_buttons[index].get_node("HP").value == 0, "Empty character slots should remain visible, disabled, and empty")
+		check(view.party_buttons[index].disabled and L10n.text(view.party_buttons[index].get_node("Name").text) == "Empty" and view.party_buttons[index].get_node("HP").value == 0, "Empty character slots should remain visible, disabled, and empty")
 	check(view.party_buttons[0].get_node("HP").value == 80 and view.party_buttons[0].get_node("HP").max_value == 80, "Party HP bars should show current and maximum HP")
 	check(view.party_buttons[1].get_node("SP").value == 35 and view.party_buttons[1].get_node("SP").max_value == 35, "Party SP bars should use the existing ability-point pool")
 	view.session.party[1].set_level(2)
@@ -167,7 +167,7 @@ func run() -> void:
 	check(view._panel_targets[view.portrait.name] and view.session.active_character().definition.display_name == "Test Caster", "Next character should display their portrait")
 	check(view.portrait_image.scale == Vector2.ONE and is_zero_approx(view.portrait_image.anchor_left) and is_zero_approx(view.portrait_image.anchor_top), "Switching characters should reset portrait adjustments")
 	check(view.portrait_image.stretch_mode == view._portrait_default_stretch, "Scene-default fit mode should reset for the next character")
-	press_command(view, "Special")
+	press_command(view, "Abilities")
 	press_command(view, "Mend (4 SP)")
 	check(not view.party_buttons[0].disabled, "Party cards should remain selectable ally targets while the portrait hides")
 	view.party_buttons[0].pressed.emit()
@@ -293,7 +293,7 @@ func run() -> void:
 	press_command(view, "Return to Test Frontliner")
 	check(view.session.active_character() == game.state.party[0] and view.session.planned_actions.is_empty(), "Return reopens the previous character choice")
 
-	press_command(view, "Special")
+	press_command(view, "Abilities")
 	check(view._special_open and view._panel_targets[view.portrait.name], "Special expands skills while retaining the portrait")
 	view.back.pressed.emit()
 	check(not view._special_open, "Back closes Special before editing choices")

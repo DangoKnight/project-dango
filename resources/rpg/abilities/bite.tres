@@ -7,8 +7,8 @@
 [resource]
 script = ExtResource("Script")
 id = &"bite"
-display_name = "Bite"
-description = "A sharp bite from a labyrinth rat."
+display_name = "content.abilities.bite.name"
+description = "content.abilities.bite.description"
 effect = 0
 power = 5
 mana_cost = 0

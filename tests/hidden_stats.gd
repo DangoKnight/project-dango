@@ -26,14 +26,14 @@ func run() -> void:
 	# These checks exercise module UI after its introductory dialogue.
 	for introduction in game.ui.get_child(0).module_conversations.values():
 		game.state.completed_conversations[introduction.id] = true
-	game.show_characters()
+	await game.show_characters()
 	var characters = game.ui.get_child(0)
-	var damage_types: Array[DamageType] = characters.damage_types
+	var damage_types: Array[DamageType] = MonsterCompendium.DAMAGE_TYPES
 	for index in range(game.state.roster.size()):
 		characters._show_character(index)
-		check_hidden(characters.details.text, "Character information")
+		check_hidden(characters.widget("CharacterDetails").text, "Character information")
 		for ability in game.state.roster[index].get_abilities():
-			check_hidden(ability.description, "Ability tooltip")
+			check_hidden(L10n.text(ability.description), "Ability tooltip")
 	game.show_location("Barracks")
 	var barracks = game.ui.get_child(0).module_view
 	barracks.open_party()
@@ -48,12 +48,13 @@ func run() -> void:
 	for stat in RPGStats.COMBAT_NAMES:
 		gear.stat_modifiers[stat] = 987.123
 	var item: GearInstance = game.state.gear_inventory.add(gear)
-	game.show_equipment()
-	var equipment = game.ui.get_child(0)
-	equipment._select(item)
-	check_hidden(equipment.details.text, "Equipment details")
-	check(not equipment.details.text.contains("987"), "Hidden equipment modifiers do not leak their values")
-	check(equipment.details.text.contains("Strength: +3.0"), "Primary equipment modifiers remain visible")
+	await game.show_equipment()
+	var equipment := game.ui.get_child(0) as PauseBook
+	equipment.widget("EquipmentSlots").item_selected.emit(1)
+	var details := equipment._gear_description(item)
+	check_hidden(details, "Equipment details")
+	check(not details.contains("987"), "Hidden equipment modifiers do not leak their values")
+	check(details.contains("Strength: +3.0"), "Primary equipment modifiers remain visible")
 	game.show_town()
 	game.explore()
 	game.start_combat(false)

@@ -42,7 +42,7 @@ func _refresh() -> void:
 			_add_slot(reserve_slots, member, false, reserve_slots.get_child_count())
 	if reserve_slots.get_child_count() == 0:
 		_add_slot(reserve_slots, null, false, 0)
-	$PartyPanel/Buttons/Content/Party/Title.text = L10n.text("Party (%d / 4)") % party.size()
+	$PartyPanel/Buttons/Content/Party/Title.text = L10n.text("ui.party_d_4") % party.size()
 	select_member(selected_member)
 
 
@@ -53,7 +53,7 @@ func _add_slot(container: VBoxContainer, member: CharacterState, active: bool, i
 	button.member = member
 	button.party_slot = active
 	button.slot_index = index
-	button.text = (L10n.text("%d. %s") % [index + 1, L10n.text(member.definition.display_name)] if active else L10n.text(member.definition.display_name)) if member != null else (L10n.text("%d. Empty") % [index + 1] if active else L10n.text("No reserves"))
+	button.text = (L10n.text("ui.d_s") % [index + 1, L10n.text(member.definition.display_name)] if active else L10n.text(member.definition.display_name)) if member != null else (L10n.text("ui.d_empty") % [index + 1] if active else L10n.text("ui.no_reserves"))
 	button.tooltip_text = L10n.text(member.definition.title) if member != null else ""
 	button.clip_text = true
 	button.toggle_mode = true
@@ -78,15 +78,15 @@ func select_member(member: CharacterState) -> void:
 	$PartyPanel/Buttons/Content/Character/Name.text = L10n.text(character.definition.display_name)
 	$PartyPanel/Buttons/Content/Character/Title.text = L10n.text(character.definition.title)
 	portrait.texture = character.definition.portrait if character.definition.portrait != null else PortraitPresentation.FALLBACK
-	var class_text := L10n.text(character.character_class.display_name) if character.character_class != null else L10n.text("None")
+	var class_text := L10n.text(character.character_class.display_name) if character.character_class != null else L10n.text("ui.none")
 	var lines := PackedStringArray([
-		L10n.text("Level %d · %s") % [character.level, class_text],
-		L10n.text("HP %d / %d") % [character.current_hp, character.get_stat(&"max_hp")],
-		L10n.text("SP %d / %d") % [character.current_mp, character.get_stat(&"max_mp")],
+		L10n.text("ui.level_d_s_2") % [character.level, class_text],
+		L10n.text("ui.hp_d_d_2") % [character.current_hp, character.get_stat(&"max_hp")],
+		L10n.text("ui.sp_d_d_2") % [character.current_mp, character.get_stat(&"max_mp")],
 	])
 	for stat in RPGStats.NAMES:
 		if stat not in [&"max_hp", &"max_mp"]:
-			lines.append(L10n.text("%s: %d") % [RPGStats.display_name(stat), character.get_stat(stat)])
+			lines.append(L10n.text("ui.common.stat_value") % [RPGStats.display_name(stat), character.get_stat(stat)])
 	stats.text = "\n".join(lines)
 
 
@@ -101,7 +101,7 @@ func apply_rest(exploration_multiplier: float = 1.0) -> Array[Dictionary]:
 	for member in roster:
 		member.apply_stored_experience(reports, exploration_multiplier)
 		member.restore()
-	$Panel/Buttons/Feedback.text = L10n.text("Everyone is rested. HP and SP fully restored.")
+	$Panel/Buttons/Feedback.text = L10n.text("ui.everyone_is_rested_hp_and_sp_fully_restored")
 	select_member(selected_member)
 	return reports
 
@@ -163,21 +163,21 @@ func drop_character(data: Variant, active: bool, index: int) -> bool:
 	var member: CharacterState = data.character
 	if not active:
 		party.erase(member)
-		feedback.text = L10n.text("%s is staying in reserve.") % L10n.text(member.definition.display_name)
+		feedback.text = L10n.text("ui.party.staying_in_reserve") % L10n.text(member.definition.display_name)
 	elif member in party:
 		var source := party.find(member)
 		var destination := mini(index, party.size() - 1)
 		var other := party[destination]
 		party[destination] = member
 		party[source] = other
-		feedback.text = L10n.text("Party order updated.")
+		feedback.text = L10n.text("ui.party_order_updated")
 	elif index < party.size():
 		# A reserve can replace an occupied slot even when the party is full.
 		party[index] = member
-		feedback.text = L10n.text("%s joined the active party.") % L10n.text(member.definition.display_name)
+		feedback.text = L10n.text("ui.party.joined_active") % L10n.text(member.definition.display_name)
 	else:
 		party.append(member)
-		feedback.text = L10n.text("%s joined the active party.") % L10n.text(member.definition.display_name)
+		feedback.text = L10n.text("ui.party.joined_active") % L10n.text(member.definition.display_name)
 	selected_member = member
 	_refresh()
 	return true

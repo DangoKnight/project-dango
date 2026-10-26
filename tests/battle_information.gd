@@ -40,11 +40,11 @@ func run() -> void:
 	await create_timer(panel.slide_duration + 0.05).timeout
 	check(panel.details.text.contains("Usami") and panel.details.text.contains("Jolly cheer"), "Own character details and skills are available")
 	check(panel.details.text.contains("RESISTANCES") and panel.details.text.contains("Mental Acuity"), "Information includes stats and all resistances")
-	check(not panel.details.text.contains(battle.session.party[0].definition.description), "Battle information omits character description")
+	check(not panel.details.text.contains(L10n.text(battle.session.party[0].definition.description)), "Battle information omits character description")
 	panel.enemy_tab.pressed.emit()
 	check(panel.enemy_tab.text == "Friendlies", "Hostile view offers return to Friendlies")
 	check(panel.showing_enemies and panel.members.item_count == battle.session.enemies.size(), "Opposite tab lists all enemies")
-	check(panel.details.text.contains(battle.session.enemies[0].definition.display_name) and panel.details.text.contains("Pierce: ???") and not panel.details.text.contains("Strength"), "Hostiles show only discovered compendium information")
+	check(panel.details.text.contains(L10n.text(battle.session.enemies[0].definition.display_name)) and panel.details.text.contains("Pierce: ???") and not panel.details.text.contains("Strength"), "Hostiles show only discovered compendium information")
 	for hidden in ["HP", "MP", "SP", "STATS", "Level", "Bite"]:
 		check(not panel.details.text.contains(hidden), "Undiscovered hostile information stays hidden: " + hidden)
 	panel.enemy_tab.pressed.emit()
@@ -82,7 +82,10 @@ func run() -> void:
 	await create_timer(0.2).timeout
 	check(panel.visible and battle._messages.size() == messages and battle.session._queue_index == queue_index, "Information pauses queued combat actions")
 	panel.closed.emit()
-	await create_timer(0.8).timeout
+	for frame in range(500):
+		if battle.session.round_number == 2:
+			break
+		await create_timer(0.01).timeout
 	check(battle.session.round_number == 2, "Closing information resumes round resolution")
 	battle.set_intro_playing(true)
 	press_tab()

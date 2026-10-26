@@ -6,4 +6,4 @@
 [resource]
 script = ExtResource("Script")
 id = &"slash"
-display_name = "Slash"
+display_name = "content.damage_types.slash.name"

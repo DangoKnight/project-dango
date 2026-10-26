@@ -50,7 +50,7 @@ func run() -> void:
 	session.select_target(enemy)
 	check(knowledge.entries[&"rat"].resistances.is_empty(), "Planning does not reveal knowledge")
 	resolve(session)
-	check(knowledge.entries[&"rat"].resistances[BLUNT.id].label == "Normal", "Landing a basic attack discovers normal affinity")
+	check(L10n.text(knowledge.entries[&"rat"].resistances[BLUNT.id].label) == "Normal", "Landing a basic attack discovers normal affinity")
 	check(knowledge.entries[&"rat"].abilities.has(bite.id), "Enemy ability execution reveals the ability")
 	for label in ["HP", "SP", "MP", "Strength", "Speed", "Level", "STATS", "1000", "30"]:
 		check(not knowledge.describe(&"rat").contains(label), "Compendium excludes hidden monster detail: " + label)
@@ -71,7 +71,7 @@ func run() -> void:
 	session.choose_ability(miss)
 	session.select_target(enemy)
 	resolve(session)
-	check(knowledge.entries[&"rat"].resistances[FIRE.id].label == "Immune", "Zero-damage immune hits still reveal affinity")
+	check(L10n.text(knowledge.entries[&"rat"].resistances[FIRE.id].label) == "Immune", "Zero-damage immune hits still reveal affinity")
 	var affinity_monster := unit(&"affinities")
 	var affinity := DamageResistance.new()
 	affinity.damage_type = FIRE
@@ -81,7 +81,7 @@ func run() -> void:
 	for index in range(amounts.size()):
 		affinity.amount = amounts[index]
 		knowledge.learn_resistance(affinity_monster, FIRE)
-		check(knowledge.entries[&"affinities"].resistances[FIRE.id].label == labels[index], "Compendium uses qualitative affinity: " + labels[index])
+		check(L10n.text(knowledge.entries[&"affinities"].resistances[FIRE.id].label) == labels[index], "Compendium uses qualitative affinity: " + labels[index])
 	knowledge.entries.erase(&"affinities")
 	# Group attacks must discover every monster actually hit, sharing species knowledge.
 	var orb := unit(&"orb")
@@ -94,7 +94,7 @@ func run() -> void:
 	session.choose_ability(group)
 	session.select_target(orb)
 	resolve(session)
-	check(knowledge.entries.size() == 2 and knowledge.entries[&"orb"].resistances[FIRE.id].label == "Normal", "Group hits reveal affinities for each species across encounters")
+	check(knowledge.entries.size() == 2 and L10n.text(knowledge.entries[&"orb"].resistances[FIRE.id].label) == "Normal", "Group hits reveal affinities for each species across encounters")
 	check(knowledge.entries[&"rat"].abilities.has(bite.id), "Previously observed abilities persist across fights")
 	# Consumables also reveal their damage type, even if the hit defeats the monster.
 	var gear := GearDefinition.new()

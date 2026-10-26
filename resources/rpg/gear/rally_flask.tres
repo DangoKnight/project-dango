@@ -18,8 +18,8 @@ status = ExtResource("Rally")
 [resource]
 script = ExtResource("Gear")
 id = &"rally_flask"
-display_name = "Rally Flask"
-description = "Heals the living party for 18 HP and grants +4 strength for three turns. Three total uses."
+display_name = "content.gear.rally_flask.name"
+description = "content.gear.rally_flask.description"
 kind = 2
 max_uses = 3
 effects = Array[ExtResource("Effect")]([SubResource("Heal"), SubResource("Buff")])

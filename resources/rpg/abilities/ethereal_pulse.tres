@@ -7,8 +7,8 @@
 [resource]
 script = ExtResource("Script")
 id = &"ethereal_pulse"
-display_name = "Ethereal Pulse"
-description = "A surge of unsettling energy from an ethereal orb."
+display_name = "content.abilities.ethereal_pulse.name"
+description = "content.abilities.ethereal_pulse.description"
 effect = 0
 power = 8
 mana_cost = 3

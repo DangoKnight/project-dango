@@ -30,7 +30,7 @@ func run() -> void:
 	var types: Array[DamageType] = [slash, fire]
 	for amount in cases:
 		var expected: String = cases[amount]
-		check(DamageResistance.display_label(amount) == expected, "Affinity boundary: " + str(amount))
+		check(L10n.text(DamageResistance.display_label(amount)) == expected, "Affinity boundary: " + str(amount))
 		resistance.amount = amount
 		for include_description in [true, false]:
 			var text := CharacterInformation.describe(unit, types, include_description)

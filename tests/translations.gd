@@ -30,14 +30,18 @@ func run() -> void:
 				continue
 			check(row.size() == 2 and not row[0].strip_edges().is_empty(), "Valid translation row")
 			check(not all_keys.has(row[0]), "Translation keys have a single owning table")
-			all_keys[row[0]] = true
+			check(row[0].begins_with(category + ".") and row[0] != row[1], "Stable keys are separate from English wording")
+			all_keys[row[0]] = row[1]
 			check(String(translation.get_message(row[0])) == row[1], "CSV messages survive Godot import, including multiline text")
 	check(L10n.text("Unknown future text") == "Unknown future text", "Missing translations fall back to source text")
 	# A temporary test locale proves the English tables are wired to presentation.
 	var test_locale := Translation.new()
 	test_locale.locale = "fr"
 	for pair in [["Station 45-B", "Gare 45-B"], ["Back to %s", "Retour à %s"], ["Attack", "Attaquer"], ["Special", "Spécial"], ["Observe", "Observer"], ["Round %d", "Tour %d"], ["Usami", "Usami test"], ["Your offer", "Votre offre"], ["Pierce", "Perforation"], ["Normal", "Neutre"], ["Strength", "Force"], ["Test conversation", "Conversation traduite"]]:
-		test_locale.add_message(pair[0], pair[1])
+		for key in all_keys:
+			if all_keys[key] == pair[0]:
+				test_locale.add_message(key, pair[1])
+	test_locale.add_message("test.conversation", "Conversation traduite")
 	TranslationServer.add_translation(test_locale)
 	TranslationServer.set_locale("fr")
 	var game = load("res://scenes/main.tscn").instantiate()
@@ -47,12 +51,13 @@ func run() -> void:
 	for introduction in game.ui.get_child(0).module_conversations.values():
 		game.state.completed_conversations[introduction.id] = true
 	check(game.ui.get_child(0).get_node("Panel/Buttons/Title").text == "GARE 45-B", "Town translates its name before capitalization")
-	check(game.state.roster[0].definition.display_name == "Usami", "Localization never mutates resource names")
+	check(game.state.roster[0].definition.display_name == "content.characters.usami.name" and game.state.roster[0].definition.id == &"usami", "Localization preserves resource keys and gameplay IDs")
+	check(L10n.text(game.state.roster[0].definition.title) == "The friendly rabbit", "Untranslated stable keys fall back to English")
 	check(RPGStats.display_name(&"strength") == "Force", "Stat names are translated")
 	game.show_pause("town")
 	check(game.ui.get_child(0).left_page.get_child(1).text == "Gare 45-B", "Town name is translated in the book")
-	game.show_characters()
-	check(game.ui.get_child(0).get_node("Panel/Buttons/Town").text == "Retour à Gare 45-B", "Return label translates its template and town name")
+	await game.show_characters()
+	check(game.ui.get_child(0).widget("CharacterDetails").text.contains("Usami test"), "Book character details translate names")
 	game.show_town()
 	game.show_location("Barterer")
 	check(game.ui.get_child(0).module_view.offered_list != null, "Translated offer labels do not change service routing")
@@ -69,11 +74,11 @@ func run() -> void:
 	var pierce: DamageType = load("res://resources/rpg/damage_types/pierce.tres")
 	combat.session.compendium.learn_resistance(enemy, pierce)
 	check(combat.session.compendium.describe(enemy.definition.id).contains("Perforation:"), "Compendium translates damage types")
-	check(combat.session.compendium.entries[enemy.definition.id].resistances[pierce.id].name == "Pierce", "Discovered knowledge stores source text")
+	check(combat.session.compendium.entries[enemy.definition.id].resistances[pierce.id].name == pierce.display_name, "Discovered knowledge stores stable keys")
 	var conversation := load("res://scenes/ui/conversation.tscn").instantiate() as ConversationOverlay
 	root.add_child(conversation)
 	var line := ConversationLine.new()
-	line.text = "Test conversation"
+	line.text = "test.conversation"
 	var event := ConversationEvent.new()
 	event.lines = [line]
 	conversation.configure(event)
